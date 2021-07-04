@@ -85,7 +85,7 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.UserSerializer
 
 
-class CreateUserView(BaseView, ModelCreationMixin):
+class CreateUserView(BaseView):
     required_fields = [
             'email',
             'password',
@@ -122,6 +122,7 @@ class CreateUserView(BaseView, ModelCreationMixin):
                 translated_data[k] = data[k]
 
         return translated_data
+
 
 class CreateStudentView(BaseView):
     required_fields = [
@@ -290,5 +291,32 @@ class UpdateStudentView(BaseView):
                 translated_data['test_centers'].append(self._create_test_center(data[k]))
 
         return translated_data
+
+
+class DeleteStudentView(BaseView):
+    required_fields = ['student_id']
+    allowed_fields = required_fields
+
+    def delete(self, request):
+        error = self._catch_errors(request)
+        if error:
+            return error
+
+        data = self._translate_request_data(request)
+
+        try:
+            student_id = data.pop('student_id')
+            student = models.Student.objects.get(id=student_id)
+        except models.Student.DoesNotExist:
+            return JsonResponse({
+                'error': f"Student with id {student_id} does not exist"
+                }, status=400)
+
+        student.delete()
+
+        return JsonResponse({}, status=204)
+        
+
+
 
 
