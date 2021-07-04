@@ -54,10 +54,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('email address'), unique=True)
     date_joined = models.DateTimeField(_('date joined'), auto_now_add=True)
     last_login = models.DateTimeField(_('date joined'), auto_now=True)
-    is_admin = models.BooleanField(default=True)
+    is_admin = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=True)
-    is_superuser = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
 
     objects = UserManager()
 
@@ -119,7 +119,13 @@ class Student(BaseModel):
     )
 
     """ must be a choice, look at the dutch website later """
-    test_type = models.CharField(max_length=30, choices=TEST_TYPES)
+    test_type = models.CharField(
+            max_length=30, 
+            choices=TEST_TYPES, 
+            blank=False,
+            null=False
+            )
+
     test_centers = models.ManyToManyField('TestCenter', blank=True)
     earliest_test_date = models.DateField(default=timezone.now, blank=True)
     

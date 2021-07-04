@@ -1,15 +1,17 @@
 from django.http import HttpResponse, JsonResponse
+from django.core import exceptions
 from django.shortcuts import render
 from rest_framework import viewsets, permissions
 from rest_framework.views import APIView
 from . import models, serializers
+from .test_types import TEST_TYPES
 
 
 class ModelCreationMixin():
     def _create_user(self, data):
         email = data.pop('email')
         password = data.pop('password')
-        
+
         user = models.User.objects.create_user(email=email, password=password)
         user.save()
 
@@ -17,8 +19,9 @@ class ModelCreationMixin():
             profile = models.Profile(
                     user = user,
                     **data
-            )
+                    )
 
+            profile.full_clean()
             profile.save()
 
         except Exception as e:
@@ -34,14 +37,17 @@ class ModelCreationMixin():
             return test_center
         except models.TestCenter.DoesNotExist as e:
             test_center = models.TestCenter(name=test_center_name)
+
+            test_center.full_clean()
             test_center.save()
 
             return test_center
-    
+
     def _create_student(self, data: dict):
         test_centers = data.pop('test_centers')
 
         student = models.Student(**data)
+        student.full_clean()
         student.save()
 
         for each in test_centers:
@@ -52,6 +58,7 @@ class ModelCreationMixin():
 
 class BaseView(APIView, ModelCreationMixin):
     required_fields = []
+    allowed_fields = []
 
     def _catch_errors(self, request):
         for each in self.required_fields:
@@ -59,6 +66,18 @@ class BaseView(APIView, ModelCreationMixin):
                 return JsonResponse({
                     'error': f"`{each}` is required"
                     })
+
+    def _translate_request_data(self, request) -> dict:
+        data = request.data
+        translated_data = {}
+
+        for k in data:
+            if k not in self.allowed_fields:
+                continue
+            else:
+                translated_data[k] = data[k]
+
+        return translated_data
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -74,7 +93,8 @@ class CreateUserView(BaseView, ModelCreationMixin):
             'gov_password',
             'first_name',
             'last_name',
-    ]
+            'mobile_number',
+            ]
 
     def post(self, request):
         error = self._catch_errors(request)
@@ -82,13 +102,19 @@ class CreateUserView(BaseView, ModelCreationMixin):
             return error
 
         translated_data = self._translate_request_data(request.data)
-        self._create_user(translated_data)
+
+        try:
+            self._create_user(translated_data)
+        except exceptions.ValidationError as e:
+            return JsonResponse({
+                'errors': e.messages
+                }, status=400)
         
         return JsonResponse({}, status=200)
 
     def _translate_request_data(self, data):
         translated_data = {}
-        
+
         for k in data:
             if False:
                 pass
@@ -109,20 +135,28 @@ class CreateStudentView(BaseView):
             'test_center_3',
             'earliest_test_date',
             'days_to_skip',
-    ]
+            ]
+
+    allowed_fields = required_fields
 
     def post(self, request):
-        #if not request.user.is_authenticated:
-        #    return JsonResponse({
-        #        'error': "Please provide your credentials"
-        #        }, status=401)
+        if not request.user.is_authenticated:
+            return JsonResponse({
+                'error': "Please provide your credentials"
+                }, status=401)
         
         error = self._catch_errors(request)
         if error:
             return error
 
         translated_data = self._translate_request_data(request)
-        self._create_student(translated_data)
+
+        try:
+            self._create_student(translated_data)
+        except exceptions.ValidationError as e:
+            return JsonResponse({
+                'errors': e.messages
+                }, status=400)
 
         return JsonResponse({})
 
@@ -149,10 +183,60 @@ class CreateStudentView(BaseView):
         return translated_data
 
         
+class UpdateProfileView(BaseView):
+    allowed_fields = [
+            'first_name',
+            'last_name',
+            'mobile_number',
+            'gov_username',
+            'gov_password',
+            ]
+
+    def patch(self, request):
+        user = request.user
+        if not user.is_authenticated:
+            return JsonResponse({
+                'error': "Please provide your credentials"
+                }, status=401)
+
+        error = self._catch_errors(request)
+        if error:
+            return error
+
+        data = self._translate_request_data(request)
+
+        try:
+            self._update_profile(user.profile, data)
+        except exceptions.ValidationError as e:
+            return JsonResponse({
+                'errors': e.messages
+                }, status=400)
+
+        return JsonResponse({}, status=200)
+
+    def _update_profile(self, profile, data):
+        for k in data:
+            setattr(profile, k, data[k])
+
+        profile.save()
+
+
 class UpdateStudentView(BaseView):
     required_fields = [
             'student_id'
-    ]
+            ]
+
+    allowed_fields = required_fields + [
+            'candidate_number',
+            'birth_date',
+            'first_name',
+            'last_name',
+            'test_type',
+            'test_center_1',
+            'test_center_2',
+            'test_center_3',
+            'days_to_skip',
+            ]
 
     def patch(self, request):
         error = self._catch_errors(request)
@@ -169,7 +253,17 @@ class UpdateStudentView(BaseView):
                 'error': f"Student with id {student_id} does not exist"
                 }, status=400)
 
+        try:
+            self._update_student(student, data)
+        except exceptions.ValidationError as e:
+            return JsonResponse({
+                'errors': e.messages
+                }, status=400)
 
+
+        return JsonResponse({}, status=200)
+    
+    def _update_student(self, student, data: dict):
         for each in student.test_centers.all():
             student.test_centers.remove(each)
 
@@ -179,25 +273,22 @@ class UpdateStudentView(BaseView):
 
         for k in data:
             setattr(student, k, data[k])
-            student.save()
 
-        return JsonResponse({}, status=200)
+        student.full_clean()
+        student.save()
 
     def _translate_request_data(self, request) -> dict:
-        data = request.data
-        translated_data = {}
+        data = super()._translate_request_data(request)
+        translated_data = dict(data)
 
         for k in data:
-            if False:
-                pass
-            elif k == 'test_center_1':
+            if k == 'test_center_1':
                 translated_data['test_centers'] = [self._create_test_center(data[k])]
             elif k == 'test_center_2':
                 translated_data['test_centers'].append(self._create_test_center(data[k]))
             elif k == 'test_center_3':
                 translated_data['test_centers'].append(self._create_test_center(data[k]))
-            else:
-                translated_data[k] = data[k]
 
         return translated_data
+
 
