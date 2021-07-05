@@ -1,4 +1,5 @@
 from django.http import HttpResponse, JsonResponse
+from django.contrib.auth import authenticate, login, logout
 from django.core import exceptions
 from django.shortcuts import render
 from rest_framework import viewsets, permissions
@@ -330,4 +331,14 @@ class InstructorProfileView(BaseView):
         return JsonResponse(serialized_data, status=200)
 
 
+class LoginView(BaseView):
+    def post(self, request):
+        email = request.data.get('email')
+        password = request.data.get('password')
+        user = authenticate(username=email, password=password)
 
+        if user is not None:
+            login(request, user)
+            return JsonResponse({'user': str(user)})
+        else:
+            return JsonResponse({'error': 'Invalid credentials'}, status=401)
