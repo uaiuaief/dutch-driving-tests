@@ -1,6 +1,7 @@
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.core import exceptions
+from django.db.utils import IntegrityError 
 from django.shortcuts import render
 from rest_framework import viewsets, permissions
 from rest_framework.views import APIView
@@ -66,7 +67,7 @@ class BaseView(APIView, ModelCreationMixin):
             if each not in request.data:
                 return JsonResponse({
                     'error': f"`{each}` is required"
-                    })
+                    }, status=400)
 
     def _translate_request_data(self, request) -> dict:
         data = request.data
@@ -97,12 +98,14 @@ class CreateUserView(BaseView):
             'mobile_number',
             ]
 
+    allowed_fields = required_fields
+
     def post(self, request):
         error = self._catch_errors(request)
         if error:
             return error
 
-        translated_data = self._translate_request_data(request.data)
+        translated_data = self._translate_request_data(request)
 
         try:
             self._create_user(translated_data)
@@ -110,19 +113,12 @@ class CreateUserView(BaseView):
             return JsonResponse({
                 'errors': e.messages
                 }, status=400)
+        except IntegrityError as e:
+            return JsonResponse({
+                'error': 'A user with that email already exists'
+                }, status=400)
         
         return JsonResponse({}, status=200)
-
-    def _translate_request_data(self, data):
-        translated_data = {}
-
-        for k in data:
-            if False:
-                pass
-            else:
-                translated_data[k] = data[k]
-
-        return translated_data
 
 
 class CreateStudentView(BaseView):
@@ -324,7 +320,7 @@ class InstructorProfileView(BaseView):
         if not user.is_authenticated:
             return JsonResponse({
                 'error': 'Please provide your credentials'
-                }, status=200)
+                }, status=401)
 
         serialized_data = serializers.UserSerializer(user).data
 
