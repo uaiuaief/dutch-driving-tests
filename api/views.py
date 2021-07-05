@@ -317,6 +317,17 @@ class DeleteStudentView(BaseView):
         return JsonResponse({}, status=204)
         
 
+class InstructorProfileView(BaseView):
+    def get(self, request):
+        user = request.user
+        if not user.is_authenticated:
+            return JsonResponse({
+                'error': 'Please provide your credentials'
+                }, status=200)
+
+        serialized_data = serializers.UserSerializer(user).data
+
+        return JsonResponse(serialized_data, status=200)
 
 
 

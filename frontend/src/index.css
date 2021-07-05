@@ -1,0 +1,16 @@
+.someclass {
+    display: block;
+}
+
+.container {
+    margin-top: 100px;
+    text-align: center;
+}
+
+.container input {
+    width: 300px;
+}
+
+.btn {
+    /* width: 130px; */
+}

@@ -10,8 +10,12 @@ urlpatterns = [
     path('auth/', include('rest_framework.urls', namespace='rest_framework')),
 
     path('create-user/', views.CreateUserView.as_view(), name='create_user'),
-    path('update-profile/', views.UpdateProfileView.as_view(), name='update_profile'),
     path('create-student/', views.CreateStudentView.as_view(), name='create_student'),
+
+    path('update-profile/', views.UpdateProfileView.as_view(), name='update_profile'),
     path('update-student/', views.UpdateStudentView.as_view(), name='update_student'),
+
     path('delete-student/', views.DeleteStudentView.as_view(), name='delete_student'),
+
+    path('get-profile/', views.InstructorProfileView.as_view(), name='instructor_profile'),
 ]
