@@ -25,7 +25,6 @@ class LoginPage extends Component {
                             setParentState={(state) => this.setState(state)}
                         />
                     </Box>
-
                 </section>
         );
     }

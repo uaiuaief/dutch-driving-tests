@@ -1,81 +1,22 @@
 import React, { Component } from 'react';
 import { Button, Box, Container } from '@material-ui/core'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import { DataGrid } from '@material-ui/data-grid'
+import StudentTable from '../StudentTable'
+import CreateStudentScreen from "../CreateStudentScreen"
 
-
-const columns = [
-    {
-        field: 'first_name',
-        headerName: 'First name',
-        width: 150,
-        editable: false,
-    },
-    {
-        field: 'last_name',
-        headerName: 'Last name',
-        width: 150,
-        editable: false,
-    },
-    {
-        field: 'candidate_number',
-        headerName: 'Candidate Number',
-        width: 200,
-        editable: false,
-    },
-    {
-        field: 'birth_date',
-        headerName: 'Date of Birth',
-        width: 180,
-        editable: false,
-    },
-    {
-        field: 'test_type',
-        headerName: 'Test Type',
-        width: 150,
-        editable: false,
-    },
-    {
-        field: 'test_centers',
-        headerName: 'Test Centers',
-        width: 350,
-        editable: false,
-    },
-    {
-        field: 'earliest_date',
-        headerName: 'Earliest Date',
-        width: 180,
-        editable: false,
-    },
-    {
-        field: 'days_to_skip',
-        headerName: 'Days to Skip',
-        width: 180,
-        editable: false,
-    },
-    {
-        field: 'edit',
-        headerName: 'Edit',
-        width: 180,
-        renderCell: (params) => (
-            <strong>
-              <Button
-                variant="contained"
-                color="primary"
-                size="small"
-                // style={{ marginLeft: 16 }}
-              >
-                Edit
-              </Button>
-            </strong>
-          ),
-    },
-];
 
 class AccountPage extends Component {
     state = {
         user: null,
-        rows: null
+        rows: null,
+        
+        show_add_student: false
+    }
+
+    showAddStudentScreen = () => {
+        this.setState({
+            show_add_student: true
+        })
     }
 
     fetchProfile = async () => {
@@ -106,7 +47,7 @@ class AccountPage extends Component {
             <div
                 style={{
                     // "margin": "auto",
-                    // "marginTop": "150px",
+                    "marginTop": "50px",
                     "height": "400px",
                     "width": "100%"
                 }}
@@ -115,14 +56,26 @@ class AccountPage extends Component {
                     ?
                     null
                     :
-                    <DataGrid
-                        rows={this.state.rows}
-                        columns={columns}
-                        pageSize={5}
-                        // checkboxSelection
-                        disableSelectionOnClick
-                        disableColumnResize={false}
-                    />
+                    <>
+                        <StudentTable
+                            rows={this.state.rows}
+                        />
+                        <Box mt={"2.0rem"}>
+                            <Button
+                                onClick={this.showAddStudentScreen}
+                                className="btn"
+                                size="large"
+                                variant="contained"
+                                color="primary"
+                                type="submit"
+                            >
+                                New Student
+                            </Button>
+                        </Box>
+                        <CreateStudentScreen
+                            show={this.state.show_add_student}
+                        />
+                    </>
                 }
             </div>
         );

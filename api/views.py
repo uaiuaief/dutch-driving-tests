@@ -64,7 +64,7 @@ class BaseView(APIView, ModelCreationMixin):
 
     def _catch_errors(self, request):
         for each in self.required_fields:
-            if each not in request.data:
+            if each not in request.data or request.data[each] == "":
                 return JsonResponse({
                     'error': f"`{each}` is required"
                     }, status=400)
@@ -75,6 +75,8 @@ class BaseView(APIView, ModelCreationMixin):
 
         for k in data:
             if k not in self.allowed_fields:
+                continue
+            elif data[k] == "":
                 continue
             else:
                 translated_data[k] = data[k]
@@ -129,13 +131,14 @@ class CreateStudentView(BaseView):
             'last_name',
             'test_type',
             'test_center_1',
-            'test_center_2',
-            'test_center_3',
             'earliest_test_date',
-            'days_to_skip',
             ]
 
-    allowed_fields = required_fields
+    allowed_fields = required_fields + [
+            'days_to_skip',
+            'test_center_2',
+            'test_center_3',
+            ]
 
     def post(self, request):
         if not request.user.is_authenticated:
@@ -157,8 +160,6 @@ class CreateStudentView(BaseView):
                 }, status=400)
 
         return JsonResponse({})
-
-
         
     def _translate_request_data(self, request) -> dict:
         data = request.data
@@ -167,8 +168,8 @@ class CreateStudentView(BaseView):
         }
 
         for k in data:
-            if False:
-                pass
+            if data[k] == "":
+                continue
             elif k == 'test_center_1':
                 translated_data['test_centers'] = [self._create_test_center(data[k])]
             elif k == 'test_center_2':
