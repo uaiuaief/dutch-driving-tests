@@ -339,3 +339,35 @@ class LoginView(BaseView):
             return JsonResponse({'user': str(user)})
         else:
             return JsonResponse({'error': 'Invalid credentials'}, status=401)
+
+
+class GetStudentView(BaseView):
+    allowed_fields = required_fields = ['student_id']
+
+    def get(self, request):
+        user = request.user
+        if not user.is_authenticated:
+            return JsonResponse({
+                'error': 'Please provide your credentials'
+                }, status=401)
+
+        error = self._catch_errors(request)
+        if error:
+            return error
+
+        student_id = request.data.get('student_id')
+
+        try:
+            student = user.profile.students.get(id=student_id)
+        except models.Student.DoesNotExist:
+            return JsonResponse({
+                'error': f'Student with id {student_id} not found'
+                }, status=404)
+
+        serialized_data = serializers.StudentSerializer(student).data
+
+        return JsonResponse(serialized_data, status=200)
+    
+        
+
+

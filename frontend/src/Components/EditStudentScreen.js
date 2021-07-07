@@ -13,8 +13,12 @@ class EditStudentScreen extends Component {
         })
     }
 
+    componentDidMount(){
+        
+    }
+
     render() {
-        const { setParentState, show } = this.props
+        const { setParentState, show, studentId } = this.props
         return (
             show
                 ?

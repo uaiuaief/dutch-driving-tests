@@ -70,8 +70,6 @@ const StudentTable = ({ rows, setParentState }) => {
         })
     }
 
-    console.log(rows)
-
     const align = "left"
     return (
         <div>
