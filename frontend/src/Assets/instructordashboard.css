@@ -46,3 +46,8 @@
 #edit-student-screen input {
     width: 270px;
 }
+
+#multiple-select {
+    width: 298px;
+    /* height: 56px; */
+}

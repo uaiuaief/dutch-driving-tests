@@ -271,14 +271,21 @@ class UpdateStudentView(BaseView):
         student.save()
 
     def _translate_request_data(self, request) -> dict:
-        data = super()._translate_request_data(request)
-        translated_data = dict(data)
+        data = request.data
+        translated_data = {}
 
         for k in data:
-            if k == 'test_centers':
+            if data[k] == "":
+                if k == 'days_to_skip':
+                    translated_data[k] = data[k]
+                else:
+                    continue
+            elif k == 'test_centers':
                 translated_data['test_centers'] = []
                 for each in data[k]:
                     translated_data['test_centers'].append(self._create_test_center(each))
+            else:
+                translated_data[k] = data[k]
 
         return translated_data
 

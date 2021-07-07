@@ -2,28 +2,31 @@ import { Formik } from 'formik';
 import { Button, Box, TextField } from '@material-ui/core'
 
 
-const UpdateStudentForm = ({ setParentState }) => (
+const UpdateStudentForm = ({ setParentState, student, refreshTable }) => {
+    let test_centers = student.test_centers
+    console.log(test_centers);
+
+    return (
         <Formik
             initialValues={{
-                candidate_number: "",
-                birth_date: "",
-                first_name: "",
-                last_name: "",
-                test_type: "",
-                earliest_test_date: "",
-                days_to_skip: "",
-                test_center_1: "",
-                test_center_2: "",
-                test_center_3: "",
+                student_id: student.id,
+                candidate_number: student.candidate_number,
+                birth_date: student.birth_date,
+                first_name: student.first_name,
+                last_name: student.last_name,
+                test_type: student.test_type,
+                earliest_test_date: student.earliest_test_date,
+                days_to_skip: student.days_to_skip,
+                test_centers: student.test_centers,
             }}
 
             onSubmit={async (values, actions) => {
-                alert(JSON.stringify(values, null, 2));
-                return
+                // alert(JSON.stringify(values, null, 2));
+                // return
 
-                const endpoint = "/api/create-student/"
+                const endpoint = "/api/update-student/"
                 let res = await fetch(endpoint, {
-                    method: 'POST',
+                    method: 'PATCH',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRFToken': window.getCookie('csrftoken')
@@ -32,7 +35,8 @@ const UpdateStudentForm = ({ setParentState }) => (
                 })
 
                 if (String(res.status).slice(0, 1) === '2') {
-                    alert('student created successfully')
+                    alert('student updated successfully')
+                    refreshTable()
                 }
                 else if (String(res.status).slice(0, 1) === '4') {
                     let data = await res.json()
@@ -105,15 +109,42 @@ const UpdateStudentForm = ({ setParentState }) => (
                             value={props.values.days_to_skip}
                             name="days_to_skip"
                         />
-                        <TextField
+                        <select
+                            id="multiple-select"
+                            multiple
+                            onChange={props.handleChange}
+                            onBlur={props.handleBlur}
+                            name="test_centers"
+                            value={props.values.test_centers}
+                        >
+                            <option>Almelo (Bedrijvenpark Twente 305)</option>
+                            <option>Kerkrade (Spekhofstraat 24)</option>
+                            <option>ASOKDOASKO</option>
+                            <option>ASOKDOASKO</option>
+                            <option>ASOKDOASKO</option>
+                            <option>ASOKDOASKO</option>
+                            <option>ASOKDOASKO</option>
+                            <option>ASOKDOASKO</option>
+                            <option>ASOKDOASKO</option>
+                            <option>ASOKDOASKO</option>
+                            <option>ASOKDOASKO</option>
+                            <option>ASOKDOASKO</option>
+                            <option>ASOKDOASKO</option>
+                            <option>ASOKDOASKO</option>
+                            <option>ASOKDOASKO</option>
+                            <option>ASOKDOASKO</option>
+                            <option>asd9as8d4a8sd498</option>
+                        </select>
+                    </Box>
+                    {/* <TextField
                             label="Test Center 1"
                             variant="outlined"
                             onChange={props.handleChange}
                             onBlur={props.handleBlur}
                             value={props.values.test_center_1}
                             name="test_center_1"
-                        />
-                    </Box>
+                        /> */}
+                    {/* </Box>
                     <Box mt={".9rem"}>
                         <TextField
                             label="Test Center 2"
@@ -131,7 +162,7 @@ const UpdateStudentForm = ({ setParentState }) => (
                             value={props.values.test_center_3}
                             name="test_center_3"
                         />
-                    </Box>
+                    </Box> */}
                     <Box mt={"2.0rem"}>
                         <Button
                             className="btn"
@@ -147,6 +178,7 @@ const UpdateStudentForm = ({ setParentState }) => (
             )}
         </Formik>
     )
+}
 
 
 export default UpdateStudentForm;

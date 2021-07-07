@@ -13,12 +13,8 @@ class EditStudentScreen extends Component {
         })
     }
 
-    componentDidMount(){
-        
-    }
-
     render() {
-        const { setParentState, show, studentId } = this.props
+        const { setParentState, show, student, refreshTable } = this.props
         return (
             show
                 ?
@@ -34,7 +30,10 @@ class EditStudentScreen extends Component {
                             <CloseIcon />
                         </Fab>
                         <h1>Update Student</h1>
-                        <UpdateStudentForm />
+                        <UpdateStudentForm
+                            refreshTable={refreshTable}
+                            student={student}
+                        />
                     </div>
                 </div>
                 :
