@@ -5,7 +5,7 @@ import AddStudentForm from "./Forms/AddStudentForm"
 import { Button, Box, TextField, Select, Fab } from '@material-ui/core'
 import "../Assets/instructordashboard.css"
 
-class CreateStudentScreen extends Component {
+class EditStudentScreen extends Component {
     closeWindow = (e) => {
         const {setParentState} = this.props
         setParentState({
@@ -18,7 +18,7 @@ class CreateStudentScreen extends Component {
         return (
             show
                 ?
-                <div id="create-student-screen">
+                <div id="edit-student-screen">
                     <Fab
                         className="close-button"
                         size="small"
@@ -28,7 +28,7 @@ class CreateStudentScreen extends Component {
                     >
                         <CloseIcon />
                     </Fab>
-                    <h1>Add a new Student</h1>
+                    <h1>Update Student</h1>
                     <AddStudentForm />
                 </div>
                 :
@@ -37,4 +37,4 @@ class CreateStudentScreen extends Component {
     }
 }
 
-export default CreateStudentScreen;
+export default EditStudentScreen;

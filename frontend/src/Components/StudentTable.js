@@ -1,5 +1,10 @@
-import { DataGrid } from '@material-ui/data-grid'
-import { Button, Box, Container } from '@material-ui/core'
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import { Button, Box, Container, Paper } from '@material-ui/core'
 
 
 const columns = [
@@ -53,32 +58,53 @@ const columns = [
     },
     {
         field: 'edit',
-        headerName: 'Edit',
-        width: 180,
-        renderCell: (params) => (
-            <strong>
-              <Button
-                variant="contained"
-                color="primary"
-                size="small"
-                // style={{ marginLeft: 16 }}
-              >
-                Edit
-              </Button>
-            </strong>
-          ),
+        headerName: '',
+        width: 180
     },
 ];
 
-const StudentTable = ({rows}) => (
-    <DataGrid
-        rows={rows}
-        columns={columns}
-        pageSize={5}
-        // checkboxSelection
-        disableSelectionOnClick
-        disableColumnResize={false}
-    />
-)
+const StudentTable = ({ rows }) => {
+    const align = "left"
+    return (
+        <div>
+            <TableContainer component={Paper}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            {columns.map(column => (
+                                <TableCell align={align}>{column.headerName}</TableCell>
+
+                            ))}
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {rows.map((student) => (
+                            <TableRow key={student.id}>
+                                <TableCell align={align}>{student.first_name}</TableCell>
+                                <TableCell align={align}>{student.last_name}</TableCell>
+                                <TableCell align={align}>{student.candidate_number}</TableCell>
+                                <TableCell align={align}>{student.birth_date}</TableCell>
+                                <TableCell align={align}>{student.test_type}</TableCell>
+                                <TableCell align={align}>{student.test_centers}</TableCell>
+                                <TableCell align={align}>{student.earliest_test_date}</TableCell>
+                                <TableCell align={align}>{student.days_to_skip}</TableCell>
+                                <TableCell align={align}><strong>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        size="small"
+                                    // style={{ marginLeft: 16 }}
+                                    >
+                                        Edit
+                                    </Button>
+                                </strong></TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </div>
+    )
+}
 
 export default StudentTable;

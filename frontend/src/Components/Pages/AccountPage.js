@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Button, Box, Container } from '@material-ui/core'
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+// import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import StudentTable from '../StudentTable'
 import CreateStudentScreen from "../CreateStudentScreen"
+import EditStudentScreen from "../EditStudentScreen"
 
 
 class AccountPage extends Component {
@@ -74,6 +75,12 @@ class AccountPage extends Component {
                         </Box>
                         <CreateStudentScreen
                             show={this.state.show_add_student}
+                            setParentState={(params) => this.setState(params)}
+                        />
+                        <EditStudentScreen
+                            // show={this.state.show_add_student}
+                            show={true}
+                            setParentState={(params) => this.setState(params)}
                         />
                     </>
                 }
