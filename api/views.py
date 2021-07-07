@@ -130,14 +130,12 @@ class CreateStudentView(BaseView):
             'first_name',
             'last_name',
             'test_type',
-            'test_center_1',
+            'test_centers',
             'earliest_test_date',
             ]
 
     allowed_fields = required_fields + [
             'days_to_skip',
-            'test_center_2',
-            'test_center_3',
             ]
 
     def post(self, request):
@@ -170,12 +168,10 @@ class CreateStudentView(BaseView):
         for k in data:
             if data[k] == "":
                 continue
-            elif k == 'test_center_1':
-                translated_data['test_centers'] = [self._create_test_center(data[k])]
-            elif k == 'test_center_2':
-                translated_data['test_centers'].append(self._create_test_center(data[k]))
-            elif k == 'test_center_3':
-                translated_data['test_centers'].append(self._create_test_center(data[k]))
+            elif k == 'test_centers':
+                translated_data['test_centers'] = []
+                for each in data[k]:
+                    translated_data['test_centers'].append(self._create_test_center(each))
             else:
                 translated_data[k] = data[k]
 
@@ -231,9 +227,7 @@ class UpdateStudentView(BaseView):
             'first_name',
             'last_name',
             'test_type',
-            'test_center_1',
-            'test_center_2',
-            'test_center_3',
+            'test_centers',
             'days_to_skip',
             ]
 
@@ -281,12 +275,10 @@ class UpdateStudentView(BaseView):
         translated_data = dict(data)
 
         for k in data:
-            if k == 'test_center_1':
-                translated_data['test_centers'] = [self._create_test_center(data[k])]
-            elif k == 'test_center_2':
-                translated_data['test_centers'].append(self._create_test_center(data[k]))
-            elif k == 'test_center_3':
-                translated_data['test_centers'].append(self._create_test_center(data[k]))
+            if k == 'test_centers':
+                translated_data['test_centers'] = []
+                for each in data[k]:
+                    translated_data['test_centers'].append(self._create_test_center(each))
 
         return translated_data
 
@@ -344,7 +336,8 @@ class LoginView(BaseView):
 class GetStudentView(BaseView):
     allowed_fields = required_fields = ['student_id']
 
-    def get(self, request):
+    def post(self, request):
+        print(request.data)
         user = request.user
         if not user.is_authenticated:
             return JsonResponse({
