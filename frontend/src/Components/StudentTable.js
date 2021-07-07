@@ -63,7 +63,15 @@ const columns = [
     },
 ];
 
-const StudentTable = ({ rows }) => {
+const StudentTable = ({ rows, setParentState }) => {
+    const showEditScreen = () => {
+        setParentState({
+            show_edit_student: true
+        })
+    }
+
+    console.log(rows)
+
     const align = "left"
     return (
         <div>
@@ -90,6 +98,7 @@ const StudentTable = ({ rows }) => {
                                 <TableCell align={align}>{student.days_to_skip}</TableCell>
                                 <TableCell align={align}><strong>
                                     <Button
+                                        onClick={showEditScreen}
                                         variant="contained"
                                         color="primary"
                                         size="small"

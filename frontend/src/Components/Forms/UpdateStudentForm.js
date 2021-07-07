@@ -2,7 +2,7 @@ import { Formik } from 'formik';
 import { Button, Box, TextField } from '@material-ui/core'
 
 
-const AddStudentForm = ({ setParentState, refreshTable }) => (
+const UpdateStudentForm = ({ setParentState }) => (
         <Formik
             initialValues={{
                 candidate_number: "",
@@ -18,8 +18,8 @@ const AddStudentForm = ({ setParentState, refreshTable }) => (
             }}
 
             onSubmit={async (values, actions) => {
-                // alert(JSON.stringify(values, null, 2));
-                // return
+                alert(JSON.stringify(values, null, 2));
+                return
 
                 const endpoint = "/api/create-student/"
                 let res = await fetch(endpoint, {
@@ -33,8 +33,6 @@ const AddStudentForm = ({ setParentState, refreshTable }) => (
 
                 if (String(res.status).slice(0, 1) === '2') {
                     alert('student created successfully')
-                    refreshTable()
-                    
                 }
                 else if (String(res.status).slice(0, 1) === '4') {
                     let data = await res.json()
@@ -142,7 +140,7 @@ const AddStudentForm = ({ setParentState, refreshTable }) => (
                             color="primary"
                             type="submit"
                         >
-                            Add Student
+                            Update Student
                         </Button>
                     </Box>
                 </form>
@@ -151,4 +149,4 @@ const AddStudentForm = ({ setParentState, refreshTable }) => (
     )
 
 
-export default AddStudentForm;
+export default UpdateStudentForm;

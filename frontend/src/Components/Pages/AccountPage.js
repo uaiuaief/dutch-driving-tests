@@ -11,12 +11,19 @@ class AccountPage extends Component {
         user: null,
         rows: null,
         
-        show_add_student: false
+        show_add_student: false,
+        show_edit_student: false
     }
 
     showAddStudentScreen = () => {
         this.setState({
             show_add_student: true
+        })
+    }
+
+    showEditStudentScreen = () => {
+        this.setState({
+            show_edit_student: true
         })
     }
 
@@ -27,7 +34,8 @@ class AccountPage extends Component {
         return data
     }
 
-    componentDidMount() {
+    refreshTable = () => {
+        console.log('refreshing');
         this.fetchProfile().then((data) => {
             let { students } = data.profile
 
@@ -41,6 +49,10 @@ class AccountPage extends Component {
 
             this.setState({ rows: students })
         })
+    }
+
+    componentDidMount() {
+        this.refreshTable()
     }
 
     render() {
@@ -60,6 +72,7 @@ class AccountPage extends Component {
                     <>
                         <StudentTable
                             rows={this.state.rows}
+                            setParentState={(state) => this.setState(state)}
                         />
                         <Box mt={"2.0rem"}>
                             <Button
@@ -76,11 +89,13 @@ class AccountPage extends Component {
                         <CreateStudentScreen
                             show={this.state.show_add_student}
                             setParentState={(params) => this.setState(params)}
-                        />
+                            refreshTable={this.refreshTable}
+                            />
                         <EditStudentScreen
-                            // show={this.state.show_add_student}
-                            show={true}
+                            show={this.state.show_edit_student}
+                            // show={true}
                             setParentState={(params) => this.setState(params)}
+                            refreshTable={this.refreshTable}
                         />
                     </>
                 }
