@@ -3,8 +3,26 @@ import { Button, Box, TextField } from '@material-ui/core'
 
 
 const UpdateStudentForm = ({ setParentState, student, refreshTable }) => {
-    let test_centers = student.test_centers
-    console.log(test_centers);
+    const deleteStudent = async () => {
+        const endpoint = "/api/delete-student/"
+        let res = await fetch(endpoint, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': window.getCookie('csrftoken')
+            },
+            body: JSON.stringify({student_id: student.id})
+        })
+
+        if (String(res.status).slice(0, 1) === '2') {
+            alert(`${student.first_name} ${student.last_name} was removed successfully`)
+            refreshTable()
+        }
+        else if (String(res.status).slice(0, 1) === '4') {
+            let data = await res.json()
+            alert(data.error || data.errors)
+        }
+    }
 
     return (
         <Formik
@@ -119,50 +137,14 @@ const UpdateStudentForm = ({ setParentState, student, refreshTable }) => {
                         >
                             <option>Almelo (Bedrijvenpark Twente 305)</option>
                             <option>Kerkrade (Spekhofstraat 24)</option>
-                            <option>ASOKDOASKO</option>
-                            <option>ASOKDOASKO</option>
-                            <option>ASOKDOASKO</option>
-                            <option>ASOKDOASKO</option>
-                            <option>ASOKDOASKO</option>
-                            <option>ASOKDOASKO</option>
-                            <option>ASOKDOASKO</option>
-                            <option>ASOKDOASKO</option>
-                            <option>ASOKDOASKO</option>
-                            <option>ASOKDOASKO</option>
-                            <option>ASOKDOASKO</option>
-                            <option>ASOKDOASKO</option>
-                            <option>ASOKDOASKO</option>
-                            <option>ASOKDOASKO</option>
-                            <option>asd9as8d4a8sd498</option>
+                            <option>Curitiba</option>
+                            <option>São Paulo</option>
+                            <option>New York</option>
+                            <option>Texas</option>
+                            <option>Seoul</option>
+                            <option>New Zealand</option>
                         </select>
                     </Box>
-                    {/* <TextField
-                            label="Test Center 1"
-                            variant="outlined"
-                            onChange={props.handleChange}
-                            onBlur={props.handleBlur}
-                            value={props.values.test_center_1}
-                            name="test_center_1"
-                        /> */}
-                    {/* </Box>
-                    <Box mt={".9rem"}>
-                        <TextField
-                            label="Test Center 2"
-                            variant="outlined"
-                            onChange={props.handleChange}
-                            onBlur={props.handleBlur}
-                            value={props.values.test_center_2}
-                            name="test_center_2"
-                        />
-                        <TextField
-                            label="Test Center 3"
-                            variant="outlined"
-                            onChange={props.handleChange}
-                            onBlur={props.handleBlur}
-                            value={props.values.test_center_3}
-                            name="test_center_3"
-                        />
-                    </Box> */}
                     <Box mt={"2.0rem"}>
                         <Button
                             className="btn"
@@ -172,6 +154,16 @@ const UpdateStudentForm = ({ setParentState, student, refreshTable }) => {
                             type="submit"
                         >
                             Update Student
+                        </Button>
+                        <Button
+                            onClick={(e) => deleteStudent()}
+                            className="btn"
+                            size="large"
+                            variant="contained"
+                            color="secondary"
+                            type="button"
+                        >
+                            Delete Student
                         </Button>
                     </Box>
                 </form>

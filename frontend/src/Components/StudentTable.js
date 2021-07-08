@@ -85,29 +85,33 @@ const StudentTable = ({ rows, setParentState }) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.map((student) => (
-                            <TableRow key={student.id}>
-                                <TableCell align={align}>{student.first_name}</TableCell>
-                                <TableCell align={align}>{student.last_name}</TableCell>
-                                <TableCell align={align}>{student.candidate_number}</TableCell>
-                                <TableCell align={align}>{student.birth_date}</TableCell>
-                                <TableCell align={align}>{student.test_type}</TableCell>
-                                <TableCell align={align}>{student.test_centers}</TableCell>
-                                <TableCell align={align}>{student.earliest_test_date}</TableCell>
-                                <TableCell align={align}>{student.days_to_skip}</TableCell>
-                                <TableCell align={align}><strong>
-                                    <Button
-                                        onClick={() => showEditScreen(student)}
-                                        variant="contained"
-                                        color="primary"
-                                        size="small"
-                                    // style={{ marginLeft: 16 }}
-                                    >
-                                        Edit
-                                    </Button>
-                                </strong></TableCell>
-                            </TableRow>
-                        ))}
+                        {rows.map((student) => {
+                            let test_centers = student.test_centers.reduce((test_centers, each) => test_centers + `, ${each}`)
+                            return (
+                                <TableRow key={student.id}>
+                                    <TableCell align={align}>{student.first_name}</TableCell>
+                                    <TableCell align={align}>{student.last_name}</TableCell>
+                                    <TableCell align={align}>{student.candidate_number}</TableCell>
+                                    <TableCell align={align}>{student.birth_date}</TableCell>
+                                    <TableCell align={align}>{student.test_type}</TableCell>
+                                    <TableCell align={align}>{test_centers}</TableCell>
+                                    <TableCell align={align}>{student.earliest_test_date}</TableCell>
+                                    <TableCell align={align}>{student.days_to_skip}</TableCell>
+                                    <TableCell align={align}><strong>
+                                        <Button
+                                            onClick={() => showEditScreen(student)}
+                                            variant="contained"
+                                            color="primary"
+                                            size="small"
+                                        // style={{ marginLeft: 16 }}
+                                        >
+                                            Edit
+                                        </Button>
+                                    </strong></TableCell>
+                                </TableRow>
+                            )
+                        }
+                        )}
                     </TableBody>
                 </Table>
             </TableContainer>
