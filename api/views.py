@@ -340,6 +340,17 @@ class LoginView(BaseView):
             return JsonResponse({'error': 'Invalid credentials'}, status=401)
 
 
+class LogoutView(BaseView):
+    def get(self, request):
+        user = request.user
+
+        if user.is_authenticated:
+            logout(request)
+            return JsonResponse({}, status=200)
+        else:
+            return JsonResponse({'error': 'Invalid credentials'}, status=401)
+
+
 class GetStudentView(BaseView):
     allowed_fields = required_fields = ['student_id']
 

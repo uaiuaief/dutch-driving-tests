@@ -23,7 +23,8 @@ const LoginForm = ({setParentState}) => (
             })
 
             if (String(res.status).slice(0, 1) === '2') {
-                setParentState({redirect: "/account"})
+                // setParentState({redirect: "/account"})
+                window.location = '/account'
                 // alert('success')
             }
             else if (String(res.status).slice(0, 1) === '4') {

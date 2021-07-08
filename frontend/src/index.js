@@ -20,6 +20,17 @@ window.getCookie = (name) => {
   return cookieValue;
 }
 
+window.fetchProfile = async () => {
+  let res = await fetch('/api/get-profile/')
+
+  if (String(res.status).slice(0, 1) === '2') {
+    let user = await res.json()
+    return user
+  }
+  else {
+    return null
+  }
+}
 
 ReactDOM.render(
   <React.StrictMode>

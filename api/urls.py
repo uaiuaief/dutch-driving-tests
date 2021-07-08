@@ -20,5 +20,6 @@ urlpatterns = [
     path('get-profile/', views.InstructorProfileView.as_view(), name='instructor_profile'),
     path('get-student/', views.GetStudentView.as_view(), name='get_student'),
 
-    path('login/', views.LoginView.as_view(), name='instructor_profile'),
+    path('login/', views.LoginView.as_view(), name='login_view'),
+    path('logout/', views.LogoutView.as_view(), name='logout_view'),
 ]

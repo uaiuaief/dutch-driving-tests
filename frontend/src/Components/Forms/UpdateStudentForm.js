@@ -1,6 +1,8 @@
 import { Formik } from 'formik';
 import { Button, Box, TextField } from '@material-ui/core'
 
+import AlertDialog from '../MaterialUIComponents/test'
+
 
 const UpdateStudentForm = ({ setParentState, student, refreshTable }) => {
     const deleteStudent = async () => {
@@ -165,6 +167,7 @@ const UpdateStudentForm = ({ setParentState, student, refreshTable }) => {
                         >
                             Delete Student
                         </Button>
+                        <AlertDialog/>
                     </Box>
                 </form>
             )}

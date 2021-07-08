@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Button, Box, Container } from '@material-ui/core'
-// import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import StudentTable from '../StudentTable'
 import CreateStudentScreen from "../CreateStudentScreen"
 import EditStudentScreen from "../EditStudentScreen"
+import { Redirect } from 'react-router-dom';
 
 
 class AccountPage extends Component {
@@ -13,7 +13,9 @@ class AccountPage extends Component {
         
         show_add_student: false,
         show_edit_student: false,
-        student_to_edit: null
+        student_to_edit: null,
+
+        redirect: false,
     }
 
     showAddStudentScreen = () => {
@@ -28,15 +30,15 @@ class AccountPage extends Component {
         })
     }
 
-    fetchProfile = async () => {
-        let res = await fetch('/api/get-profile/')
-        let data = await res.json()
-
-        return data
-    }
-
     refreshTable = () => {
-        this.fetchProfile().then((data) => {
+        window.fetchProfile().then((data) => {
+            if (data === null){
+                this.setState({
+                    redirect: true
+                })
+                return
+            }
+
             let { students } = data.profile
 
             students.forEach(student => {
@@ -58,6 +60,10 @@ class AccountPage extends Component {
 
     render() {
         return (
+            this.state.redirect
+            ?
+            <Redirect to="/"/>
+            :
             <div
                 style={{
                     // "margin": "auto",

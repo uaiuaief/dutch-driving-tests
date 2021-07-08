@@ -86,7 +86,14 @@ const StudentTable = ({ rows, setParentState }) => {
                     </TableHead>
                     <TableBody>
                         {rows.map((student) => {
-                            let test_centers = student.test_centers.reduce((test_centers, each) => test_centers + `, ${each}`)
+                            let test_centers;
+                            if (student.test_centers.length > 0){
+                                test_centers = student.test_centers.reduce((test_centers, each) => test_centers + `, ${each}`)
+                            }
+                            else {
+                                test_centers = ''
+                            }
+
                             return (
                                 <TableRow key={student.id}>
                                     <TableCell align={align}>{student.first_name}</TableCell>
