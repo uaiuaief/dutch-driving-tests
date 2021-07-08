@@ -21,6 +21,7 @@ class ProfileSerializer(serializers.ModelSerializer):
                 'mobile_number',
                 'gov_username',
                 'gov_password',
+                'student_limit',
                 'students',
         ]
         
@@ -36,8 +37,6 @@ class UserSerializer(serializers.ModelSerializer):
                 'email',
                 'profile',
                 ]
-
-
 
 
 class TestCenterSerializer(serializers.ModelSerializer):

@@ -96,6 +96,8 @@ class Profile(BaseModel):
             validators=[MinLengthValidator(1)]
     )
 
+    student_limit = models.IntegerField(default=100, blank=True)
+
     def __str__(self):
         return f'{self.user}'
 

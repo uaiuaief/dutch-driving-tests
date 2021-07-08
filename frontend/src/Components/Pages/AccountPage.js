@@ -8,7 +8,7 @@ import { Redirect } from 'react-router-dom';
 
 class AccountPage extends Component {
     state = {
-        user: null,
+        profile: null,
         rows: null,
         
         show_add_student: false,
@@ -37,6 +37,11 @@ class AccountPage extends Component {
                     redirect: true
                 })
                 return
+            }
+            else {
+                this.setState({
+                    profile: data.profile
+                })
             }
 
             let { students } = data.profile
@@ -80,7 +85,7 @@ class AccountPage extends Component {
                         <div style={{display: "flex", justifyContent: "space-between"}}>
                             <div>
                                 <h1>Total Students</h1>
-                                <h1>{this.state.rows.length}/100</h1>
+                                <h1>{this.state.rows.length}/{this.state.profile.student_limit}</h1>
                             </div>
                             <div>
                                 <h1>Searching</h1>

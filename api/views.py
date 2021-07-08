@@ -5,6 +5,7 @@ from django.db.utils import IntegrityError
 from django.shortcuts import render
 from rest_framework import viewsets, permissions
 from rest_framework.views import APIView
+from exceptions import StudentLimitReached
 from . import models, serializers
 from .test_types import TEST_TYPES
 
@@ -48,6 +49,9 @@ class ModelCreationMixin():
     def _create_student(self, data: dict):
         test_centers = data.pop('test_centers')
 
+        if self._is_over_student_limit(data.get('instructor')):
+            raise StudentLimitReached
+
         student = models.Student(**data)
         student.full_clean()
         student.save()
@@ -56,7 +60,14 @@ class ModelCreationMixin():
             student.test_centers.add(each)
 
         return student
-
+    
+    def _is_over_student_limit(self, instructor):
+        student_count = instructor.students.count()
+        
+        if student_count >= instructor.student_limit:
+            return True
+        else:
+            return False
 
 class BaseView(APIView, ModelCreationMixin):
     required_fields = []
@@ -156,6 +167,11 @@ class CreateStudentView(BaseView):
             return JsonResponse({
                 'errors': e.messages
                 }, status=400)
+        except StudentLimitReached as e:
+            return JsonResponse({
+                'errors': "Student limit has been reached, can't add more students"
+                }, status=400)
+
 
         return JsonResponse({})
         

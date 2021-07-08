@@ -1,0 +1,2 @@
+class StudentLimitReached(Exception):
+    pass
