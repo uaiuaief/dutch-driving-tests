@@ -1,10 +1,14 @@
+import ConfirmDeleteDialog from '../MaterialUIComponents/ConfirmDeleteDialog'
+import React from 'react';
 import { Formik } from 'formik';
-import { Button, Box, TextField } from '@material-ui/core'
-
-import AlertDialog from '../MaterialUIComponents/test'
+import Button from '@material-ui/core/Button'
+import Box from '@material-ui/core/Box'
+import TextField from '@material-ui/core/TextField'
 
 
 const UpdateStudentForm = ({ setParentState, student, refreshTable }) => {
+    let [state, setState] = React.useState({ open: false })
+
     const deleteStudent = async () => {
         const endpoint = "/api/delete-student/"
         let res = await fetch(endpoint, {
@@ -13,7 +17,7 @@ const UpdateStudentForm = ({ setParentState, student, refreshTable }) => {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': window.getCookie('csrftoken')
             },
-            body: JSON.stringify({student_id: student.id})
+            body: JSON.stringify({ student_id: student.id })
         })
 
         if (String(res.status).slice(0, 1) === '2') {
@@ -78,11 +82,19 @@ const UpdateStudentForm = ({ setParentState, student, refreshTable }) => {
                         <TextField
                             label="Test Type"
                             variant="outlined"
+                            select
+                            SelectProps={{
+                                native: true,
+                            }}
                             onChange={props.handleChange}
                             onBlur={props.handleBlur}
                             value={props.values.test_type}
                             name="test_type"
-                        />
+                        >
+                            <option value=""></option>
+                            <option>A</option>
+                            <option>B</option>
+                        </TextField>
                     </Box>
                     <Box mt={".9rem"}>
                         <TextField
@@ -158,7 +170,8 @@ const UpdateStudentForm = ({ setParentState, student, refreshTable }) => {
                             Update Student
                         </Button>
                         <Button
-                            onClick={(e) => deleteStudent()}
+                            // onClick={(e) => deleteStudent()}
+                            onClick={(e) => setState({ open: true })}
                             className="btn"
                             size="large"
                             variant="contained"
@@ -167,7 +180,15 @@ const UpdateStudentForm = ({ setParentState, student, refreshTable }) => {
                         >
                             Delete Student
                         </Button>
-                        <AlertDialog/>
+                        {state.open
+                            ?
+                            <ConfirmDeleteDialog
+                                deleteStudent={deleteStudent}
+                                setParentState={state => setState(state)}
+                            />
+                            :
+                            null
+                        }
                     </Box>
                 </form>
             )}

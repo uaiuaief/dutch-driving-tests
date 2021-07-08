@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Button, Box, Container } from '@material-ui/core'
+import Box from '@material-ui/core/Box'
+import Button from '@material-ui/core/Button'
 import StudentTable from '../StudentTable'
 import CreateStudentScreen from "../CreateStudentScreen"
 import EditStudentScreen from "../EditStudentScreen"
@@ -52,7 +53,6 @@ class AccountPage extends Component {
                 })
                 
                 student.test_centers = test_centers;
-                console.log(student.test_centers)
             })
             
             this.setState({ rows: students })

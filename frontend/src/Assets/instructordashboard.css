@@ -20,8 +20,11 @@
     text-align: center;
 }
 
-#create-student-screen input {
-    width: 270px;
+#edit-student-screen input,
+#edit-student-screen select,
+#create-student-screen input,
+#create-student-screen select {
+    width: 270px !important;
 }
 
 .close-button {
@@ -41,10 +44,6 @@
     border: 2px solid black;
     z-index: 2;
     text-align: center;
-}
-
-#edit-student-screen input {
-    width: 270px;
 }
 
 #multiple-select {
