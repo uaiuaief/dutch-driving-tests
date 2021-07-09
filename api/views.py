@@ -1,4 +1,6 @@
+import datetime
 from django.http import HttpResponse, JsonResponse
+from django.utils import timezone
 from django.contrib.auth import authenticate, login, logout
 from django.core import exceptions
 from django.db.utils import IntegrityError 
@@ -379,7 +381,6 @@ class GetStudentView(BaseView):
     allowed_fields = required_fields = ['student_id']
 
     def post(self, request):
-        print(request.data)
         user = request.user
         if not user.is_authenticated:
             return JsonResponse({
@@ -403,6 +404,52 @@ class GetStudentView(BaseView):
 
         return JsonResponse(serialized_data, status=200)
     
+
+"""
+Crawler views
+"""
+class GetStudentToCrawl(BaseView):
+    allowed_fields = required_fields = ['user_id']
+
+    def post(self, request):
+        error = self._catch_errors(request)
+        if error:
+            return error
+
+        try:
+            user = models.User.objects.get(id=request.data['user_id'])
+        except models.User.DoesNotExist as e:
+            return JsonResponse({
+                'error': f'User with id {user_id} does not exist'
+                }, status=404)
+
+        student = self.find_usable_student(user.profile)
+
+        if student:
+            student.last_crawled = timezone.now()
+            student.save()
+
+            serialized_data = serializers.StudentSerializer(student).data
+
+            return JsonResponse(serialized_data, status=200)
+        else:
+            return JsonResponse({
+                'error': 'There are no students avaiable'
+                }, status=200)
+
+    def find_usable_student(self, profile):
+        minutes = .1
+        time_limit = timezone.now() - datetime.timedelta(minutes=minutes)
+
+        student = profile.students.filter(
+                last_crawled__lte=time_limit,
+                #status=3
+                ).order_by('last_crawled').first()
+
+        if student:
+            return student
+        else:
+            return None
         
 
 

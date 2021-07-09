@@ -22,4 +22,8 @@ urlpatterns = [
 
     path('login/', views.LoginView.as_view(), name='login_view'),
     path('logout/', views.LogoutView.as_view(), name='logout_view'),
+
+    #CRAWLER VIEWS
+    path('get-student-to-crawl/', views.GetStudentToCrawl.as_view()),
+
 ]

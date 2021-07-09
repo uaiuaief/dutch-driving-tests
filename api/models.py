@@ -174,3 +174,4 @@ class Proxy(BaseModel):
 
     def __str__(self):
         return self.ip
+
