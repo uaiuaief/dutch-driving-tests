@@ -1,14 +1,25 @@
-#login-page {
-    margin-top: 260px;
+#signup-page {
+    margin-top: 200px;
     text-align: center;
 }
 
-#login-page h1 {
+#signup-page h1 {
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     font-size: xx-large;
 }
 
-#login-page input {
-    width: 300px;
+#signup-page input {
+    width: 270px;
 }
+
+#signup-page .icon-textfield input {
+    width: 214px;
+}
+
+#signup-form {
+    text-align: center;
+    margin: auto;
+    width: 400px;
+}
+
 

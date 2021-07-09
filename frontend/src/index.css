@@ -1,3 +1,7 @@
+body {
+    font-family: sans-serif;
+}
+
 #main-content {
     width: 90%;
     margin: auto;
@@ -8,7 +12,7 @@
 }
 
 .container {
-    margin-top: 100px;
+    margin-top: 50px;
     text-align: center;
 }
 
@@ -26,6 +30,16 @@ a {
     font-size: x-large;
 }
 
-/* input[type=date][value=""] {
-    color: transparent; 
-} */
+.form-item {
+    position: relative;
+    width: fit-content;
+    margin-top: 1.5rem;
+}
+
+.input-error {
+    color: red;
+    font-size: 12px;
+    position: absolute;
+    bottom: -15px;
+}
+
