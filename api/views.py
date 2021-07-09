@@ -68,7 +68,17 @@ class BaseView(APIView, ModelCreationMixin):
                     }, status=400)
 
         if 'test_centers' in request.data:
-            for each in request.data['test_centers']:
+            test_centers = request.data['test_centers']
+            if not test_centers:
+                return JsonResponse({
+                    'error': f"`test_centers` is required"
+                    }, status=400)
+            elif len(test_centers) > 3:
+                return JsonResponse({
+                    'error': f"Can't choose more than 3 test centers"
+                    }, status=400)
+
+            for each in test_centers:
                 try:
                     models.TestCenter.objects.get(name=each)
                 except models.TestCenter.DoesNotExist:

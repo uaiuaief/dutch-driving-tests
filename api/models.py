@@ -139,14 +139,16 @@ class Student(BaseModel):
     days_to_skip = models.CharField(max_length=30, blank=True, null=True)
     last_crawled = models.DateTimeField(blank=True, default=timezone.now)
 
-    info_validation = models.CharField(
+    status = models.CharField(
             max_length=20,
             choices=[
-                ('unchecked', 'unchecked'),
-                ('valid', 'valid'),
-                ('invalid', 'invalid')
+                ('1', 'In analysis'),
+                ('2', 'Invalid'),
+                ('3', 'Searching'),
+                ('4', 'Test found'),
+                ('5', 'Paused'),
             ],
-            default='unchecked'
+            default='1'
     )
     
     def __str__(self):

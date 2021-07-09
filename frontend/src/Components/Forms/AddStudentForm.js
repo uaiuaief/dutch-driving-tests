@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button'
 import Box from '@material-ui/core/Box'
 import TextField from '@material-ui/core/TextField'
 import SnackBar from '../MaterialUIComponents/SnackBar'
+import TestCenters from './TestCenters'
 
 
 const AddStudentForm = ({ setParentState, refreshTable }) => {
@@ -153,14 +154,7 @@ const AddStudentForm = ({ setParentState, refreshTable }) => {
                             name="test_centers"
                             value={props.values.test_centers}
                         >
-                            <option>Almelo (Bedrijvenpark Twente 305)</option>
-                            <option>Kerkrade (Spekhofstraat 24)</option>
-                            <option>Curitiba</option>
-                            <option>São Paulo</option>
-                            <option>New York</option>
-                            <option>Texas</option>
-                            <option>Seoul</option>
-                            <option>New Zealand</option>
+                            <TestCenters/>
                         </TextField>
                     </Box>
                     <Box mt={"2.0rem"}>
