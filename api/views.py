@@ -7,7 +7,7 @@ from rest_framework import viewsets, permissions
 from rest_framework.views import APIView
 from exceptions import StudentLimitReached
 from . import models, serializers
-from .test_types import TEST_TYPES
+from .choices import TEST_TYPES
 
 
 class ModelCreationMixin():
@@ -32,19 +32,6 @@ class ModelCreationMixin():
             raise e
 
         return user
-
-    def _create_test_center(self, test_center_name):
-        try:
-            test_center = models.TestCenter.objects.get(name=test_center_name)
-
-            return test_center
-        except models.TestCenter.DoesNotExist as e:
-            test_center = models.TestCenter(name=test_center_name)
-
-            test_center.full_clean()
-            test_center.save()
-
-            return test_center
 
     def _create_student(self, data: dict):
         test_centers = data.pop('test_centers')
@@ -79,6 +66,15 @@ class BaseView(APIView, ModelCreationMixin):
                 return JsonResponse({
                     'error': f"`{each}` is required"
                     }, status=400)
+
+        if 'test_centers' in request.data:
+            for each in request.data['test_centers']:
+                try:
+                    models.TestCenter.objects.get(name=each)
+                except models.TestCenter.DoesNotExist:
+                    return JsonResponse({
+                        'error': f"`{each}` is not a valid test center"
+                        }, status=400)
 
     def _translate_request_data(self, request) -> dict:
         data = request.data
@@ -187,7 +183,8 @@ class CreateStudentView(BaseView):
             elif k == 'test_centers':
                 translated_data['test_centers'] = []
                 for each in data[k]:
-                    translated_data['test_centers'].append(self._create_test_center(each))
+                    test_center = models.TestCenter.objects.get(name=each)
+                    translated_data['test_centers'].append(test_center)
             else:
                 translated_data[k] = data[k]
 
@@ -299,7 +296,8 @@ class UpdateStudentView(BaseView):
             elif k == 'test_centers':
                 translated_data['test_centers'] = []
                 for each in data[k]:
-                    translated_data['test_centers'].append(self._create_test_center(each))
+                    test_center = models.TestCenter.objects.get(name=each)
+                    translated_data['test_centers'].append(test_center)
             else:
                 translated_data[k] = data[k]
 

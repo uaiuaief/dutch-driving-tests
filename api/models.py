@@ -9,7 +9,7 @@ from django.contrib.auth.models import PermissionsMixin
 from django.utils.translation import ugettext_lazy as _
 from django.core.mail import send_mail
 from django.contrib.auth.base_user import BaseUserManager
-from .test_types import TEST_TYPES
+from .choices import TEST_TYPES
 
 
 class BaseModel(models.Model):
@@ -137,7 +137,7 @@ class Student(BaseModel):
     eg: `15,16,17`
     """
     days_to_skip = models.CharField(max_length=30, blank=True, null=True)
-    last_crawled = models.DateTimeField(blank=True, default=datetime.datetime.now)
+    last_crawled = models.DateTimeField(blank=True, default=timezone.now)
 
     info_validation = models.CharField(
             max_length=20,
@@ -161,3 +161,14 @@ class TestCenter(BaseModel):
 
     def __str__(self):
         return self.name
+
+
+class Proxy(BaseModel):
+    ip = models.CharField(max_length=30)
+    use_count = models.IntegerField(default=0, blank=True)
+    ban_count = models.IntegerField(default=0, blank=True)
+    is_banned = models.BooleanField(default=False, blank=True)
+    last_used = models.DateTimeField(blank=True, default=timezone.now)
+
+    def __str__(self):
+        return self.ip

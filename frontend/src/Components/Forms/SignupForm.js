@@ -34,7 +34,6 @@ const SignupSchema = Yup.object().shape({
         .required('This field is required'),
     gov_password: Yup.string()
         .required('This field is required')
-
 })
 
 const SignupForm = ({ setParentState }) => {
