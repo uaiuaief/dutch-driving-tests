@@ -25,6 +25,6 @@ urlpatterns = [
 
     #CRAWLER VIEWS
     path('get-student-to-crawl/', views.GetStudentToCrawl.as_view()),
-    path('get-instructors/', views.GetInstructorsView.as_view()),
+    path('get-valid-instructors/', views.GetInstructorsView.as_view()),
 
 ]
