@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.core import exceptions
 from django.db.utils import IntegrityError 
 from django.shortcuts import render
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, generics
 from rest_framework.views import APIView
 from exceptions import StudentLimitReached
 from . import models, serializers
@@ -408,6 +408,16 @@ class GetStudentView(BaseView):
 """
 Crawler views
 """
+class GetInstructorsView(generics.ListAPIView):
+    invalid_profiles = models.Profile.objects.filter(students__isnull=True).all()
+    invalid_user_ids = [each.user.id for each in invalid_profiles]
+
+    queryset = models.User.objects.exclude(profile__isnull=True)
+    queryset = queryset.exclude(id__in=invalid_user_ids).all()
+
+    serializer_class = serializers.UserSerializer
+
+
 class GetStudentToCrawl(BaseView):
     allowed_fields = required_fields = ['user_id']
 
