@@ -5,7 +5,42 @@ import Box from '@material-ui/core/Box'
 import TextField from '@material-ui/core/TextField'
 import SnackBar from '../MaterialUIComponents/SnackBar'
 import TestCenters from './TestCenters'
+import * as Yup from "yup"
 
+
+const NewStudentSchema = Yup.object().shape({
+    candidate_number: Yup.string()
+        .required('This field is required')
+        .max(100, 'Too long')
+        .matches(/^[0-9]*$/, 'Candidate number can only contain numbers'),
+    birth_date: Yup.string()
+        .required('This field is required')
+        .min(8, 'Password must be at least 8 characters')
+        .max(100, 'Too long'),
+    test_type: Yup.string()
+        .required('This field is required')
+        .min(8, 'Password must be at least 8 characters')
+        .max(100, 'Too long')
+        .oneOf([Yup.ref('password'), null], "Password must match"),
+    first_name: Yup.string()
+        .required('This field is required')
+        .min(2, 'Too short')
+        .max(30, 'Too long'),
+    last_name: Yup.string()
+        .required('This field is required')
+        .min(2, 'Too short')
+        .max(30, 'Too long'),
+    earliest_test_date: Yup.string()
+        .required('This field is required')
+        .min(2, 'Too short')
+        .max(30, 'Too long'),
+    test_centers: Yup.string()
+        .required('This field is required')
+        .min(2, 'Too short')
+        .max(30, 'Too long'),
+    days_to_skip: Yup.string()
+        .matches(/^[0-9]{1,2}(,[0-9]{1,2})*$/, 'Must have days divided by a comma eg:(15,16,17)')
+})
 
 const AddStudentForm = ({ setParentState, refreshTable }) => {
     const [state, setState] = React.useState({
@@ -61,9 +96,12 @@ const AddStudentForm = ({ setParentState, refreshTable }) => {
                     // alert(data.error || data.errors)
                 }
             }}
+            validationSchema={NewStudentSchema}
         >
             {props => (
-                <form onSubmit={props.handleSubmit}>
+                <form
+                    onSubmit={props.handleSubmit}
+                >
                     <Box>
                         <TextField
                             required
@@ -73,6 +111,8 @@ const AddStudentForm = ({ setParentState, refreshTable }) => {
                             onBlur={props.handleBlur}
                             value={props.values.candidate_number}
                             name="candidate_number"
+                            error={props.touched.candidate_number && props.errors.candidate_number}
+                            helperText={props.touched.candidate_number && props.errors.candidate_number ? props.errors.candidate_number : null}
                         />
                         <TextField
                             required
@@ -86,6 +126,8 @@ const AddStudentForm = ({ setParentState, refreshTable }) => {
                             onBlur={props.handleBlur}
                             value={props.values.test_type}
                             name="test_type"
+                            error={props.touched.test_type && props.errors.test_type}
+                            helperText={props.touched.test_type && props.errors.test_type ? props.errors.test_type : null}
                         >
                             <option value=""></option>
                             <option>A</option>
@@ -101,6 +143,8 @@ const AddStudentForm = ({ setParentState, refreshTable }) => {
                             onBlur={props.handleBlur}
                             value={props.values.first_name}
                             name="first_name"
+                            error={props.touched.first_name && props.errors.first_name}
+                            helperText={props.touched.first_name && props.errors.first_name ? props.errors.first_name : null}
                         />
                         <TextField
                             required
@@ -110,6 +154,8 @@ const AddStudentForm = ({ setParentState, refreshTable }) => {
                             onBlur={props.handleBlur}
                             value={props.values.last_name}
                             name="last_name"
+                            error={props.touched.last_name && props.errors.last_name}
+                            helperText={props.touched.last_name && props.errors.last_name ? props.errors.last_name : null}
                         />
                     </Box>
                     <Box mt={".9rem"}>
@@ -121,6 +167,8 @@ const AddStudentForm = ({ setParentState, refreshTable }) => {
                             onBlur={props.handleBlur}
                             value={props.values.birth_date}
                             name="birth_date"
+                            error={props.touched.birth_date && props.errors.birth_date}
+                            helperText={props.touched.birth_date && props.errors.birth_date ? props.errors.birth_date : null}
                         />
                         <TextField
                             required
@@ -130,6 +178,8 @@ const AddStudentForm = ({ setParentState, refreshTable }) => {
                             onBlur={props.handleBlur}
                             value={props.values.earliest_test_date}
                             name="earliest_test_date"
+                            error={props.touched.earliest_test_date && props.errors.earliest_test_date}
+                            helperText={props.touched.earliest_test_date && props.errors.earliest_test_date ? props.errors.earliest_test_date : null}
                         />
                     </Box>
                     <Box mt={".9rem"}>
@@ -138,8 +188,11 @@ const AddStudentForm = ({ setParentState, refreshTable }) => {
                             variant="outlined"
                             onChange={props.handleChange}
                             onBlur={props.handleBlur}
+                            placeholder={'Eg: 14,15,16'}
                             value={props.values.days_to_skip}
                             name="days_to_skip"
+                            error={props.touched.days_to_skip && props.errors.days_to_skip}
+                            helperText={props.touched.days_to_skip && props.errors.days_to_skip ? props.errors.days_to_skip : null}
                         />
                         <TextField
                             required
@@ -153,8 +206,10 @@ const AddStudentForm = ({ setParentState, refreshTable }) => {
                             onBlur={props.handleBlur}
                             name="test_centers"
                             value={props.values.test_centers}
+                            error={props.touched.test_centers && props.errors.test_centers}
+                            helperText={props.touched.test_centers && props.errors.test_centers ? props.errors.test_centers : null}
                         >
-                            <TestCenters/>
+                            <TestCenters />
                         </TextField>
                     </Box>
                     <Box mt={"2.0rem"}>
