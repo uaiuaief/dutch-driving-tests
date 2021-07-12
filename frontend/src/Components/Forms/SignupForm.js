@@ -7,7 +7,9 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import SnackBar from '../MaterialUIComponents/SnackBar'
 import * as Yup from "yup"
+
 
 const SignupSchema = Yup.object().shape({
     email: Yup.string()
@@ -30,11 +32,17 @@ const SignupSchema = Yup.object().shape({
         .required('This field is required')
         .min(2, 'Too short')
         .max(30, 'Too long'),
+    mobile_number: Yup.string()
+        .required('This field is required')
+        .matches(/^[0-9]*$/, 'Mobile number can only contain numbers')
+        .min(8, 'Too short')
+        .max(12, 'Too long'),
     gov_username: Yup.string()
         .required('This field is required'),
     gov_password: Yup.string()
         .required('This field is required')
 })
+
 
 const SignupForm = ({ setParentState }) => {
     const [values, setValues] = React.useState({
@@ -42,6 +50,11 @@ const SignupForm = ({ setParentState }) => {
         showPassword: false,
         showConfirmPassword: false,
         showCBRPassword: false,
+
+        alert: false,
+        message: null,
+        severity: null,
+        open: false
     });
 
     const handleClickShowPassword = (prop) => {
@@ -89,26 +102,22 @@ const SignupForm = ({ setParentState }) => {
 
                 if (String(res.status).slice(0, 1) === '2') {
                     // setParentState({ redirect: "/account" })
-                    alert('Account created successfully')
+                    setValues({
+                        alert: true,
+                        severity: "success",
+                        message: "Account created successfully"
+                    })
                 }
                 else if (String(res.status).slice(0, 1) === '4') {
                     let data = await res.json()
-                    alert(data.error || data.errors)
+                    setValues({
+                        alert: true,
+                        severity: "error",
+                        message: data.error || data.errors
+                    })
                 }
             }}
             validationSchema={SignupSchema}
-        // validate={(values) => {
-        //     const errors = {}
-
-        //     if (!values.email) {
-        //         errors.email = 'This field is required';
-        //     }
-        //     else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-        //         errors.email = 'Invalid email address';
-        //     }
-
-        //     return errors
-        // }}
         >
             {props => (
                 <form
@@ -129,7 +138,6 @@ const SignupForm = ({ setParentState }) => {
                             error={props.touched.email && props.errors.email}
                             helperText={props.touched.email && props.errors.email ? props.errors.email : null}
                         />
-                        {/* {props.touched.email && props.errors.email ? <div className="input-error">{props.errors.email}</div> : null} */}
                     </Box>
                     <Box className="form-item">
                         <TextField
@@ -280,6 +288,17 @@ const SignupForm = ({ setParentState }) => {
                             Create Account
                         </Button>
                     </Box>
+                    {values.alert
+                        ?
+                        <SnackBar
+                            open={true}
+                            setParentState={setValues}
+                            message={values.message}
+                            severity={values.severity}
+                        />
+                        :
+                        null
+                    }
                 </form>
             )}
         </Formik>

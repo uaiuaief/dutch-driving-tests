@@ -14,14 +14,9 @@ const NewStudentSchema = Yup.object().shape({
         .max(100, 'Too long')
         .matches(/^[0-9]*$/, 'Candidate number can only contain numbers'),
     birth_date: Yup.string()
-        .required('This field is required')
-        .min(8, 'Password must be at least 8 characters')
-        .max(100, 'Too long'),
+        .required('This field is required'),
     test_type: Yup.string()
-        .required('This field is required')
-        .min(8, 'Password must be at least 8 characters')
-        .max(100, 'Too long')
-        .oneOf([Yup.ref('password'), null], "Password must match"),
+        .required('This field is required'),
     first_name: Yup.string()
         .required('This field is required')
         .min(2, 'Too short')
@@ -35,9 +30,7 @@ const NewStudentSchema = Yup.object().shape({
         .min(2, 'Too short')
         .max(30, 'Too long'),
     test_centers: Yup.string()
-        .required('This field is required')
-        .min(2, 'Too short')
-        .max(30, 'Too long'),
+        .required('This field is required'),
     days_to_skip: Yup.string()
         .matches(/^[0-9]{1,2}(,[0-9]{1,2})*$/, 'Must have days divided by a comma eg:(15,16,17)')
 })
@@ -84,6 +77,7 @@ const AddStudentForm = ({ setParentState, refreshTable }) => {
                         message: "Student created successfully",
                     })
                     refreshTable()
+                    actions.resetForm()
 
                 }
                 else if (String(res.status).slice(0, 1) === '4') {
