@@ -29,7 +29,7 @@ class CreateStudentScreen extends Component {
                         >
                             <CloseIcon />
                         </Fab>
-                        <h1>Add a new Student</h1>
+                        <h1>Add New Student</h1>
                         <AddStudentForm 
                             refreshTable={refreshTable}
                         />

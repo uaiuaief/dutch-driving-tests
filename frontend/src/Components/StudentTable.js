@@ -6,6 +6,13 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { Button, Box, Container, Paper } from '@material-ui/core'
 
+const statusDict = {
+    1: 'In Analysis',
+    2: 'Invalid',
+    3: 'Searching',
+    4: 'Found',
+    5: 'Idle'
+}
 
 const columns = [
     {
@@ -57,6 +64,12 @@ const columns = [
         editable: false,
     },
     {
+        field: 'status',
+        headerName: 'Status',
+        width: 180,
+        editable: false,
+    },
+    {
         field: 'edit',
         headerName: '',
         width: 180
@@ -64,6 +77,8 @@ const columns = [
 ];
 
 const StudentTable = ({ rows, setParentState }) => {
+    const align = "center"
+
     const showEditScreen = (student) => {
         setParentState({
             show_edit_student: true,
@@ -71,7 +86,39 @@ const StudentTable = ({ rows, setParentState }) => {
         })
     }
 
-    const align = "left"
+    const renderStatus = (status) => {
+        let className = 'status status-'
+
+        switch (status) {
+            case '1':
+                className += "in-analysis"
+                break;
+            case '2':
+                className += "invalid"
+                break;
+            case '3':
+                className += "searching"
+                break;
+            case '4':
+                className += "test-found"
+                break;
+            case '5':
+                className += "paused"
+                break;
+        }
+
+        return (
+            <TableCell
+                align={align}
+            >
+                <div className={className}>
+                    {statusDict[status]}
+                </div>
+            </TableCell>
+        )
+
+    }
+
     return (
         <div>
             <TableContainer component={Paper}>
@@ -87,7 +134,7 @@ const StudentTable = ({ rows, setParentState }) => {
                     <TableBody>
                         {rows.map((student) => {
                             let test_centers;
-                            if (student.test_centers.length > 0){
+                            if (student.test_centers.length > 0) {
                                 test_centers = student.test_centers.reduce((test_centers, each) => test_centers + `, ${each}`)
                             }
                             else {
@@ -96,25 +143,29 @@ const StudentTable = ({ rows, setParentState }) => {
 
                             return (
                                 <TableRow key={student.id}>
-                                    <TableCell align={align}>{student.first_name}</TableCell>
                                     <TableCell align={align}>{student.last_name}</TableCell>
+                                    <TableCell align={align}>{student.first_name}</TableCell>
                                     <TableCell align={align}>{student.candidate_number}</TableCell>
                                     <TableCell align={align}>{student.birth_date}</TableCell>
                                     <TableCell align={align}>{student.test_type}</TableCell>
                                     <TableCell align={align}>{test_centers}</TableCell>
                                     <TableCell align={align}>{student.earliest_test_date}</TableCell>
                                     <TableCell align={align}>{student.days_to_skip}</TableCell>
-                                    <TableCell align={align}><strong>
-                                        <Button
-                                            onClick={() => showEditScreen(student)}
-                                            variant="contained"
-                                            color="primary"
-                                            size="small"
-                                        // style={{ marginLeft: 16 }}
-                                        >
-                                            Edit
-                                        </Button>
-                                    </strong></TableCell>
+                                    {/* <TableCell align={align}>{statusDict[student.status]}</TableCell> */}
+                                    {renderStatus(student.status)}
+                                    <TableCell align={align}>
+                                        <strong>
+                                            <Button
+                                                onClick={() => showEditScreen(student)}
+                                                variant="contained"
+                                                color="primary"
+                                                size="small"
+                                            // style={{ marginLeft: 16 }}
+                                            >
+                                                Edit
+                                            </Button>
+                                        </strong>
+                                    </TableCell>
                                 </TableRow>
                             )
                         }

@@ -94,9 +94,10 @@ const AddStudentForm = ({ setParentState, refreshTable }) => {
         >
             {props => (
                 <form
+                    id="add-student-form"
                     onSubmit={props.handleSubmit}
                 >
-                    <Box>
+                    <Box className="form-row">
                         <TextField
                             required
                             label="Candidate Number"
@@ -128,7 +129,7 @@ const AddStudentForm = ({ setParentState, refreshTable }) => {
                             <option>B</option>
                         </TextField>
                     </Box>
-                    <Box mt={".9rem"}>
+                    <Box className="form-row" mt={".9rem"}>
                         <TextField
                             required
                             label="First Name"
@@ -152,7 +153,7 @@ const AddStudentForm = ({ setParentState, refreshTable }) => {
                             helperText={props.touched.last_name && props.errors.last_name ? props.errors.last_name : null}
                         />
                     </Box>
-                    <Box mt={".9rem"}>
+                    <Box className="form-row" mt={".9rem"}>
                         <TextField
                             required
                             label="Date of Birth"
@@ -176,7 +177,7 @@ const AddStudentForm = ({ setParentState, refreshTable }) => {
                             helperText={props.touched.earliest_test_date && props.errors.earliest_test_date ? props.errors.earliest_test_date : null}
                         />
                     </Box>
-                    <Box mt={".9rem"}>
+                    <Box className="form-row" mt={".9rem"}>
                         <TextField
                             label="Days to Skip"
                             variant="outlined"

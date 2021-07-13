@@ -128,8 +128,8 @@ const UpdateStudentForm = ({ setParentState, student, refreshTable }) => {
 
         >
             {props => (
-                <form onSubmit={props.handleSubmit}>
-                    <Box>
+                <form id="edit-student-form" onSubmit={props.handleSubmit}>
+                    <Box className="form-row">
                         <TextField
                             required
                             label="Candidate Number"
@@ -161,7 +161,7 @@ const UpdateStudentForm = ({ setParentState, student, refreshTable }) => {
                             <option>B</option>
                         </TextField>
                     </Box>
-                    <Box mt={".9rem"}>
+                    <Box className="form-row">
                         <TextField
                             required
                             label="First Name"
@@ -185,7 +185,7 @@ const UpdateStudentForm = ({ setParentState, student, refreshTable }) => {
                             helperText={props.touched.last_name && props.errors.last_name ? props.errors.last_name : null}
                         />
                     </Box>
-                    <Box mt={".9rem"}>
+                    <Box className="form-row">
                         <TextField
                             required
                             label="Date of Birth"
@@ -209,7 +209,7 @@ const UpdateStudentForm = ({ setParentState, student, refreshTable }) => {
                             helperText={props.touched.earliest_test_date && props.errors.earliest_test_date ? props.errors.earliest_test_date : null}
                         />
                     </Box>
-                    <Box mt={".9rem"}>
+                    <Box className="form-row">
                         <TextField
                             label="Days to Skip"
                             variant="outlined"
@@ -220,10 +220,14 @@ const UpdateStudentForm = ({ setParentState, student, refreshTable }) => {
                             error={props.touched.days_to_skip && props.errors.days_to_skip}
                             helperText={props.touched.days_to_skip && props.errors.days_to_skip ? props.errors.days_to_skip : null}
                         />
-                        <select
+                        <TextField
                             required
                             id="multiple-select"
-                            multiple
+                            select
+                            SelectProps={{
+                                multiple: true,
+                                native: true
+                            }}
                             onChange={props.handleChange}
                             onBlur={props.handleBlur}
                             name="test_centers"
@@ -232,7 +236,7 @@ const UpdateStudentForm = ({ setParentState, student, refreshTable }) => {
                             helperText={props.touched.test_centers && props.errors.test_centers ? props.errors.test_centers : null}
                         >
                             <TestCenters/>
-                        </select>
+                        </TextField>
                     </Box>
                     <Box mt={"2.0rem"}>
                         <Button
