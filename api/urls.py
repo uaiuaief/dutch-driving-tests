@@ -27,5 +27,6 @@ urlpatterns = [
     path('get-student-to-crawl/', views.GetStudentToCrawl.as_view()),
     path('get-valid-instructors/', views.GetInstructorsView.as_view()),
     path('get-instructor-proxy-pair/', views.GetInstructorProxyPair.as_view()),
+    path('set-student-status/', views.SetStudentStatusView.as_view()),
 
 ]

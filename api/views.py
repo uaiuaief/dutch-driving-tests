@@ -502,4 +502,37 @@ class GetStudentToCrawl(BaseView):
             return None
         
 
+class SetStudentStatusView(BaseView):
+    allowed_fields = required_fields = [
+            "student_id",
+            "status"
+            ]
+
+    def post(self, request):
+        error = self._catch_errors(request)
+        if error:
+            return error
+
+        student_id = request.data['student_id']
+        status = request.data['status']
+        
+        try:
+            student = models.Student.objects.get(id=student_id)
+        except models.Student.DoesNotExist:
+            return JsonResponse({
+                'error': f"theres no student with id `{student_id}`"
+                }, status=404)
+
+        student.status = status
+
+        try:
+            student.full_clean()
+            student.save()
+        except exceptions.ValidationError:
+            return JsonResponse({
+                'error': f"status {status} is not a valid choice"
+                }, status=404)
+
+
+        return JsonResponse({}, status=200)
 
