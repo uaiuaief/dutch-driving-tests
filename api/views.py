@@ -405,6 +405,7 @@ class GetStudentView(BaseView):
         return JsonResponse(serialized_data, status=200)
     
 
+
 """
 Crawler views
 """
@@ -416,6 +417,46 @@ class GetInstructorsView(generics.ListAPIView):
     queryset = queryset.exclude(id__in=invalid_user_ids).all()
 
     serializer_class = serializers.UserSerializer
+
+"""
+If there's an active instructor that has a valid and active student 
+who hasn't been crawled for more than 5 minutes, returns the instructor 
+and a proxy, the crawler will spawn another process with that instructor and 
+proxy.
+"""
+class GetInstructorProxyPair(BaseView):
+    def get(self, request):
+        user_data = self.get_user()
+        if user_data:
+            return JsonResponse(user_data, status=200)
+        else:
+            return JsonResponse({'error': 'no instructors'}, status=200)
+
+    def get_user(self):
+        minutes = 10
+        time_limit = timezone.now() - datetime.timedelta(minutes=minutes)
+        student = models.Student.objects.filter(
+                last_crawled__lte=time_limit,
+                status='3'
+                ).order_by('last_crawled').first()
+
+        if student:
+            instructor = student.instructor
+            serialized_data = serializers.UserSerializer(instructor.user).data
+
+            return serialized_data
+        else:
+            return None
+
+
+    def get_proxy(self):
+        minutes = 3
+        time_limit = timezone.now() - datetime.timedelta(minutes=minutes)
+        usable_proxy = models.Proxy.objects.order_by('last_used').filter(
+                last_used__lte=time_limit,
+                is_banned=False).first()
+
+        return usable_proxy
 
 
 class GetStudentToCrawl(BaseView):
@@ -453,7 +494,6 @@ class GetStudentToCrawl(BaseView):
 
         student = profile.students.filter(
                 last_crawled__lte=time_limit,
-                #status=3
                 ).order_by('last_crawled').first()
 
         if student:
