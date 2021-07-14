@@ -98,6 +98,16 @@ class Profile(BaseModel):
 
     student_limit = models.IntegerField(default=100, blank=True)
 
+    status = models.CharField(
+            max_length=20,
+            choices=[
+                ('1', 'Deactivated'),
+                ('2', 'Activated'),
+                ('3', 'Invalid'),
+                ],
+            default='1'
+            )
+
     def __str__(self):
         return f'{self.user}'
 

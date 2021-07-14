@@ -28,5 +28,6 @@ urlpatterns = [
     path('get-valid-instructors/', views.GetInstructorsView.as_view()),
     path('get-instructor-proxy-pair/', views.GetInstructorProxyPair.as_view()),
     path('set-student-status/', views.SetStudentStatusView.as_view()),
+    path('set-instructor-status/', views.SetInstructorStatusView.as_view()),
 
 ]

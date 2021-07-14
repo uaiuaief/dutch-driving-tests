@@ -442,9 +442,13 @@ class GetInstructorProxyPair(BaseView):
 
         if student:
             instructor = student.instructor
-            serialized_data = serializers.UserSerializer(instructor.user).data
 
-            return serialized_data
+            if instructor.status == '2':
+                serialized_data = serializers.UserSerializer(instructor.user).data
+
+                return serialized_data
+            else:
+                return None
         else:
             return None
 
@@ -531,8 +535,41 @@ class SetStudentStatusView(BaseView):
         except exceptions.ValidationError:
             return JsonResponse({
                 'error': f"status {status} is not a valid choice"
-                }, status=404)
+                }, status=400)
 
 
         return JsonResponse({}, status=200)
 
+
+class SetInstructorStatusView(BaseView):
+    allowed_fields = required_fields = [
+            'user_id',
+            'status'
+            ]
+
+    def post(self, request):
+        error = self._catch_errors(request)
+        if error:
+            return error
+
+        user_id = request.data['user_id']
+        status = request.data['status']
+
+        try:
+            user = models.User.objects.get(id=user_id)
+        except models.User.DoesNotExist:
+            return JsonResponse({
+                'error': f"theres no instructor with id `{user_id}`"
+                }, status=404)
+
+        user.profile.status = status
+
+        try:
+            user.profile.full_clean()
+            user.profile.save()
+        except exceptions.ValidationError:
+            return JsonResponse({
+                'error': f"status {status} is not a valid choice"
+                }, status=400)
+
+        return JsonResponse({}, status=200)
