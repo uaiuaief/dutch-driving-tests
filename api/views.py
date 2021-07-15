@@ -426,14 +426,26 @@ proxy.
 """
 class GetInstructorProxyPair(BaseView):
     def get(self, request):
-        user_data = self.get_user()
-        if user_data:
-            return JsonResponse(user_data, status=200)
+        pair = self.get_pair()
+        if pair:
+            return JsonResponse(pair, status=200)
         else:
-            return JsonResponse({'error': 'no instructors'}, status=400)
+            return JsonResponse({'error': 'no instructors or proxies available'}, status=400)
 
-    def get_user(self):
-        minutes = 10
+    def get_pair(self):
+        user_data = self.get_user_data()
+        proxy_data = self.get_proxy_data()
+
+        if user_data and proxy_data:
+            return {
+                    "user": user_data,
+                    "proxy": proxy_data
+                    }
+        else:
+            return None
+
+    def get_user_data(self):
+        minutes = 5
         time_limit = timezone.now() - datetime.timedelta(minutes=minutes)
         student = models.Student.objects.filter(
                 last_crawled__lte=time_limit,
@@ -453,14 +465,18 @@ class GetInstructorProxyPair(BaseView):
             return None
 
 
-    def get_proxy(self):
+    def get_proxy_data(self):
         minutes = 3
         time_limit = timezone.now() - datetime.timedelta(minutes=minutes)
         usable_proxy = models.Proxy.objects.order_by('last_used').filter(
                 last_used__lte=time_limit,
                 is_banned=False).first()
 
-        return usable_proxy
+        if usable_proxy:
+            serialized_data = serializers.ProxySerializer(usable_proxy).data
+            return serialized_data
+        else:
+            return None
 
 
 class GetStudentToCrawl(BaseView):
@@ -490,13 +506,14 @@ class GetStudentToCrawl(BaseView):
         else:
             return JsonResponse({
                 'error': 'There are no students avaiable'
-                }, status=200)
+                }, status=400)
 
     def find_usable_student(self, profile):
-        minutes = .1
+        minutes = 3
         time_limit = timezone.now() - datetime.timedelta(minutes=minutes)
 
         student = profile.students.filter(
+                status="3",
                 last_crawled__lte=time_limit,
                 ).order_by('last_crawled').first()
 

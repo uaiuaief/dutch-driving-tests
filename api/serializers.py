@@ -46,6 +46,6 @@ class TestCenterSerializer(serializers.ModelSerializer):
 
 
 class ProxySerializer(serializers.ModelSerializer):
-    pass
-    #class Meta:
-        #model = models.Proxy
+    class Meta:
+        model = models.Proxy
+        fields = "__all__"
