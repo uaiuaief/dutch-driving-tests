@@ -158,6 +158,10 @@ const AddStudentForm = ({ setParentState, refreshTable }) => {
                             required
                             label="Date of Birth"
                             variant="outlined"
+                            InputLabelProps={{ shrink: true }}
+                            inputProps={{
+                                type: "date"
+                            }}
                             onChange={props.handleChange}
                             onBlur={props.handleBlur}
                             value={props.values.birth_date}
@@ -169,6 +173,10 @@ const AddStudentForm = ({ setParentState, refreshTable }) => {
                             required
                             label="Earliest Date"
                             variant="outlined"
+                            InputLabelProps={{ shrink: true }}
+                            inputProps={{
+                                type: "date"
+                            }}
                             onChange={props.handleChange}
                             onBlur={props.handleBlur}
                             value={props.values.earliest_test_date}

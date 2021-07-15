@@ -190,6 +190,10 @@ const UpdateStudentForm = ({ setParentState, student, refreshTable }) => {
                             required
                             label="Date of Birth"
                             variant="outlined"
+                            InputLabelProps={{ shrink: true }}
+                            inputProps={{
+                                type: "date"
+                            }}
                             onChange={props.handleChange}
                             onBlur={props.handleBlur}
                             value={props.values.birth_date}
@@ -201,6 +205,10 @@ const UpdateStudentForm = ({ setParentState, student, refreshTable }) => {
                             required
                             label="Earliest Date"
                             variant="outlined"
+                            InputLabelProps={{ shrink: true }}
+                            inputProps={{
+                                type: "date"
+                            }}
                             onChange={props.handleChange}
                             onBlur={props.handleBlur}
                             value={props.values.earliest_test_date}
@@ -213,6 +221,7 @@ const UpdateStudentForm = ({ setParentState, student, refreshTable }) => {
                         <TextField
                             label="Days to Skip"
                             variant="outlined"
+                            placeholder={'Eg: 14,15,16'}
                             onChange={props.handleChange}
                             onBlur={props.handleBlur}
                             value={props.values.days_to_skip}

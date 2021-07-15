@@ -126,7 +126,7 @@ const StudentTable = ({ rows, setParentState }) => {
                     <TableHead>
                         <TableRow>
                             {columns.map(column => (
-                                <TableCell align={align}>{column.headerName}</TableCell>
+                                <TableCell className="table-header" align={align}>{column.headerName}</TableCell>
 
                             ))}
                         </TableRow>
@@ -143,8 +143,8 @@ const StudentTable = ({ rows, setParentState }) => {
 
                             return (
                                 <TableRow key={student.id}>
-                                    <TableCell align={align}>{student.last_name}</TableCell>
                                     <TableCell align={align}>{student.first_name}</TableCell>
+                                    <TableCell align={align}>{student.last_name}</TableCell>
                                     <TableCell align={align}>{student.candidate_number}</TableCell>
                                     <TableCell align={align}>{student.birth_date}</TableCell>
                                     <TableCell align={align}>{student.test_type}</TableCell>

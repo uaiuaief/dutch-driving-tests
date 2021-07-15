@@ -430,7 +430,7 @@ class GetInstructorProxyPair(BaseView):
         if user_data:
             return JsonResponse(user_data, status=200)
         else:
-            return JsonResponse({'error': 'no instructors'}, status=200)
+            return JsonResponse({'error': 'no instructors'}, status=400)
 
     def get_user(self):
         minutes = 10
