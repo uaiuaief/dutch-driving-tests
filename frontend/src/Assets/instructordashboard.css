@@ -1,5 +1,10 @@
 #account-page {
-    margin-top: 15px
+    /* margin-top: 15px; */
+    display: flex;
+}
+
+#current-menu {
+    margin-left: 30px;
 }
 
 #student-information {
@@ -135,7 +140,7 @@
 
 #edit-student-screen h1,
 #create-student-screen h1 {
-    font-size: 10px;
+    font-size: 40px;
     margin-top: 25px;
     color: var(--primary-color)
 }
@@ -160,3 +165,52 @@
     height: 40px;
     margin-right: 20px;
 }
+
+/* SIDEBAR */
+#sidebar {
+    background-color: #FAFAFA;
+    height: 950px;
+    flex-basis: 270px;
+    flex-shrink: 0;
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
+  }
+  
+  #sidebar .inner-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2.5rem;
+  }
+  
+  #sidebar .sidebar-button .img-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    text-align: center;
+    margin-left: 2rem;
+    margin-right: 1.3rem;
+    width: 30px;
+  }
+  
+  #sidebar .sidebar-button {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    border: none;
+    background-color: transparent;
+    color: var(--primary-color);
+    font-family: 'Catamaran', sans-serif;
+    font-weight: 400;
+    font-size: var(--sm-3);
+    /* margin: auto; */
+    width: 100%;
+    margin: .9rem 0;
+    cursor: pointer;
+  }
+  
+  #sidebar .sidebar-button.highlighted {
+    color: var(--primary-color)
+  }
+  
+  #sidebar .sidebar-button.highlighted img{
+    filter: invert(31%) sepia(59%) saturate(738%) hue-rotate(0deg) brightness(105%) contrast(101%);
+  }
