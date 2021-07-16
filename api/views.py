@@ -473,6 +473,9 @@ class GetInstructorProxyPair(BaseView):
                 is_banned=False).first()
 
         if usable_proxy:
+            usable_proxy.last_used = timezone.now()
+            usable_proxy.save()
+
             serialized_data = serializers.ProxySerializer(usable_proxy).data
             return serialized_data
         else:

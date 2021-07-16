@@ -5,7 +5,8 @@ import Button from '@material-ui/core/Button'
 import StudentTable from '../StudentTable'
 import CreateStudentScreen from "../CreateStudentScreen"
 import EditStudentScreen from "../EditStudentScreen"
-import DeactivatedAccountNotification from "../DeactivatedAccountNotification"
+// import DeactivatedAccountNotification from "../DeactivatedAccountNotification"
+import "../../Assets/InstructorDashboard.css"
 
 
 class InstrutorDashboard extends Component {
@@ -16,8 +17,6 @@ class InstrutorDashboard extends Component {
         show_add_student: false,
         show_edit_student: false,
         student_to_edit: null,
-
-        redirect: false,
     }
 
     showAddStudentScreen = () => {
@@ -65,15 +64,17 @@ class InstrutorDashboard extends Component {
     }
 
     render() {
+        const {className=""} = this.props
+
         return (
-            <div id="instructor-dashboard">
-                {
+            <div id="instructor-dashboard" className={className}>
+                {/* {
                     this.state.profile && this.state.profile.status == 1
                         ?
                         <DeactivatedAccountNotification />
                         :
                         null
-                }
+                } */}
                 {
                     this.state.rows === null
                         ?

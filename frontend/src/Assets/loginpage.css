@@ -6,6 +6,7 @@
 #login-page h1 {
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     font-size: xx-large;
+    margin-bottom: 2rem;
 }
 
 #login-page input {

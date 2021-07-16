@@ -1,12 +1,3 @@
-#account-page {
-    /* margin-top: 15px; */
-    display: flex;
-}
-
-#current-menu {
-    margin-left: 30px;
-}
-
 #student-information {
     display: flex;
     justify-content: space-around;
@@ -147,24 +138,6 @@
 
 /* END CREATE / UPDATE STUDENT SCREENS */
 
-.account-notification {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 15px 20px;
-    background-color: #FFB600;
-    color: white;
-    width: 100%;
-    margin-bottom: 30px;
-}
-.account-notification h1{
-    margin-bottom: 5px;
-}
-
-#warning-icon {
-    height: 40px;
-    margin-right: 20px;
-}
 
 /* SIDEBAR */
 #sidebar {
@@ -175,13 +148,13 @@
     box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
   }
   
-  #sidebar .inner-container {
+#sidebar .inner-container {
     display: flex;
     flex-direction: column;
     margin-top: 2.5rem;
-  }
-  
-  #sidebar .sidebar-button .img-wrapper {
+}
+
+#sidebar .sidebar-button .img-wrapper {
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -189,9 +162,9 @@
     margin-left: 2rem;
     margin-right: 1.3rem;
     width: 30px;
-  }
-  
-  #sidebar .sidebar-button {
+}
+
+#sidebar .sidebar-button {
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -205,12 +178,20 @@
     width: 100%;
     margin: .9rem 0;
     cursor: pointer;
-  }
-  
-  #sidebar .sidebar-button.highlighted {
-    color: var(--primary-color)
-  }
-  
-  #sidebar .sidebar-button.highlighted img{
-    filter: invert(31%) sepia(59%) saturate(738%) hue-rotate(0deg) brightness(105%) contrast(101%);
-  }
+}
+
+#sidebar .sidebar-button.highlighted {
+    color: var(--secondary-color);
+}
+
+#sidebar .sidebar-button.highlighted .sidebar-icon {
+    fill: var(--secondary-color);
+}  
+
+#sidebar .sidebar-button.highlighted img{
+/* filter: invert(31%) sepia(59%) saturate(738%) hue-rotate(0deg) brightness(105%) contrast(101%); */
+}
+
+.sidebar-icon {
+    fill: var(--primary-color)
+}

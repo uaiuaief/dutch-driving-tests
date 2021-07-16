@@ -4,7 +4,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import UpdateStudentForm from "./Forms/UpdateStudentForm"
 // import { Button, Box, TextField, Select } from '@material-ui/core'
 import Fab from '@material-ui/core/Fab'
-import "../Assets/instructordashboard.css"
 
 
 class EditStudentScreen extends Component {

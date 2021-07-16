@@ -32,10 +32,6 @@ body {
     width: 300px;
 }
 
-.btn {
-    /* width: 130px; */
-}
-
 a {
     margin-left: 1rem;
     text-transform: capitalize;

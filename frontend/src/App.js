@@ -3,7 +3,6 @@ import { Switch, Route, BrowserRouter, Link } from 'react-router-dom';
 import AccountPage from './Components/Pages/AccountPage'
 import LoginPage from './Components/Pages/LoginPage'
 import SignupPage from './Components/Pages/SignupPage'
-import UpdateProfilePage from './Components/Pages/UpdateProfilePage'
 import { Container } from '@material-ui/core'
 import Navbar from './Components/Navbar'
 
@@ -30,7 +29,6 @@ function App() {
           <Route path="/login" exact component={LoginPage} />
           <Route path="/signup" exact component={SignupPage} />
           <Route path="/account" exact component={AccountPage} />
-          <Route path="/profile" exact component={UpdateProfilePage} />
         </Switch>
       </div>
     </BrowserRouter>

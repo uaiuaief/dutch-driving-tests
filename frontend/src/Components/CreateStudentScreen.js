@@ -3,7 +3,6 @@ import { Formik } from 'formik';
 import CloseIcon from '@material-ui/icons/Close';
 import AddStudentForm from "./Forms/AddStudentForm"
 import { Button, Box, TextField, Select, Fab } from '@material-ui/core'
-import "../Assets/instructordashboard.css"
 
 class CreateStudentScreen extends Component {
     closeWindow = (e) => {

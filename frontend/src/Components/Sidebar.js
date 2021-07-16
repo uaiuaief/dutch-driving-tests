@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import dashboardIcon from '../Assets/images/dashboard-icon.png';
-import profileIcon from '../Assets/images/profile-icon.png';
-import planIcon from '../Assets/images/plan-icon.png';
-import supportIcon from '../Assets/images/support-icon.png';
+// import dashboardIcon from '../Assets/images/dashboard-icon.svg';
+// import profileIcon from '../Assets/images/profile-icon.svg';
+import planIcon from '../Assets/images/plan-icon.svg';
+import supportIcon from '../Assets/images/support-icon.svg';
+
+import { DashboardIcon, ProfileIcon, PlanIcon, SupportIcon } from './Icons'
 
 
 class Sidebar extends Component {
@@ -23,8 +25,10 @@ class Sidebar extends Component {
                         onClick={() => setParentState({ highlighted: 'dashboard' })}
                     >
                         <div className="img-wrapper">
-                            {/* <img src={dashboardIcon} /> */}
-                            <img src={dashboardIcon} />
+                            <DashboardIcon
+                                className="sidebar-icon"
+                                id="dashboard-icon"
+                            />
                         </div>
                         My Dashboard
                     </div>
@@ -39,7 +43,11 @@ class Sidebar extends Component {
                         onClick={() => setParentState({ highlighted: 'account' })}
                     >
                         <div className="img-wrapper">
-                            <img src={profileIcon} />
+                            {/* <img src={profileIcon} /> */}
+                            <ProfileIcon
+                                id="profile-icon"
+                                className="sidebar-icon"
+                            />
                         </div>
                         Account
                     </div>
@@ -54,7 +62,10 @@ class Sidebar extends Component {
                         onClick={() => setParentState({ highlighted: 'plan' })}
                     >
                         <div className="img-wrapper">
-                            <img src={planIcon} />
+                            <PlanIcon
+                                id="plan-icon"
+                                className="sidebar-icon"
+                            />
                         </div>
                         My Plan
                     </div>
@@ -69,7 +80,10 @@ class Sidebar extends Component {
                         onClick={() => setParentState({ highlighted: 'support' })}
                     >
                         <div className="img-wrapper">
-                            <img src={supportIcon} />
+                            <SupportIcon
+                                id="support-icon"
+                                className="sidebar-icon"
+                            />
                         </div>
                         Support
                     </div>
