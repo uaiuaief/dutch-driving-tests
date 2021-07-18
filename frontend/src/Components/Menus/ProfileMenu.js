@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import UpdateProfileForm from '../Forms/UpdateProfileForm'
 import { Redirect } from 'react-router-dom';
-import "../../Assets/update_profile_page.css"
+import "../../Assets/ProfileMenu.css"
 
 class ProfileMenu extends Component {
     state = {
@@ -22,14 +22,13 @@ class ProfileMenu extends Component {
             else {
                 this.setState({
                     isLoading: false,
-                    profile: data.profile
+                    profile: {...data.profile, email: data.email}
                 })
             }
         })
     }
 
     render() {
-        console.log(this.state.profile)
         const {className=""} = this.props
         return (
             this.state.isLoading
@@ -39,8 +38,6 @@ class ProfileMenu extends Component {
                 this.state.profile
                     ?
                     <section id="profile-menu" className={className} >
-                        <h1>Update your profile</h1>
-
                         <UpdateProfileForm
                             profile={this.state.profile}
                         />

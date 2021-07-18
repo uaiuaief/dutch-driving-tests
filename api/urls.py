@@ -12,8 +12,11 @@ urlpatterns = [
     path('create-user/', views.CreateUserView.as_view(), name='create_user'),
     path('create-student/', views.CreateStudentView.as_view(), name='create_student'),
 
+    #User update urls
     path('update-profile/', views.UpdateProfileView.as_view(), name='update_profile'),
     path('update-student/', views.UpdateStudentView.as_view(), name='update_student'),
+    path('change-email/', views.ChangeEmailView.as_view(), name='change_email'),
+    path('change-password/', views.ChangePasswordView.as_view(), name='change_password'),
 
     path('delete-student/', views.DeleteStudentView.as_view(), name='delete_student'),
 

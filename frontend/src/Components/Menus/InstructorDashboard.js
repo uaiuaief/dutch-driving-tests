@@ -5,7 +5,6 @@ import Button from '@material-ui/core/Button'
 import StudentTable from '../StudentTable'
 import CreateStudentScreen from "../CreateStudentScreen"
 import EditStudentScreen from "../EditStudentScreen"
-// import DeactivatedAccountNotification from "../DeactivatedAccountNotification"
 import "../../Assets/InstructorDashboard.css"
 
 
@@ -68,13 +67,6 @@ class InstrutorDashboard extends Component {
 
         return (
             <div id="instructor-dashboard" className={className}>
-                {/* {
-                    this.state.profile && this.state.profile.status == 1
-                        ?
-                        <DeactivatedAccountNotification />
-                        :
-                        null
-                } */}
                 {
                     this.state.rows === null
                         ?

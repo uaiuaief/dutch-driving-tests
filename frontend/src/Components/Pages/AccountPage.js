@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import DeactivatedAccountNotification from "../DeactivatedAccountNotification"
 import Sidebar from "../Sidebar"
 import InstructorDashboard from "../Menus/InstructorDashboard"
 import ProfileMenu from "../Menus/ProfileMenu"
-import DeactivatedAccountNotification from "../DeactivatedAccountNotification"
+import PlanMenu from "../Menus/PlanMenu"
+import SupportMenu from "../Menus/SupportMenu"
 import "../../Assets/AccountPage.css"
 
 
@@ -30,7 +32,6 @@ class AccountPage extends Component {
         })
     }
 
-
     getCurrentMenu = () => {
         switch (this.state.highlighted) {
             case 'dashboard':
@@ -42,20 +43,27 @@ class AccountPage extends Component {
                 </>
             case 'account':
                 return <>
-                    <h1 className="menu-header">Instructor's name</h1>
+                    <h1 className="menu-header">{this.state.profile.first_name} {this.state.profile.last_name}</h1>
                     <ProfileMenu
                         className="menu-body"
                         parentState={this.state}
                         setParentState={state => this.setState(state)}
                     />
                 </>
-            case 'support':
-                return <>
-                    <h1 className="menu-header">Support</h1>
-                </>
             case 'plan':
                 return <>
                     <h1 className="menu-header">My Plan</h1>
+                    <PlanMenu
+                        profile={this.state.profile}   
+                        className="menu-body"
+                    />
+                </>
+            case 'support':
+                return <>
+                    <h1 className="menu-header">Support</h1>
+                    <SupportMenu
+                        className="menu-body"
+                    />
                 </>
         }
     }

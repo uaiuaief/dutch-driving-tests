@@ -2,6 +2,7 @@ import datetime
 from django.http import HttpResponse, JsonResponse
 from django.utils import timezone
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.hashers import make_password
 from django.core import exceptions
 from django.db.utils import IntegrityError 
 from django.shortcuts import render
@@ -238,6 +239,7 @@ class UpdateProfileView(BaseView):
         for k in data:
             setattr(profile, k, data[k])
 
+        profile.full_clean()
         profile.save()
 
 
@@ -403,8 +405,116 @@ class GetStudentView(BaseView):
         serialized_data = serializers.StudentSerializer(student).data
 
         return JsonResponse(serialized_data, status=200)
-    
+   
 
+class ChangeEmailView(BaseView):
+    #permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        data = request.data
+        user = request.user
+
+        error = self.get_request_errors(request)
+        if error:
+            return error
+
+        user.email = data.get('new_email')
+        user.full_clean()
+        user.save()
+
+        logout(request)
+        login(request, user)
+
+        return JsonResponse({}, status=204)
+
+    def get_request_errors(self, request):
+        data = request.data
+        user = request.user
+
+        if not user.is_authenticated:
+            return JsonResponse({
+                'error': "You must be logged in to view this page",
+                'code': 0
+                }, status=401)
+
+        if not data.get('password'):
+            return JsonResponse({
+                'error': "Please provide your credentials",
+                'code': 1
+                }, status=401)
+
+        if not data.get('new_email'):
+            return JsonResponse({
+                'error': "Please provide your new email",
+                'code': 2
+                }, status=400)
+
+        if not user.check_password(data.get('password')):
+            return JsonResponse({
+                'error': "Wrong password",
+                'code': 3
+                }, status=401)
+        try:
+            models.User.objects.get(email=data.get('new_email'))
+            return JsonResponse({
+                'error': "A user with that email already exists",
+                'code': 4
+                }, status=403)
+        except models.User.DoesNotExist:
+            pass
+
+        return None
+
+
+class ChangePasswordView(BaseView):
+    #permission_classes = [permissions.IsAuthenticated]
+    
+    def post(self, request):
+        data = request.data
+        user = request.user
+
+        error = self.get_request_errors(request)
+        if error:
+            return error
+
+        user.password = make_password(data.get('new_password'))
+        user.full_clean()
+        user.save()
+
+        logout(request)
+        login(request, user)
+
+        return JsonResponse({}, status=204)
+
+    def get_request_errors(self, request):
+        data = request.data
+        user = request.user
+
+        if not user.is_authenticated:
+            return JsonResponse({
+                'error': "You must be logged in to view this page",
+                'code': 1
+                }, status=401)
+
+        if not data.get('current_password'):
+            return JsonResponse({
+                'error': "Please provide your credentials",
+                'code': 2
+                }, status=401)
+
+        if not data.get('new_password'):
+            return JsonResponse({
+                'error': "Please provide your new password",
+                'code': 3
+                }, status=400)
+
+        if not user.check_password(data.get('current_password')):
+            return JsonResponse({
+                'error': "Wrong password",
+                'code': 4
+                }, status=401)
+
+        return None
 
 """
 Crawler views

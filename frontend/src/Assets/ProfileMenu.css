@@ -1,0 +1,19 @@
+#profile-menu {
+}
+
+#profile-menu input {
+    width: 270px;
+}
+
+#profile-menu .form-row {
+    display: flex;
+}
+
+#profile-menu .form-row .form-item {
+    width: 300px;
+    margin-right: 35px;
+}
+
+.menu-header-2 {
+    margin-top: 50px;
+}
