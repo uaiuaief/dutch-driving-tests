@@ -2,9 +2,18 @@ import React from 'react';
 import { Formik } from 'formik';
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
+import * as Yup from "yup"
+
+const ChangeEmailSchema = Yup.object().shape({
+    new_email: Yup.string()
+        .required('This field is required')
+        .email('Invalid Email'),
+    password: Yup.string()
+        .required('This field is required')
+})
 
 
-const ChangeEmailForm = ({ setParentState }) => {
+const ChangeEmailForm = ({ setParentState, loadProfile }) => {
     const goBack = () => {
         setParentState({
             subMenu: false
@@ -32,22 +41,27 @@ const ChangeEmailForm = ({ setParentState }) => {
                     body: JSON.stringify(values)
                 })
 
-                // if (String(res.status).slice(0, 1) === '2') {
-                //     // setParentState({ redirect: "/account" })
-                //     actions.resetForm({
-                //         values: values
-                //     })
-                //     setState({
-                //         alert: true,
-                //         severity: "success",
-                //         message: "Profile updated successfully",
-                //     })
-                // }
-                // else if (String(res.status).slice(0, 1) === '4') {
-                //     let data = await res.json()
-                //     alert(data.error || data.errors)
-                // }
+                if (String(res.status).slice(0, 1) === '2') {
+                    setParentState({
+                        subMenu: 'success-email'
+                    })
+                }
+                else if (String(res.status).slice(0, 1) === '4') {
+                    let data = await res.json()
+                    if (data.code === 3){
+                        actions.setErrors({
+                            password: data.error
+                        })
+                    }
+                    else if (data.code === 4){
+                        actions.setErrors({
+                            new_email: data.error
+                        })
+                    }
+                }
             }}
+
+            validationSchema={ChangeEmailSchema}
         >
             {props => {
                 return (
@@ -63,6 +77,7 @@ const ChangeEmailForm = ({ setParentState }) => {
                                     variant="outlined"
                                     onChange={props.handleChange}
                                     onBlur={props.handleBlur}
+                                    type='email'
                                     value={props.values.new_email}
                                     name="new_email"
                                     error={props.touched.new_email && props.errors.new_email}
@@ -80,6 +95,7 @@ const ChangeEmailForm = ({ setParentState }) => {
                                     onBlur={props.handleBlur}
                                     value={props.values.password}
                                     name="password"
+                                    type="password"
                                     error={props.touched.password && props.errors.password}
                                     helperText={props.touched.password && props.errors.password ? props.errors.password : null}
                                 />

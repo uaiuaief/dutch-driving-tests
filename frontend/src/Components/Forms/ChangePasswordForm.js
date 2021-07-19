@@ -2,9 +2,26 @@ import React from 'react';
 import { Formik } from 'formik';
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
+import * as Yup from "yup"
 
 
-const ChangePasswordForm = ({ setParentState }) => {
+const ChangePasswordSchema = Yup.object().shape({
+    current_password: Yup.string()
+        .required('This field is required')
+        .max(100, 'Too long'),
+    new_password: Yup.string()
+        .required('This field is required')
+        .min(8, 'Password must be at least 8 characters long')
+        .max(100, 'Too long'),
+    confirm_new_password: Yup.string()
+        .required('This field is required')
+        .min(8, 'Password must be at least 8 characters long')
+        .max(100, 'Too long')
+        .oneOf([Yup.ref('new_password'), null], "Password must match")
+})
+
+
+const ChangePasswordForm = ({ setParentState, loadProfile }) => {
     const goBack = () => {
         setParentState({
             subMenu: false
@@ -33,22 +50,22 @@ const ChangePasswordForm = ({ setParentState }) => {
                     body: JSON.stringify(values)
                 })
 
-                // if (String(res.status).slice(0, 1) === '2') {
-                //     // setParentState({ redirect: "/account" })
-                //     actions.resetForm({
-                //         values: values
-                //     })
-                //     setState({
-                //         alert: true,
-                //         severity: "success",
-                //         message: "Profile updated successfully",
-                //     })
-                // }
-                // else if (String(res.status).slice(0, 1) === '4') {
-                //     let data = await res.json()
-                //     alert(data.error || data.errors)
-                // }
+                if (String(res.status).slice(0, 1) === '2') {
+                    setParentState({
+                        subMenu: 'success-email'
+                    })
+                }
+                else if (String(res.status).slice(0, 1) === '4') {
+                    let data = await res.json()
+                    if (data.code === 4){
+                        actions.setErrors({
+                            current_password: data.error
+                        })
+                    }
+                }
             }}
+
+            validationSchema={ChangePasswordSchema}
         >
             {props => {
                 return (

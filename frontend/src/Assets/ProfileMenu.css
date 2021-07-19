@@ -32,3 +32,7 @@
 #change-password-form input {
     width: 270px;
 }
+
+#success-menu button {
+    margin-top: 35px;
+}

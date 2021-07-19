@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import UpdateProfileForm from '../Forms/UpdateProfileForm'
 import ChangePasswordForm from '../Forms/ChangePasswordForm'
 import ChangeEmailForm from '../Forms/ChangeEmailForm'
+import SuccessMenu from './SuccessMenu'
 import { Redirect } from 'react-router-dom';
 import "../../Assets/ProfileMenu.css"
 
 
-const ChangeEmailMenu = ({setParentState}) => {
+const ChangeEmailMenu = ({ setParentState }) => {
     return (
         <>
             <h1 className="menu-header">Change Email</h1>
@@ -18,7 +19,7 @@ const ChangeEmailMenu = ({setParentState}) => {
 }
 
 
-const ChangePasswordMenu = ({setParentState}) => {
+const ChangePasswordMenu = ({ setParentState }) => {
     return (
         <>
             <h1 className="menu-header">Change Password</h1>
@@ -49,10 +50,16 @@ class ProfileMenu extends Component {
 
         subMenu: false,
         // subMenu: "change-password",
-        // subMenu: "change-email",
+        // subMenu: "success-password",
     }
 
-    componentDidMount() {
+    goBack = () => {
+        this.setState({
+            subMenu: false
+        })
+    }
+
+    loadProfile = () => {
         window.fetchProfile().then((data) => {
             if (data === null) {
                 this.setState({
@@ -68,6 +75,10 @@ class ProfileMenu extends Component {
                 })
             }
         })
+    }
+
+    componentDidMount() {
+        this.loadProfile()
     }
 
     getSubMenu() {
@@ -87,6 +98,7 @@ class ProfileMenu extends Component {
                 return (
                     <ChangePasswordMenu
                         setParentState={state => this.setState(state)}
+                        loadProfile={this.loadProfile}
                     />
                 )
 
@@ -94,6 +106,21 @@ class ProfileMenu extends Component {
                 return (
                     <ChangeEmailMenu
                         setParentState={state => this.setState(state)}
+                        loadProfile={this.loadProfile}
+                    />
+                )
+            case 'success-email':
+                return (
+                    <SuccessMenu
+                        menuHeader="Email Changed Successfully!"
+                        goBack={this.goBack}
+                    />
+                )
+            case 'success-password':
+                return (
+                    <SuccessMenu
+                        menuHeader="Password Changed Successfully!"
+                        goBack={this.goBack}
                     />
                 )
         }
@@ -108,11 +135,6 @@ class ProfileMenu extends Component {
                 :
                 this.state.profile
                     ?
-                    // <DefaultMenu
-                    //     className={className}
-                    //     profile={this.state.profile}
-                    //     menuHeader={this.props.menuHeader}
-                    // />
                     this.getSubMenu()
                     :
                     <Redirect to="/login" />

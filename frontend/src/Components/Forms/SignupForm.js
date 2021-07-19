@@ -17,11 +17,11 @@ const SignupSchema = Yup.object().shape({
         .required('This field is required'),
     password: Yup.string()
         .required('This field is required')
-        .min(8, 'Password must be at least 8 characters')
+        .min(8, 'Password must be at least 8 characters long')
         .max(100, 'Too long'),
     confirm_password: Yup.string()
         .required('This field is required')
-        .min(8, 'Password must be at least 8 characters')
+        .min(8, 'Password must be at least 8 characters long')
         .max(100, 'Too long')
         .oneOf([Yup.ref('password'), null], "Password must match"),
     first_name: Yup.string()
