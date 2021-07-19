@@ -6,6 +6,7 @@ class SupportMenu extends Component {
 
         return (
             <div id="plan-menu" className={className}>
+                <h1 className="menu-header">{this.props.menuHeader}</h1>
                 <p>
                     Send us an email at <strong>support@snelcbrexamen.nl</strong> if you need anything
                 </p>

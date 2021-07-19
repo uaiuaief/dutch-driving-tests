@@ -5,7 +5,8 @@ class PlanMenu extends Component {
         const { profile, className = "" } = this.props
 
         return (
-            <div id="plan-menu" className={className}>
+            <div id="plan-menu" className={className}>           
+                <h1 className="menu-header">{this.props.menuHeader}</h1>
                 <p>
                     {profile.student_limit} students
                 </p>

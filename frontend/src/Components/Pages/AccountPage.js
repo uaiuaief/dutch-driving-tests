@@ -36,15 +36,15 @@ class AccountPage extends Component {
         switch (this.state.highlighted) {
             case 'dashboard':
                 return <>
-                    <h1 className="menu-header">My Driving Test Dashboard</h1>
                     <InstructorDashboard
+                        menuHeader="My Driving Test Dashboard"
                         className="menu-body"
                     />
                 </>
             case 'account':
                 return <>
-                    <h1 className="menu-header">{this.state.profile.first_name} {this.state.profile.last_name}</h1>
                     <ProfileMenu
+                        menuHeader={this.state.profile.first_name + ' ' + this.state.profile.last_name}
                         className="menu-body"
                         parentState={this.state}
                         setParentState={state => this.setState(state)}
@@ -52,16 +52,16 @@ class AccountPage extends Component {
                 </>
             case 'plan':
                 return <>
-                    <h1 className="menu-header">My Plan</h1>
                     <PlanMenu
-                        profile={this.state.profile}   
+                        menuHeader="My Plan"
+                        profile={this.state.profile}
                         className="menu-body"
                     />
                 </>
             case 'support':
                 return <>
-                    <h1 className="menu-header">Support</h1>
                     <SupportMenu
+                        menuHeader="Support"
                         className="menu-body"
                     />
                 </>
@@ -89,7 +89,6 @@ class AccountPage extends Component {
                                 null
                         }
                         {this.getCurrentMenu()}
-                        {/* <InstructorDashboard/> */}
                     </div>
                 </section>
         );

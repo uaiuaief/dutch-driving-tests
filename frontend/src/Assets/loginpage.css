@@ -1,5 +1,5 @@
 #login-page {
-    margin-top: 260px;
+    /* margin-top: 260px; */
     text-align: center;
 }
 
@@ -11,5 +11,9 @@
 
 #login-page input {
     width: 300px;
+}
+
+#login-page .auth-box h1 {
+    margin-top: 70px;
 }
 

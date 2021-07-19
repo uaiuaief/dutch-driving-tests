@@ -3,6 +3,7 @@ import { Formik } from 'formik';
 import { Button, Box, Container, TextField } from '@material-ui/core'
 import * as Yup from "yup"
 import SnackBar from '../MaterialUIComponents/SnackBar'
+import InputButton from "../Buttons/InputButton"
 
 
 const LoginSchema = Yup.object().shape({
@@ -60,9 +61,10 @@ const LoginForm = ({ setParentState }) => {
             validationSchema={LoginSchema}
         >
             {props => (
-                <form onSubmit={props.handleSubmit}>
+                <form id="login-form" onSubmit={props.handleSubmit}>
                     <Box>
                         <TextField
+                            required
                             id="email"
                             label="Email"
                             variant="outlined"
@@ -76,6 +78,7 @@ const LoginForm = ({ setParentState }) => {
                     </Box>
                     <Box mt={".5rem"}>
                         <TextField
+                            required
                             id="password"
                             label="Password"
                             variant="outlined"
@@ -86,6 +89,9 @@ const LoginForm = ({ setParentState }) => {
                             name="password"
                             error={props.touched.password && props.errors.password}
                             helperText={props.touched.password && props.errors.password ? props.errors.password : null}
+                        />
+                        <InputButton
+                            text="Forgot password?"
                         />
                     </Box>
                     <Box mt={"2.0rem"}>

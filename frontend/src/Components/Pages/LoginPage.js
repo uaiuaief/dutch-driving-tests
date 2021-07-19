@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import { Box } from '@material-ui/core'
 import LoginForm from "../Forms/LoginForm"
 import "../../Assets/loginpage.css"
@@ -17,14 +17,17 @@ class LoginPage extends Component {
                 <Redirect to={this.state.redirect} />
                 :
                 <section id="login-page">
-                    <Box>
+                    <div className="auth-box">
                         <h1>
                             Login to your account
                         </h1>
                         <LoginForm 
                             setParentState={(state) => this.setState(state)}
-                        />
-                    </Box>
+                        />       
+                        <div className="auth-box-footer">
+                            Don't have an account? <Link>Sign up</Link>
+                        </div>
+                    </div>
                 </section>
         );
     }

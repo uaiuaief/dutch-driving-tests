@@ -17,3 +17,18 @@
 .menu-header-2 {
     margin-top: 50px;
 }
+
+#change-email-form .button-container,
+#change-password-form .button-container {
+    margin-top: 2rem;
+}
+
+#change-email-form button:first-child,
+#change-password-form button:first-child {
+    margin-right: 20px;
+}
+
+#change-email-form input,
+#change-password-form input {
+    width: 270px;
+}

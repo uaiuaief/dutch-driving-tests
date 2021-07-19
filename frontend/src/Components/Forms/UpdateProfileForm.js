@@ -35,6 +35,18 @@ const UpdateProfileForm = ({ setParentState, profile }) => {
         open: false
     })
 
+    const goToChangePassword = () => {
+        setParentState({
+            subMenu: 'change-password'
+        })
+    }
+
+    const goToChangeEmail = () => {
+        setParentState({
+            subMenu: 'change-email'
+        })
+    }
+
     return (
         <Formik
             initialValues={{
@@ -137,6 +149,7 @@ const UpdateProfileForm = ({ setParentState, profile }) => {
                                 helperText={props.touched.email && props.errors.email ? props.errors.email : null}
                             />
                             <InputButton
+                                onClick={goToChangeEmail}
                                 text='Change Email'
                             />
                         </div>
@@ -149,7 +162,6 @@ const UpdateProfileForm = ({ setParentState, profile }) => {
                                 disabled={true}
                                 inputProps={{
                                     type: 'password'
-
                                 }}
                                 value={props.values.password}
                                 name="password"
@@ -157,6 +169,7 @@ const UpdateProfileForm = ({ setParentState, profile }) => {
                                 helperText={props.touched.password && props.errors.password ? props.errors.password : null}
                             />
                             <InputButton
+                                onClick={goToChangePassword}
                                 text='Change Password'
                             />
                         </div>

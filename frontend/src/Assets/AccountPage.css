@@ -16,12 +16,13 @@
     width: 100%
 }
 
-#current-menu p{
+#plan-menu p,
+#support-menu p {
     color: #7b7b7b;
 }
 
 .menu-body {
-    margin-top: 30px;
+    /* margin-top: 30px; */
 }
 
 .account-notification {

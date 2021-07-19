@@ -66,7 +66,8 @@ class InstrutorDashboard extends Component {
         const {className=""} = this.props
 
         return (
-            <div id="instructor-dashboard" className={className}>
+            <div id="instructor-dashboard" className={className}>            
+                <h1 className="menu-header">{this.props.menuHeader}</h1>
                 {
                     this.state.rows === null
                         ?
