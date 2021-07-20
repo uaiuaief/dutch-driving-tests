@@ -35,33 +35,43 @@ const ResetPasswordForm = ({ setParentState }) => {
 
             onSubmit={async (values, actions) => {
                 // alert(JSON.stringify(values, null, 2));
-                setParentState({
-                    step: 2
+                let payload = values;
+                payload.token = window.location.search.split('=')[1]
+
+                const endpoint = "/api/unauthenticated-change-password/"
+                let res = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': window.getCookie('csrftoken')
+                    },
+                    body: JSON.stringify(payload)
                 })
 
-            //     const endpoint = "/api/login/"
-            //     let res = await fetch(endpoint, {
-            //         method: 'POST',
-            //         headers: {
-            //             'Content-Type': 'application/json',
-            //             'X-CSRFToken': window.getCookie('csrftoken')
-            //         },
-            //         body: JSON.stringify(values)
-            //     })
+                if (String(res.status).slice(0, 1) === '2') {
+                    setParentState({
+                        step: 2
+                    })
+                }
+                else if (String(res.status).slice(0, 1) === '4') {
+                    let data = await res.json()
+                    if (data.code === 1) {
+                        setState({
+                            alert: true,
+                            severity: "error",
+                            message: "Invalid Token"
+                        })
 
-            //     if (String(res.status).slice(0, 1) === '2') {
-            //         // setParentState({redirect: "/account"})
-            //         window.location = '/account'
-            //         // alert('success')
-            //     }
-            //     else if (String(res.status).slice(0, 1) === '4') {
-            //         let data = await res.json()
-            //         setState({
-            //             alert: true,
-            //             severity: "error",
-            //             message: "Email or Password are incorrect"
-            //         })
-            //     }
+                    }
+                    else if (data.code === 2) {
+                        setState({
+                            alert: true,
+                            severity: "error",
+                            message: "Token Expired"
+                        })
+
+                    }
+                }
             }}
 
             validationSchema={ResetPasswordSchema}

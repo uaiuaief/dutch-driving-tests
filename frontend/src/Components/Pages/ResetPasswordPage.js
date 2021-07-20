@@ -27,6 +27,8 @@ const StepTwo = ({ setParentState }) => {
                 Your password was reset successfully!
             </h1>
             <Button
+                component={Link}
+                to="/login"
                 className="btn"
                 size="large"
                 variant="contained"
@@ -42,6 +44,7 @@ const StepTwo = ({ setParentState }) => {
 class ResetPasswordPage extends Component {
     state = {
         redirect: false,
+        token: null,
         step: 1
     }
 
@@ -58,6 +61,22 @@ class ResetPasswordPage extends Component {
         }
     }
 
+    componentDidMount() {
+        let token = window.location.search.split('=')[1]
+
+        if (typeof token === 'undefined' || token === null) {
+            this.setState({
+                redirect: '/'
+            })
+        }
+        else {
+            this.setState({
+                token: token
+            })
+        }
+
+    }
+
     render() {
         return (
             this.state.redirect
@@ -65,7 +84,7 @@ class ResetPasswordPage extends Component {
                 <Redirect to={this.state.redirect} />
                 :
                 <section id="reset-password-page">
-                    {this.renderStep()}
+                    {this.renderStep(this.state.token)}
                 </section>
         );
     }

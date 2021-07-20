@@ -5,13 +5,6 @@ import * as Yup from "yup"
 import SnackBar from '../MaterialUIComponents/SnackBar'
 
 
-const ForgotPasswordSchema = Yup.object().shape({
-    email: Yup.string()
-        .email('Invalid email')
-        .required('This field is required'),
-})
-
-
 const ForgotPasswordForm = ({ setParentState }) => {
     const [state, setState] = React.useState({
         alert: false,
@@ -29,33 +22,18 @@ const ForgotPasswordForm = ({ setParentState }) => {
             onSubmit={async (values, actions) => {
                 // alert(JSON.stringify(values, null, 2));
 
+                const endpoint = "/api/recover-password/"
+                let res = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': window.getCookie('csrftoken')
+                    },
+                    body: JSON.stringify(values)
+                })
+                
                 setParentState({step: 2})
-            //     const endpoint = "/api/login/"
-            //     let res = await fetch(endpoint, {
-            //         method: 'POST',
-            //         headers: {
-            //             'Content-Type': 'application/json',
-            //             'X-CSRFToken': window.getCookie('csrftoken')
-            //         },
-            //         body: JSON.stringify(values)
-            //     })
-
-            //     if (String(res.status).slice(0, 1) === '2') {
-            //         // setParentState({redirect: "/account"})
-            //         window.location = '/account'
-            //         // alert('success')
-            //     }
-            //     else if (String(res.status).slice(0, 1) === '4') {
-            //         let data = await res.json()
-            //         setState({
-            //             alert: true,
-            //             severity: "error",
-            //             message: "Email or Password are incorrect"
-            //         })
-            //     }
             }}
-
-            // validationSchema={LoginSchema}
         >
             {props => (
                 <form id="forgot-password-form" onSubmit={props.handleSubmit}>
