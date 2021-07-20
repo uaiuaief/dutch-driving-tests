@@ -53,7 +53,7 @@ class Navbar extends Component {
                             :
                             <>
                                 <Link to="/login">login</Link>
-                                <Link to="/signup">Signup</Link>
+                                <Link to="/signup">Sign up</Link>
                             </>
                         }
                     </div>

@@ -1,3 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@100;200;300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Passion+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fresca&display=swap');
+
+
 * {
     margin: 0;
     padding: 0;
@@ -10,7 +15,7 @@
 }
 
 body {
-    font-family: sans-serif;
+  font-family: 'Catamaran', sans-serif;
 }
 
 #main-content {
@@ -60,6 +65,7 @@ a {
     /* width: 150px; */
     bottom: -20px;
     right: 5px;
+    font-size: 12px;
 }
 
 .input-button:hover {
@@ -69,12 +75,12 @@ a {
 .auth-box {
     position: relative;
     margin: auto;
-    margin-top: 180px;
     width: 445px;
     height: 476px;
     padding: 1rem;
     background: #FFFFFF;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); 
+    text-align: center;
 }
 
 .auth-box-footer {
@@ -83,4 +89,15 @@ a {
     left: 50%;
     transform: translate(-50%);
     width: 100%;
+    font-size: 14px;
+    font-weight: 600;
+    color: #c1c1c1;
+}
+
+.auth-box-footer a {
+    font-size: 14px;
+    color: var(--secondary-color);
+    margin: 0;
+    font-weight: 600;
+    text-decoration: none;
 }

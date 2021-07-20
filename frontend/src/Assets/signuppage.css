@@ -4,8 +4,8 @@
 }
 
 #signup-page h1 {
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     font-size: xx-large;
+    color: var(--primary-color);
 }
 
 #signup-page input {

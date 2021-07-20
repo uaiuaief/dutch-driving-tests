@@ -1,6 +1,6 @@
 import React from 'react';
 import { Formik } from 'formik';
-import { Button, Box, Container, TextField } from '@material-ui/core'
+import { Button, TextField } from '@material-ui/core'
 import * as Yup from "yup"
 import SnackBar from '../MaterialUIComponents/SnackBar'
 import InputButton from "../Buttons/InputButton"
@@ -58,43 +58,49 @@ const LoginForm = ({ setParentState }) => {
                 }
             }}
 
-            validationSchema={LoginSchema}
+            // validationSchema={LoginSchema}
         >
             {props => (
                 <form id="login-form" onSubmit={props.handleSubmit}>
-                    <Box>
-                        <TextField
-                            required
-                            id="email"
-                            label="Email"
-                            variant="outlined"
-                            onChange={props.handleChange}
-                            onBlur={props.handleBlur}
-                            value={props.values.email}
-                            name="email"
-                            error={props.touched.email && props.errors.email}
-                            helperText={props.touched.email && props.errors.email ? props.errors.email : null}
-                        />
-                    </Box>
-                    <Box mt={".5rem"}>
-                        <TextField
-                            required
-                            id="password"
-                            label="Password"
-                            variant="outlined"
-                            type="password"
-                            onChange={props.handleChange}
-                            onBlur={props.handleBlur}
-                            value={props.values.password}
-                            name="password"
-                            error={props.touched.password && props.errors.password}
-                            helperText={props.touched.password && props.errors.password ? props.errors.password : null}
-                        />
-                        <InputButton
-                            text="Forgot password?"
-                        />
-                    </Box>
-                    <Box mt={"2.0rem"}>
+                    <div className="form-row form-row-1">
+                        <div className="form-item">
+                            <TextField
+                                required
+                                id="email"
+                                label="Email"
+                                variant="outlined"
+                                onChange={props.handleChange}
+                                onBlur={props.handleBlur}
+                                value={props.values.email}
+                                name="email"
+                                error={props.touched.email && props.errors.email}
+                                helperText={props.touched.email && props.errors.email ? props.errors.email : null}
+                            />
+                        </div>
+                    </div>
+                    <div className="form-row form-row-1">
+                        <div className="form-item">
+                            <TextField
+                                required
+                                id="password"
+                                label="Password"
+                                variant="outlined"
+                                type="password"
+                                onChange={props.handleChange}
+                                onBlur={props.handleBlur}
+                                value={props.values.password}
+                                name="password"
+                                error={props.touched.password && props.errors.password}
+                                helperText={props.touched.password && props.errors.password ? props.errors.password : null}
+                            />
+                            <InputButton
+                                component="link"
+                                to="forgot-password"
+                                text="Forgot password?"
+                            />
+                        </div>
+                    </div>
+                    <div>
                         <Button
                             className="btn"
                             size="large"
@@ -104,7 +110,7 @@ const LoginForm = ({ setParentState }) => {
                         >
                             Login
                         </Button>
-                    </Box>
+                    </div>
                     {state.alert
                         ?
                         <SnackBar

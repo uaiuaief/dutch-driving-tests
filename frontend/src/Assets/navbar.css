@@ -9,6 +9,7 @@
     height: 63px;
     background-color: #FAFAFA;
     border-bottom: 1px solid #d0d0d0;
+    z-index: 99;
 }
 
 #navbar a {

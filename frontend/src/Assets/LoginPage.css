@@ -1,0 +1,41 @@
+#login-page {
+    /* margin-top: 260px; */
+    padding: 178px 0;
+    text-align: center;
+    background: url('./images/background.png') no-repeat;
+    background-size: cover;
+    background-position-y: 135px;
+    background-attachment: fixed;
+}
+
+#login-page h1 {
+    font-size: xx-large;
+    margin-bottom: 2rem;
+}
+
+#login-page input {
+    width: 300px;
+}
+
+#login-page .auth-box h1 {
+    font-family: 'Catamaran', sans-serif;
+    color: var(--primary-color);
+    margin-top: 50px;
+}
+
+#login-page .form-item {
+    margin: auto;
+    margin-top: .8rem;
+    /* height: 70px; */
+}
+
+#login-page .input-button {
+    bottom: -20px;
+    color: var(--secondary-color);
+    font-weight: 600;
+    font-size: 12px;
+}
+
+#login-form .btn {
+    margin-top: 60px;
+}

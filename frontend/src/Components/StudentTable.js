@@ -120,7 +120,7 @@ const StudentTable = ({ rows, setParentState }) => {
     }
 
     return (
-        <div>
+        <div id="student-table">
             <TableContainer component={Paper}>
                 <Table>
                     <TableHead>
@@ -153,18 +153,18 @@ const StudentTable = ({ rows, setParentState }) => {
                                     <TableCell align={align}>{student.days_to_skip}</TableCell>
                                     {/* <TableCell align={align}>{statusDict[student.status]}</TableCell> */}
                                     {renderStatus(student.status)}
-                                    <TableCell align={align}>
-                                        <strong>
+                                    <TableCell 
+                                        align={align}
+                                    >
                                             <Button
+                                                className="edit-button"
                                                 onClick={() => showEditScreen(student)}
                                                 variant="contained"
                                                 color="primary"
                                                 size="small"
-                                            // style={{ marginLeft: 16 }}
                                             >
                                                 Edit
                                             </Button>
-                                        </strong>
                                     </TableCell>
                                 </TableRow>
                             )

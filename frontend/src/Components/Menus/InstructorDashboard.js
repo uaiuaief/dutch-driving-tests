@@ -88,6 +88,7 @@ class InstrutorDashboard extends Component {
                                     <h1>0</h1>
                                 </div>
                             </div>
+                            <h1 className="menu-header menu-header-2">Students</h1>
                             <StudentTable
                                 rows={this.state.rows}
                                 setParentState={(state) => this.setState(state)}

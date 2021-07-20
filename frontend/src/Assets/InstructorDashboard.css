@@ -1,25 +1,36 @@
 #student-information {
     display: flex;
     justify-content: space-around;
-    margin-bottom: 45px;
+    margin-bottom: 25px;
 }
 
 #student-information h2{
     color: #7b7b7b;
     text-align: center;
+    margin-top: 40px;
 }
 
 #student-information h1{
     text-align: center;
-    font-size: 45px;
+    font-size: 60px;
 }
 
 #student-information div{
     text-align: center;
 }
 
+#instructor-dashboard .menu-header-2 {
+    margin-top: 0;
+}
+
+#student-table {
+    margin-top: 30px;
+}
+
+
 .table-header {
     font-weight: 600 !important;
+    font-size: 12px !important;
 }
 
 .status {
@@ -143,13 +154,14 @@
 /* SIDEBAR */
 #sidebar {
     background-color: #FAFAFA;
-    height: 930px;
+    min-height: 930px;
     flex-basis: 270px;
     flex-shrink: 0;
     box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
   }
   
 #sidebar .inner-container {
+    position: fixed;
     display: flex;
     flex-direction: column;
     margin-top: 2.5rem;
@@ -174,7 +186,7 @@
     color: var(--primary-color);
     font-family: 'Catamaran', sans-serif;
     font-weight: 400;
-    font-size: var(--sm-3);
+    font-size: 22px;
     /* margin: auto; */
     width: 100%;
     margin: .9rem 0;
@@ -188,10 +200,6 @@
 #sidebar .sidebar-button.highlighted .sidebar-icon {
     fill: var(--secondary-color);
 }  
-
-#sidebar .sidebar-button.highlighted img{
-/* filter: invert(31%) sepia(59%) saturate(738%) hue-rotate(0deg) brightness(105%) contrast(101%); */
-}
 
 .sidebar-icon {
     fill: var(--primary-color)

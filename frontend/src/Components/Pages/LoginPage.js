@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import { Box } from '@material-ui/core'
 import LoginForm from "../Forms/LoginForm"
-import "../../Assets/loginpage.css"
+import "../../Assets/LoginPage.css"
 
 
 class LoginPage extends Component {
@@ -25,7 +25,7 @@ class LoginPage extends Component {
                             setParentState={(state) => this.setState(state)}
                         />       
                         <div className="auth-box-footer">
-                            Don't have an account? <Link>Sign up</Link>
+                            Don't have an account? <Link to="/signup">Sign up</Link>
                         </div>
                     </div>
                 </section>

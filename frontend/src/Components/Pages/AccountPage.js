@@ -33,6 +33,8 @@ class AccountPage extends Component {
     }
 
     getCurrentMenu = () => {
+        if (!this.state.profile) return
+        
         switch (this.state.highlighted) {
             case 'dashboard':
                 return <>
