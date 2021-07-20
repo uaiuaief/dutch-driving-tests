@@ -185,3 +185,17 @@ class Proxy(BaseModel):
     def __str__(self):
         return self.ip
 
+
+class Token(BaseModel):
+    token_hash = models.CharField(max_length=32, unique=True)
+    user = models.ForeignKey('User', on_delete=models.CASCADE)
+    expiration = models.DateTimeField(
+            default=(timezone.now() + datetime.timedelta(minutes=60)),
+            blank=True
+            )
+
+    def __str__(self):
+        return self.user.email
+
+    def is_expired(self):
+        return self.expiration < timezone.now()

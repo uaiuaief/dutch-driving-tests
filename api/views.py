@@ -1,5 +1,6 @@
 import datetime
 from django.http import HttpResponse, JsonResponse
+from django.utils.crypto import get_random_string
 from django.utils import timezone
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.hashers import make_password
@@ -515,6 +516,78 @@ class ChangePasswordView(BaseView):
                 }, status=401)
 
         return None
+
+class RecoverPasswordView(BaseView):
+    #permission_classes = [permissions.AllowAny]
+    allowed_fields = required_fields = [
+            'email',
+            ]
+
+    def post(self, request):
+        error = self._catch_errors(request)
+        if error:
+            return error
+
+        try:
+            token_hash = self._generate_token(request.data['email'])
+        except models.User.DoesNotExist:
+            return JsonResponse({
+                'error':'There is no user with that email'
+                }, status=404)
+
+
+        user = models.User.objects.get(email=request.data['email'])
+        #email_sender.send_password_recovery_email(
+        #        'receiver',
+        #        user.profile.first_name,
+        #        f'{settings.DOMAIN_NAME}/choose-new-password?token={token_hash}'
+        #        )
+
+        return JsonResponse({'msg':'success'}, status=200)
+    
+    def _generate_token(self, email):
+        user = models.User.objects.get(email=email)
+        token_hash = get_random_string(length=32)
+
+        token = models.Token(token_hash=token_hash, user=user)
+        token.save()
+
+        return token_hash
+
+
+class UnauthenticatedChangePasswordView(BaseView):
+    #permission_classes = [permissions.AllowAny]
+    allowed_fields = required_fields = [
+            'token',
+            'new_password'
+            ]
+
+    def post(self, request):
+        error = self._catch_errors(request)
+        if error:
+            return error
+
+        try:
+            token = models.Token.objects.get(token_hash=request.data['token'])
+        except models.Token.DoesNotExist:
+            return JsonResponse({
+                'error':'Invalid token',
+                'code': 1
+                }, status=403)
+
+        if token.is_expired():
+            return JsonResponse({
+                'error':'Token expired',
+                'code': 2
+                }, status=403)
+
+        user = token.user
+        user.password = make_password(request.data.get('new_password'))
+        user.full_clean()
+        user.save()
+        token.delete()
+            
+        return JsonResponse({}, status=204)
 
 """
 Crawler views
