@@ -274,7 +274,6 @@ const SignupForm = ({ setParentState }) => {
                                     </InputAdornment>
 
                             }}
-
                         />
                     </Box>
                     <Box mt={"2.0rem"}>

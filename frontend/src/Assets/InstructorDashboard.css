@@ -21,12 +21,39 @@
 
 #instructor-dashboard .menu-header-2 {
     margin-top: 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+#instructor-dashboard .menu-header-2 div{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#instructor-dashboard .menu-header-2 div.right-side {
+    margin-right: 10px;
+}
+
+#instructor-dashboard .menu-header-2 div.right-side input{
+    width: 270px;
+}
+
+#instructor-dashboard .menu-header-2 .right-side .status-dropdown {
+    margin-right: 15px;
+}
+
+#instructor-dashboard  .MuiOutlinedInput-adornedEnd {
+    padding-right: 0;
+}
+
+#instructor-dashboard .menu-header-2 .btn{
+    margin-left: 30px;
 }
 
 #student-table {
     margin-top: 30px;
 }
-
 
 .table-header {
     font-weight: 600 !important;

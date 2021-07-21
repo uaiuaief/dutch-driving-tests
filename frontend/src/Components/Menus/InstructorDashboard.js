@@ -5,6 +5,10 @@ import Button from '@material-ui/core/Button'
 import StudentTable from '../StudentTable'
 import CreateStudentScreen from "../CreateStudentScreen"
 import EditStudentScreen from "../EditStudentScreen"
+import TextField from '@material-ui/core/TextField'
+import InputAdornment from '@material-ui/core/InputAdornment';
+import IconButton from '@material-ui/core/IconButton';
+import SearchIcon from '@material-ui/icons/Search';
 import "../../Assets/InstructorDashboard.css"
 
 
@@ -16,8 +20,20 @@ class InstrutorDashboard extends Component {
         show_add_student: false,
         show_edit_student: false,
         student_to_edit: null,
+
+        filterStatus: false,
     }
 
+    filterStatus = (rows) => {        
+        if(this.state.filterStatus){
+            let result = rows.filter(each => each.status == this.state.filterStatus)
+            return result;
+        }
+        else {
+            return rows
+        }
+    }
+    
     showAddStudentScreen = () => {
         this.setState({
             show_add_student: true
@@ -54,7 +70,9 @@ class InstrutorDashboard extends Component {
                 student.test_centers = test_centers;
             })
 
+            students = this.filterStatus(students)
             this.setState({ rows: students })
+            // this.setState({ rows: this.filter() })
         })
     }
 
@@ -63,10 +81,10 @@ class InstrutorDashboard extends Component {
     }
 
     render() {
-        const {className=""} = this.props
+        const { className = "" } = this.props
 
         return (
-            <div id="instructor-dashboard" className={className}>            
+            <div id="instructor-dashboard" className={className}>
                 <h1 className="menu-header">{this.props.menuHeader}</h1>
                 {
                     this.state.rows === null
@@ -88,13 +106,67 @@ class InstrutorDashboard extends Component {
                                     <h1>0</h1>
                                 </div>
                             </div>
-                            <h1 className="menu-header menu-header-2">Students</h1>
+                            <div className="menu-header menu-header-2">
+                                <div>
+                                    <h3>
+                                        Students
+                                    </h3>
+                                    <Button
+                                        onClick={this.showAddStudentScreen}
+                                        className="btn"
+                                        size="large"
+                                        variant="contained"
+                                        color="primary"
+                                        type="submit"
+                                    >
+                                        New Student
+                                    </Button>
+                                </div>
+                                <div className="right-side">
+                                    <div className="status-dropdown">
+                                        <TextField
+                                            onChange={e => this.setState({filterStatus: e.target.value})}
+                                            label="Status"
+                                            variant="outlined"
+                                            select
+                                            SelectProps={{
+                                                native: true,
+                                            }}
+                                        >
+                                            <option>All</option>
+                                            <option>Searching</option>
+                                            <option>Invalid</option>
+                                            <option>Idle</option>
+                                            <option>In Analysis</option>
+                                        </TextField>
+                                    </div>
+                                    <div>
+                                        <TextField
+                                            id="search-bar"
+                                            label="Search"
+                                            variant="outlined"
+                                            InputProps={{
+                                                endAdornment:
+                                                    <InputAdornment position="end">
+                                                        <IconButton
+                                                            // onClick={() => handleClickShowPassword('showPassword')}
+                                                            // onMouseDown={handleMouseDownPassword}
+                                                        >
+                                                            <SearchIcon/>
+                                                        </IconButton>
+                                                    </InputAdornment>
+                
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
                             <StudentTable
                                 rows={this.state.rows}
                                 setParentState={(state) => this.setState(state)}
                             />
                             <Box mt={"2.0rem"}>
-                                <Button
+                                {/* <Button
                                     onClick={this.showAddStudentScreen}
                                     className="btn"
                                     size="large"
@@ -103,7 +175,7 @@ class InstrutorDashboard extends Component {
                                     type="submit"
                                 >
                                     New Student
-                                </Button>
+                                </Button> */}
                             </Box>
                             <CreateStudentScreen
                                 show={this.state.show_add_student}
