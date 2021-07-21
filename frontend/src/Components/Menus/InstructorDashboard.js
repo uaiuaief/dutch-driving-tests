@@ -15,25 +15,58 @@ import "../../Assets/InstructorDashboard.css"
 class InstrutorDashboard extends Component {
     state = {
         profile: null,
+        students: null,
         rows: null,
 
         show_add_student: false,
         show_edit_student: false,
         student_to_edit: null,
 
-        filterStatus: false,
+        filterStatus: '0',
+        filterSearch: null,
     }
 
-    filterStatus = (rows) => {        
-        if(this.state.filterStatus){
-            let result = rows.filter(each => each.status == this.state.filterStatus)
-            return result;
+    filterSearch = (students) => {
+        if (this.state.filterSearch === null) {
+            return students
+        }
+
+        const result = students.filter(each => {
+            let regex = new RegExp(this.state.filterSearch)
+            if (
+                regex.test(each.first_name) ||
+                regex.test(each.last_name) ||
+                regex.test(each.candidate_number) ||
+                regex.test(each.birth_date) ||
+                regex.test(each.test_type)
+            ) {
+                return (true)
+            }
+        })
+
+        return result
+    }
+
+    filterStatus = (students) => {
+        if (this.state.filterStatus == '0') {
+            return students
         }
         else {
-            return rows
+            let result = students.filter(each => each.status == this.state.filterStatus)
+            return result;
         }
     }
-    
+
+    renderTable = () => {
+        let rows = this.filterStatus(this.state.students)
+        rows = this.filterSearch(rows)
+
+        this.setState({ rows: rows })
+
+
+        // console.log(result)
+    }
+
     showAddStudentScreen = () => {
         this.setState({
             show_add_student: true
@@ -70,8 +103,9 @@ class InstrutorDashboard extends Component {
                 student.test_centers = test_centers;
             })
 
-            students = this.filterStatus(students)
-            this.setState({ rows: students })
+            this.setState({ students: students })
+            this.renderTable()
+            // students = this.filterStatus(students)
             // this.setState({ rows: this.filter() })
         })
     }
@@ -125,7 +159,12 @@ class InstrutorDashboard extends Component {
                                 <div className="right-side">
                                     <div className="status-dropdown">
                                         <TextField
-                                            onChange={e => this.setState({filterStatus: e.target.value})}
+                                            onChange={e => {
+                                                this.setState({
+                                                    filterStatus: e.target.value
+                                                }, this.renderTable
+                                                )
+                                            }}
                                             label="Status"
                                             variant="outlined"
                                             select
@@ -133,31 +172,44 @@ class InstrutorDashboard extends Component {
                                                 native: true,
                                             }}
                                         >
-                                            <option>All</option>
-                                            <option>Searching</option>
-                                            <option>Invalid</option>
-                                            <option>Idle</option>
-                                            <option>In Analysis</option>
+                                            <option value='0'>All</option>
+                                            <option value='1'>In Analysis</option>
+                                            <option value='2'>Invalid</option>
+                                            <option value='3'>Searching</option>
+                                            <option value='4'>Found</option>
+                                            <option value='5'>Idle</option>
                                         </TextField>
                                     </div>
                                     <div>
-                                        <TextField
-                                            id="search-bar"
-                                            label="Search"
-                                            variant="outlined"
-                                            InputProps={{
-                                                endAdornment:
-                                                    <InputAdornment position="end">
-                                                        <IconButton
+                                        <form onSubmit={
+                                            e => {
+                                                e.preventDefault()
+                                                this.setState({
+                                                    filterSearch: document.getElementById('search-bar').value
+                                                }, this.renderTable
+                                                )
+                                            }}
+                                        >
+                                            <TextField
+                                                id="search-bar"
+                                                label="Search"
+                                                variant="outlined"
+                                                InputProps={{
+                                                    endAdornment:
+                                                        <InputAdornment position="end">
+                                                            <IconButton
+                                                                type='submit'
+
                                                             // onClick={() => handleClickShowPassword('showPassword')}
                                                             // onMouseDown={handleMouseDownPassword}
-                                                        >
-                                                            <SearchIcon/>
-                                                        </IconButton>
-                                                    </InputAdornment>
-                
-                                            }}
-                                        />
+                                                            >
+                                                                <SearchIcon />
+                                                            </IconButton>
+                                                        </InputAdornment>
+
+                                                }}
+                                            />
+                                        </form>
                                     </div>
                                 </div>
                             </div>
