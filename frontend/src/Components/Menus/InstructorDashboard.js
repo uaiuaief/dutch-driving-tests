@@ -194,6 +194,12 @@ class InstrutorDashboard extends Component {
                                                 id="search-bar"
                                                 label="Search"
                                                 variant="outlined"
+                                                onChange={e => {
+                                                    this.setState({
+                                                        filterSearch: e.target.value
+                                                    }, this.renderTable
+                                                    )
+                                                }}
                                                 InputProps={{
                                                     endAdornment:
                                                         <InputAdornment position="end">
