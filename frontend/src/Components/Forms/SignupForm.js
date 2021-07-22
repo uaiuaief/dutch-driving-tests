@@ -188,7 +188,7 @@ const StepOne = ({ values, handleClickShowPassword, handleMouseDownPassword, nex
                             />
                         </div>
                     </div>
-                    <Box mt={"2.0rem"}>
+                    <Box className="button-container">
                         <Button
                             className="btn"
                             size="large"
@@ -299,7 +299,7 @@ const StepTwo = ({ values, handleClickShowPassword, handleMouseDownPassword, pre
                             />
                         </div>
                     </div>
-                    <Box mt={"2.0rem"}>
+                    <Box className="button-container">
                         <Button
                             onClick={() => {
                                 setParentState({

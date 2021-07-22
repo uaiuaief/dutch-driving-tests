@@ -11,7 +11,8 @@
 
 #signup-page .header .cbr-icon-container {
     position: relative;
-    width: 109px;
+    max-width: 109px;
+    min-width: 109px;
     height: 177px;
     background-color: #0588f0;
 }
@@ -19,7 +20,7 @@
 #cbr-icon {
     position: absolute;
     bottom: 10px;
-    left: 6px;
+    left: 10px;
 }
 
 #cloud-lock-icon {
@@ -92,8 +93,16 @@
     margin-right: 40px;
 }
 
+#signup-form .button-container {
+    margin-top: 25px;
+}
+
 #signup-form .btn {
-    margin-top: 30px;
+    margin-top: 25px;
+}
+
+#signup-form .btn:nth-of-type(2) {
+    margin-left: 30px;
 }
 
 #signup-form h2.encrypted {

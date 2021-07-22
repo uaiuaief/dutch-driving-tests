@@ -5,19 +5,8 @@ import LoginPage from './Components/Pages/LoginPage'
 import SignupPage from './Components/Pages/SignupPage'
 import ForgotPasswordPage from './Components/Pages/ForgotPasswordPage'
 import ResetPasswordPage from './Components/Pages/ResetPasswordPage'
+import HomePage from './Components/Pages/HomePage'
 import Navbar from './Components/Navbar'
-
-const HomePage = () => (
-  <div style={{
-    textAlign: "center",
-    marginTop: "150px",
-    font: "20px sans-serif",
-  }}>
-    <h1>
-      Welcome to Snel CBR Examen
-    </h1>
-  </div>
-)
 
 function App() {
   return (

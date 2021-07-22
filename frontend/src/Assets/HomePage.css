@@ -1,0 +1,82 @@
+#home-page {
+    background: url('./images/background.png') no-repeat;
+    background-size: cover;
+    background-position-y: 380px;
+    background-attachment: fixed;
+}
+
+#home-page .banner {
+    margin-top: 16px;
+    padding-top: 8px;
+    color: white;
+    background-color: #00B0F0;
+    text-align: center;
+    height: 335px;
+}
+
+#home-page .banner h1 {
+    font-size: 60px;
+    font-weight: 700;
+}
+
+#home-page .banner p {
+    font-size: 22px;
+    line-height: 36px;
+    width: 850px;
+    margin: auto;
+}
+
+#home-page .banner .btn {
+    margin-top: 70px;
+}
+
+#home-page .content { 
+}
+
+#home-page .content .flex {
+    width: 780px;
+    margin: auto;
+    margin-top: 84px;
+    display: flex;
+}
+
+#home-page .content .flex .block {
+    width: 220px;
+}
+
+#home-page .content .flex .block:not(:last-child) {
+    margin-right: 63px;
+
+}
+
+#home-page .content .flex .block h1 {
+    color: #00B0F0;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+#home-page .content .flex .block h1::after {
+    position: absolute;
+    bottom: 2px;
+    content: "";
+    display: block;
+    width: 160px;
+    height: 2px;
+    background-image: linear-gradient(to right, rgba(255, 182, 0, 1), rgba(255, 182, 0, 0.03));
+    
+}
+
+#home-page .content .flex .block p {
+    font-size: 18px;
+    line-height: 30px;
+    display: flex;
+    text-align: justify;
+}
+
+#home-page .footer {
+    font-size: 20px;
+    margin-top: 140px;
+    padding-bottom: 7px;
+    text-align: center;
+    color: #00B0F0;
+}
