@@ -11,6 +11,10 @@
     width: 100%;
 }
 
+#account-page .menu-header-2 h1{
+    font-size: 30px;
+}
+
 #current-menu {
     margin-left: 30px;
     width: 100%

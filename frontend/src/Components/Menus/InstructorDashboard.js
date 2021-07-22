@@ -62,9 +62,6 @@ class InstrutorDashboard extends Component {
         rows = this.filterSearch(rows)
 
         this.setState({ rows: rows })
-
-
-        // console.log(result)
     }
 
     showAddStudentScreen = () => {
@@ -142,9 +139,9 @@ class InstrutorDashboard extends Component {
                             </div>
                             <div className="menu-header menu-header-2">
                                 <div>
-                                    <h3>
+                                    <h1>
                                         Students
-                                    </h3>
+                                    </h1>
                                     <Button
                                         onClick={this.showAddStudentScreen}
                                         className="btn"
@@ -222,6 +219,7 @@ class InstrutorDashboard extends Component {
                             <StudentTable
                                 rows={this.state.rows}
                                 setParentState={(state) => this.setState(state)}
+                                refreshTable={() => this.refreshTable()}
                             />
                             <Box mt={"2.0rem"}>
                                 {/* <Button

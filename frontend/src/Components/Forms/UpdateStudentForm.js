@@ -1,4 +1,3 @@
-import ConfirmDeleteDialog from '../MaterialUIComponents/ConfirmDeleteDialog'
 import React from 'react';
 import { Formik } from 'formik';
 import Button from '@material-ui/core/Button'
@@ -45,35 +44,6 @@ const UpdateStudentForm = ({ setParentState, student, refreshTable }) => {
         severity: null,
         open: false
     })
-
-    const deleteStudent = async () => {
-        const endpoint = "/api/delete-student/"
-        let res = await fetch(endpoint, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': window.getCookie('csrftoken')
-            },
-            body: JSON.stringify({ student_id: student.id })
-        })
-
-        if (String(res.status).slice(0, 1) === '2') {
-            setState({
-                alert: true,
-                severity: "success",
-                message: `${student.first_name} ${student.last_name} was removed successfully`,
-            })
-            refreshTable()
-        }
-        else if (String(res.status).slice(0, 1) === '4') {
-            let data = await res.json()
-            setState({
-                alert: true,
-                severity: "error",
-                message: data.error || data.errors,
-            })
-        }
-    }
 
     return (
         <Formik
@@ -258,26 +228,6 @@ const UpdateStudentForm = ({ setParentState, student, refreshTable }) => {
                         >
                             Update Student
                         </Button>
-                        <Button
-                            // onClick={(e) => deleteStudent()}
-                            onClick={(e) => setState({ open: true })}
-                            className="btn"
-                            size="large"
-                            variant="contained"
-                            color="secondary"
-                            type="button"
-                        >
-                            Delete Student
-                        </Button>
-                        {state.open
-                            ?
-                            <ConfirmDeleteDialog
-                                deleteStudent={deleteStudent}
-                                setParentState={state => setState(state)}
-                            />
-                            :
-                            null
-                        }
                     </Box>
                     {state.alert
                         ?

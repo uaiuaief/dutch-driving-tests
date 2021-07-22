@@ -59,9 +59,25 @@
     margin-top: 30px;
 }
 
+#student-table td.MuiTableCell-root {
+    height: 40px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
 .table-header {
     font-weight: 600 !important;
     font-size: 12px !important;
+}
+
+#student-table .table-row-button:not(:first-child) {
+    margin-left: -10px;
+}
+
+#student-table .button-filler {
+    display: inline-block;
+    width: 38px;
+    height: 1px;
 }
 
 .status {
