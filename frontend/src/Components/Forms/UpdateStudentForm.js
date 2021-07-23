@@ -99,124 +99,140 @@ const UpdateStudentForm = ({ setParentState, student, refreshTable }) => {
         >
             {props => (
                 <form id="edit-student-form" onSubmit={props.handleSubmit}>
-                    <Box className="form-row">
-                        <TextField
-                            required
-                            label="Candidate Number"
-                            variant="outlined"
-                            onChange={props.handleChange}
-                            onBlur={props.handleBlur}
-                            value={props.values.candidate_number}
-                            name="candidate_number"
-                            error={props.touched.candidate_number && props.errors.candidate_number}
-                            helperText={props.touched.candidate_number && props.errors.candidate_number ? props.errors.candidate_number : null}
-                        />
-                        <TextField
-                            required
-                            label="Test Type"
-                            variant="outlined"
-                            select
-                            SelectProps={{
-                                native: true,
-                            }}
-                            onChange={props.handleChange}
-                            onBlur={props.handleBlur}
-                            value={props.values.test_type}
-                            name="test_type"
-                            error={props.touched.test_type && props.errors.test_type}
-                            helperText={props.touched.test_type && props.errors.test_type ? props.errors.test_type : null}
-                        >
-                            <option value=""></option>
-                            <option>A</option>
-                            <option>B</option>
-                        </TextField>
-                    </Box>
-                    <Box className="form-row">
-                        <TextField
-                            required
-                            label="First Name"
-                            variant="outlined"
-                            onChange={props.handleChange}
-                            onBlur={props.handleBlur}
-                            value={props.values.first_name}
-                            name="first_name"
-                            error={props.touched.first_name && props.errors.first_name}
-                            helperText={props.touched.first_name && props.errors.first_name ? props.errors.first_name : null}
-                        />
-                        <TextField
-                            required
-                            label="Last Name"
-                            variant="outlined"
-                            onChange={props.handleChange}
-                            onBlur={props.handleBlur}
-                            value={props.values.last_name}
-                            name="last_name"
-                            error={props.touched.last_name && props.errors.last_name}
-                            helperText={props.touched.last_name && props.errors.last_name ? props.errors.last_name : null}
-                        />
-                    </Box>
-                    <Box className="form-row">
-                        <TextField
-                            required
-                            label="Date of Birth"
-                            variant="outlined"
-                            InputLabelProps={{ shrink: true }}
-                            inputProps={{
-                                type: "date"
-                            }}
-                            onChange={props.handleChange}
-                            onBlur={props.handleBlur}
-                            value={props.values.birth_date}
-                            name="birth_date"
-                            error={props.touched.birth_date && props.errors.birth_date}
-                            helperText={props.touched.birth_date && props.errors.birth_date ? props.errors.birth_date : null}
-                        />
-                        <TextField
-                            required
-                            label="Earliest Date"
-                            variant="outlined"
-                            InputLabelProps={{ shrink: true }}
-                            inputProps={{
-                                type: "date"
-                            }}
-                            onChange={props.handleChange}
-                            onBlur={props.handleBlur}
-                            value={props.values.earliest_test_date}
-                            name="earliest_test_date"
-                            error={props.touched.earliest_test_date && props.errors.earliest_test_date}
-                            helperText={props.touched.earliest_test_date && props.errors.earliest_test_date ? props.errors.earliest_test_date : null}
-                        />
-                    </Box>
-                    <Box className="form-row">
-                        <TextField
-                            label="Days to Skip"
-                            variant="outlined"
-                            placeholder={'Eg: 14,15,16'}
-                            onChange={props.handleChange}
-                            onBlur={props.handleBlur}
-                            value={props.values.days_to_skip}
-                            name="days_to_skip"
-                            error={props.touched.days_to_skip && props.errors.days_to_skip}
-                            helperText={props.touched.days_to_skip && props.errors.days_to_skip ? props.errors.days_to_skip : null}
-                        />
-                        <TextField
-                            required
-                            id="multiple-select"
-                            select
-                            SelectProps={{
-                                multiple: true,
-                                native: true
-                            }}
-                            onChange={props.handleChange}
-                            onBlur={props.handleBlur}
-                            name="test_centers"
-                            value={props.values.test_centers}
-                            error={props.touched.test_centers && props.errors.test_centers}
-                            helperText={props.touched.test_centers && props.errors.test_centers ? props.errors.test_centers : null}
-                        >
-                            <TestCenters/>
-                        </TextField>
-                    </Box>
+                    <div className="form-row form-row-1">
+                        <div className="form-item">
+                            <TextField
+                                required
+                                label="Candidate Number"
+                                variant="outlined"
+                                onChange={props.handleChange}
+                                onBlur={props.handleBlur}
+                                value={props.values.candidate_number}
+                                name="candidate_number"
+                                error={props.touched.candidate_number && props.errors.candidate_number}
+                                helperText={props.touched.candidate_number && props.errors.candidate_number ? props.errors.candidate_number : null}
+                            />
+                        </div>
+                        <div className="form-item">
+                            <TextField
+                                required
+                                label="Test Type"
+                                variant="outlined"
+                                select
+                                SelectProps={{
+                                    native: true,
+                                }}
+                                onChange={props.handleChange}
+                                onBlur={props.handleBlur}
+                                value={props.values.test_type}
+                                name="test_type"
+                                error={props.touched.test_type && props.errors.test_type}
+                                helperText={props.touched.test_type && props.errors.test_type ? props.errors.test_type : null}
+                            >
+                                <option value=""></option>
+                                <option>A</option>
+                                <option>B</option>
+                            </TextField>
+                        </div>
+                    </div>
+                    <div className="form-row form-row-2">
+                        <div className="form-item">
+                            <TextField
+                                required
+                                label="First Name"
+                                variant="outlined"
+                                onChange={props.handleChange}
+                                onBlur={props.handleBlur}
+                                value={props.values.first_name}
+                                name="first_name"
+                                error={props.touched.first_name && props.errors.first_name}
+                                helperText={props.touched.first_name && props.errors.first_name ? props.errors.first_name : null}
+                            />
+                        </div>
+                        <div className="form-item">
+                            <TextField
+                                required
+                                label="Last Name"
+                                variant="outlined"
+                                onChange={props.handleChange}
+                                onBlur={props.handleBlur}
+                                value={props.values.last_name}
+                                name="last_name"
+                                error={props.touched.last_name && props.errors.last_name}
+                                helperText={props.touched.last_name && props.errors.last_name ? props.errors.last_name : null}
+                            />
+                        </div>
+                    </div>
+                    <div className="form-row form-row-3">
+                        <div className="form-item">
+                            <TextField
+                                required
+                                label="Date of Birth"
+                                variant="outlined"
+                                InputLabelProps={{ shrink: true }}
+                                inputProps={{
+                                    type: "date"
+                                }}
+                                onChange={props.handleChange}
+                                onBlur={props.handleBlur}
+                                value={props.values.birth_date}
+                                name="birth_date"
+                                error={props.touched.birth_date && props.errors.birth_date}
+                                helperText={props.touched.birth_date && props.errors.birth_date ? props.errors.birth_date : null}
+                            />
+                        </div>
+                        <div className="form-item">
+                            <TextField
+                                required
+                                label="Earliest Date"
+                                variant="outlined"
+                                InputLabelProps={{ shrink: true }}
+                                inputProps={{
+                                    type: "date"
+                                }}
+                                onChange={props.handleChange}
+                                onBlur={props.handleBlur}
+                                value={props.values.earliest_test_date}
+                                name="earliest_test_date"
+                                error={props.touched.earliest_test_date && props.errors.earliest_test_date}
+                                helperText={props.touched.earliest_test_date && props.errors.earliest_test_date ? props.errors.earliest_test_date : null}
+                            />
+                        </div>
+                    </div>
+                    <div className="form-row form-row-4">
+                        <div className="form-item">
+                            <TextField
+                                label="Days to Skip"
+                                variant="outlined"
+                                placeholder={'Eg: 14,15,16'}
+                                onChange={props.handleChange}
+                                onBlur={props.handleBlur}
+                                value={props.values.days_to_skip}
+                                name="days_to_skip"
+                                error={props.touched.days_to_skip && props.errors.days_to_skip}
+                                helperText={props.touched.days_to_skip && props.errors.days_to_skip ? props.errors.days_to_skip : null}
+                            />
+                        </div>
+                        <div className="form-item">
+                            <TextField
+                                required
+                                id="multiple-select"
+                                select
+                                SelectProps={{
+                                    multiple: true,
+                                    native: true
+                                }}
+                                onChange={props.handleChange}
+                                onBlur={props.handleBlur}
+                                name="test_centers"
+                                value={props.values.test_centers}
+                                error={props.touched.test_centers && props.errors.test_centers}
+                                helperText={props.touched.test_centers && props.errors.test_centers ? props.errors.test_centers : null}
+                            >
+                                <TestCenters />
+                            </TextField>
+                        </div>
+                    </div>
                     <Box mt={"2.0rem"}>
                         <Button
                             disabled={!props.dirty || !props.isValid || props.isSubmitting}
@@ -226,7 +242,7 @@ const UpdateStudentForm = ({ setParentState, student, refreshTable }) => {
                             color="primary"
                             type="submit"
                         >
-                            Update Student
+                            Save
                         </Button>
                     </Box>
                     {state.alert

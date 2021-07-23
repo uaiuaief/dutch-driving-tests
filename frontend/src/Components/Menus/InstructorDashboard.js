@@ -221,18 +221,6 @@ class InstrutorDashboard extends Component {
                                 setParentState={(state) => this.setState(state)}
                                 refreshTable={() => this.refreshTable()}
                             />
-                            <Box mt={"2.0rem"}>
-                                {/* <Button
-                                    onClick={this.showAddStudentScreen}
-                                    className="btn"
-                                    size="large"
-                                    variant="contained"
-                                    color="primary"
-                                    type="submit"
-                                >
-                                    New Student
-                                </Button> */}
-                            </Box>
                             <CreateStudentScreen
                                 show={this.state.show_add_student}
                                 setParentState={(params) => this.setState(params)}
