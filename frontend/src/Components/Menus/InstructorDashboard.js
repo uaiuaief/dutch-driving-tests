@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import Box from '@material-ui/core/Box'
-import Button from '@material-ui/core/Button'
+import PrimaryButton from '../Buttons/PrimaryButton'
 import StudentTable from '../StudentTable'
 import CreateStudentScreen from "../CreateStudentScreen"
 import EditStudentScreen from "../EditStudentScreen"
@@ -142,16 +142,15 @@ class InstrutorDashboard extends Component {
                                     <h1>
                                         Students
                                     </h1>
-                                    <Button
+                                    <PrimaryButton
                                         onClick={this.showAddStudentScreen}
                                         className="btn"
                                         size="large"
                                         variant="contained"
-                                        color="primary"
+                                        color="success"
                                         type="submit"
-                                    >
-                                        New Student
-                                    </Button>
+                                        text="Add Student"
+                                    />
                                 </div>
                                 <div className="right-side">
                                     <div className="status-dropdown">

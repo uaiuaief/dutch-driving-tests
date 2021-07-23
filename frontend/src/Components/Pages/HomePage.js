@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button'
+import PrimaryButton from '../Buttons/PrimaryButton'
 import "../../Assets/HomePage.css"
 
 
@@ -14,15 +15,14 @@ class HomePage extends Component {
                         consectetur adipiscing elit, sed do eiusmod tempor incididunt
                         ut labore et dolore magna aliqua. Ut enim ad minim veniam.
                     </p>
-                    <Button
+                    <PrimaryButton
                         className="btn"
                         size="large"
                         variant="contained"
                         color="primary"
                         type="submit"
-                    >
-                        Register Now
-                    </Button>
+                        text="Register Now"
+                    />
                 </div>
                 <div className="content">
                     <div className="flex">

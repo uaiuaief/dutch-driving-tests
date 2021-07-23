@@ -1,6 +1,6 @@
 import React from 'react'
 import { Formik } from 'formik';
-import Button from '@material-ui/core/Button'
+import PrimaryButton from '../Buttons/PrimaryButton'
 import Box from '@material-ui/core/Box'
 import TextField from '@material-ui/core/TextField'
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -189,15 +189,14 @@ const StepOne = ({ values, handleClickShowPassword, handleMouseDownPassword, nex
                         </div>
                     </div>
                     <Box className="button-container">
-                        <Button
+                        <PrimaryButton
                             className="btn"
                             size="large"
                             variant="contained"
                             color="primary"
                             type="submit"
-                        >
-                            Next
-                        </Button>
+                            text="Next"
+                        />
                     </Box>
                 </form>
             )}
@@ -300,7 +299,7 @@ const StepTwo = ({ values, handleClickShowPassword, handleMouseDownPassword, pre
                         </div>
                     </div>
                     <Box className="button-container">
-                        <Button
+                        <PrimaryButton
                             onClick={() => {
                                 setParentState({
                                     ...props.values
@@ -312,18 +311,16 @@ const StepTwo = ({ values, handleClickShowPassword, handleMouseDownPassword, pre
                             variant="contained"
                             color="primary"
                             type="button"
-                        >
-                            Back
-                        </Button>
-                        <Button
+                            text="Back"
+                        />
+                        <PrimaryButton
                             className="btn"
                             size="large"
                             variant="contained"
                             color="primary"
                             type="submit"
-                        >
-                            Next
-                        </Button>
+                            text="Next"
+                        />
                     </Box>
                 </form>
             )}

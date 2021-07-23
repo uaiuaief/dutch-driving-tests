@@ -25,8 +25,12 @@ body {
     margin: auto;
 }
 
-.someclass {
-    display: block;
+.primary-button {
+    font-family: 'Catamaran', sans-serif !important;
+    background-color: var(--secondary-color) !important;
+    color: white !important;
+    font-weight: 600 !important;
+    font-size: 22px;
 }
 
 .container {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Formik } from 'formik';
 import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
+import PrimaryButton from '../Buttons/PrimaryButton'
 import * as Yup from "yup"
 
 
@@ -122,25 +122,23 @@ const ChangePasswordForm = ({ setParentState, loadProfile }) => {
                             </div>
                         </div>
                         <div className="button-container">
-                            <Button
+                            <PrimaryButton
                                 onClick={goBack}
                                 className="btn"
                                 size="large"
                                 variant="contained"
                                 color="primary"
                                 type="button"
-                            >
-                                Back
-                            </Button>
-                            <Button
+                                text="Back"
+                            />
+                            <PrimaryButton
                                 className="btn"
                                 size="large"
                                 variant="contained"
                                 color="primary"
                                 type="submit"
-                            >
-                                Save
-                            </Button>
+                                text="Save"
+                            />
                         </div>
                     </form>
                 )

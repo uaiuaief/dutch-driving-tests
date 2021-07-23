@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Button, Box, Container, TextField } from '@material-ui/core'
+import { Box } from '@material-ui/core'
+import PrimaryButton from '../Buttons/PrimaryButton'
 import { Link } from 'react-router-dom';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import SignupForm from "../Forms/SignupForm"
 import { CbrIcon } from "../Icons"
 import CloudLockIcon from "../../Assets/images/cloud-lock-icon.png"
@@ -142,7 +142,7 @@ const StepThree = () => {
                 You can also contact our support via the following email: support@snelcbrexam.nl
             </p>
             <Box mt={"2.0rem"}>
-                <Button
+                <PrimaryButton
                     component={Link}
                     to="/"
                     className="btn"
@@ -150,9 +150,8 @@ const StepThree = () => {
                     variant="contained"
                     color="primary"
                     type="submit"
-                >
-                    Home
-                </Button>
+                    text="Home"
+                />
             </Box>
         </div>
     )

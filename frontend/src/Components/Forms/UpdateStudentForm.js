@@ -1,6 +1,6 @@
 import React from 'react';
 import { Formik } from 'formik';
-import Button from '@material-ui/core/Button'
+import PrimaryButton from '../Buttons/PrimaryButton'
 import Box from '@material-ui/core/Box'
 import TextField from '@material-ui/core/TextField'
 import TestCenters from './TestCenters'
@@ -234,16 +234,15 @@ const UpdateStudentForm = ({ setParentState, student, refreshTable }) => {
                         </div>
                     </div>
                     <Box mt={"2.0rem"}>
-                        <Button
+                        <PrimaryButton
                             disabled={!props.dirty || !props.isValid || props.isSubmitting}
                             className="btn"
                             size="large"
                             variant="contained"
                             color="primary"
                             type="submit"
-                        >
-                            Save
-                        </Button>
+                            text="Save"
+                        />
                     </Box>
                     {state.alert
                         ?

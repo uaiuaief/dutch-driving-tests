@@ -1,6 +1,7 @@
 import React from 'react';
 import { Formik } from 'formik';
-import { Button, TextField } from '@material-ui/core'
+import { TextField } from '@material-ui/core'
+import PrimaryButton from '../Buttons/PrimaryButton'
 import * as Yup from "yup"
 import SnackBar from '../MaterialUIComponents/SnackBar'
 
@@ -111,15 +112,14 @@ const ResetPasswordForm = ({ setParentState }) => {
                         </div>
                     </div>
                     <div>
-                        <Button
+                        <PrimaryButton
                             className="btn"
                             size="large"
                             variant="contained"
                             color="primary"
                             type="submit"
-                        >
-                            Reset
-                        </Button>
+                            text="Reset"
+                        />
                     </div>
                     {state.alert
                         ?

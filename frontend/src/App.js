@@ -8,20 +8,21 @@ import ResetPasswordPage from './Components/Pages/ResetPasswordPage'
 import HomePage from './Components/Pages/HomePage'
 import Navbar from './Components/Navbar'
 
+
 function App() {
   return (
     <BrowserRouter>
       <div id="main-content">
-        <Navbar />
-        <div id="navbar-filler"></div>
-        <Switch>
-          <Route path="/" exact component={HomePage} />
-          <Route path="/login" exact component={LoginPage} />
-          <Route path="/signup" exact component={SignupPage} />
-          <Route path="/account" exact component={AccountPage} />
-          <Route path="/forgot-password" exact component={ForgotPasswordPage} />
-          <Route path="/reset-password" exact component={ResetPasswordPage} />
-        </Switch>
+          <Navbar />
+          <div id="navbar-filler"></div>
+          <Switch>
+            <Route path="/" exact component={HomePage} />
+            <Route path="/login" exact component={LoginPage} />
+            <Route path="/signup" exact component={SignupPage} />
+            <Route path="/account" exact component={AccountPage} />
+            <Route path="/forgot-password" exact component={ForgotPasswordPage} />
+            <Route path="/reset-password" exact component={ResetPasswordPage} />
+          </Switch>
       </div>
     </BrowserRouter>
   );

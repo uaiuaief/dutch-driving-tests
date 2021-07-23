@@ -1,6 +1,7 @@
 import { Formik } from 'formik';
 import React from 'react';
-import { Button, Box, TextField } from '@material-ui/core'
+import { Box, TextField } from '@material-ui/core'
+import PrimaryButton from '../Buttons/PrimaryButton'
 import SnackBar from '../MaterialUIComponents/SnackBar'
 import * as Yup from "yup"
 import InputButton from '../Buttons/InputButton'
@@ -205,16 +206,15 @@ const UpdateProfileForm = ({ setParentState, profile }) => {
                         </div>
                     </div>
                     <Box mt={"2.0rem"}>
-                        <Button
+                        <PrimaryButton
                             disabled={!props.dirty || !props.isValid || props.isSubmitting}
                             className="btn"
                             size="large"
                             variant="contained"
                             color="primary"
                             type="submit"
-                        >
-                            Save
-                        </Button>
+                            text="Save"
+                        />
                     </Box>
                     {state.alert
                         ?

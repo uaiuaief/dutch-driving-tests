@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import ResetPasswordForm from "../Forms/ResetPasswordForm"
-import {Button} from '@material-ui/core'
+import PrimaryButton from '../Buttons/PrimaryButton'
 import "../../Assets/ResetPasswordPage.css"
 
 const StepOne = ({ setParentState }) => {
@@ -26,7 +26,7 @@ const StepTwo = ({ setParentState }) => {
             <h1>
                 Your password was reset successfully!
             </h1>
-            <Button
+            <PrimaryButton
                 component={Link}
                 to="/login"
                 className="btn"
@@ -34,9 +34,8 @@ const StepTwo = ({ setParentState }) => {
                 variant="contained"
                 color="primary"
                 type="submit"
-            >
-                Go to account
-            </Button>
+                text="Go to account"
+            />
         </div>
     )
 }
@@ -45,7 +44,7 @@ class ResetPasswordPage extends Component {
     state = {
         redirect: false,
         token: null,
-        step: 1
+        step: 2
     }
 
     renderStep = () => {
