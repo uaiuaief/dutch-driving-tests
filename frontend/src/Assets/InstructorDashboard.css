@@ -129,6 +129,7 @@
     position: absolute !important;
     top: 10px;
     right: 10px;
+    background-color: var(--danger-color) !important;
 }
 
 #edit-student-screen {

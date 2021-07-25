@@ -140,6 +140,21 @@ class Student(BaseModel):
 
     test_centers = models.ManyToManyField('TestCenter', blank=True)
     earliest_test_date = models.DateField(default=timezone.now, blank=True)
+#    test_center = models.ForeignKey(
+#            'TestCenter',
+#            on_delete=models.PROTECT,
+#            related_name='students'
+#            )
+#
+    #time_range = models.CharField(
+    #        max_length=20,
+    #        choices=[
+    #            ('1', '2 weeks'),
+    #            ('2', '4 weeks'),
+    #            ('3', '12 weeks')
+    #        ],
+    #        default='1'
+    #)
     
     """
     days the candidate won't be able to do the test
@@ -186,11 +201,14 @@ class Proxy(BaseModel):
         return self.ip
 
 
+def get_expiration_time(self):
+    return timezone.now() + datetime.timedelta(minutes=60)
+
 class Token(BaseModel):
     token_hash = models.CharField(max_length=32, unique=True)
     user = models.ForeignKey('User', on_delete=models.CASCADE)
     expiration = models.DateTimeField(
-            default=(lambda: timezone.now() + datetime.timedelta(minutes=60)),
+            default=(get_expiration_time),
             blank=True
             )
 
@@ -199,3 +217,4 @@ class Token(BaseModel):
 
     def is_expired(self):
         return self.expiration < timezone.now()
+    

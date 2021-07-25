@@ -216,6 +216,8 @@ const AddStudentForm = ({ setParentState, refreshTable }) => {
                             <TextField
                                 required
                                 id="multiple-select"
+                                // id="location-dropdown"
+                                // variant="outlined"
                                 select
                                 SelectProps={{
                                     multiple: true,

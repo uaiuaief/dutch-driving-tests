@@ -21,7 +21,7 @@ class HomePage extends Component {
                         variant="contained"
                         color="primary"
                         type="submit"
-                        text="Register Now"
+                        text="Register Now!"
                     />
                 </div>
                 <div className="content">
