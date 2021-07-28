@@ -14,6 +14,11 @@
     margin-right: 35px;
 }
 
+#profile-menu select,
+#profile-menu select {
+    width: 252px;
+}
+
 .menu-header-2 {
     margin-top: 50px;
 }

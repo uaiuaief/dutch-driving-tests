@@ -209,6 +209,7 @@ class UpdateProfileView(BaseView):
             'mobile_number',
             'gov_username',
             'gov_password',
+            'test_center',
             ]
 
     def patch(self, request):
@@ -234,6 +235,18 @@ class UpdateProfileView(BaseView):
         return JsonResponse({}, status=200)
 
     def _update_profile(self, profile, data):
+        name = data.pop('test_center')
+
+        if name:
+            try:
+                test_center = models.TestCenter.objects.get(name=name)
+            except models.TestCenter.DoesNotExist:
+                return JsonResponse({
+                    'error': f"{name} is not a valid test center"
+                    }, status=400)
+            
+            profile.test_center = test_center
+
         for k in data:
             setattr(profile, k, data[k])
 

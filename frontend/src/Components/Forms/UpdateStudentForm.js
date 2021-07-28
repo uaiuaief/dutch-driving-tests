@@ -3,7 +3,6 @@ import { Formik } from 'formik';
 import PrimaryButton from '../Buttons/PrimaryButton'
 import Box from '@material-ui/core/Box'
 import TextField from '@material-ui/core/TextField'
-import TestCenters from './TestCenters'
 import SnackBar from '../MaterialUIComponents/SnackBar'
 import * as Yup from "yup"
 

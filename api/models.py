@@ -1,14 +1,14 @@
 import datetime
-from django.db import models
-from django.core.exceptions import ValidationError
-from django.core.validators import MinLengthValidator
-from django.core.exceptions import ValidationError
-from django.utils import timezone
-from django.contrib.auth.base_user import AbstractBaseUser
+
+from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
-from django.utils.translation import ugettext_lazy as _
+from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
-from django.contrib.auth.base_user import BaseUserManager
+from django.core.validators import MinLengthValidator
+from django.db import models
+from django.utils import timezone
+from django.utils.translation import ugettext_lazy as _
+
 from .choices import TEST_TYPES
 
 
@@ -67,46 +67,52 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Profile(BaseModel):
     user = models.OneToOneField(
-            User, 
-            on_delete=models.CASCADE,
+        User,
+        on_delete=models.CASCADE,
     )
 
     first_name = models.CharField(
-            max_length=30, 
-            validators=[MinLengthValidator(1)],
+        max_length=30,
+        validators=[MinLengthValidator(1)],
     )
 
     last_name = models.CharField(
-            max_length=30, 
-            validators=[MinLengthValidator(1)]
+        max_length=30,
+        validators=[MinLengthValidator(1)]
     )
 
     mobile_number = models.CharField(
-            max_length=30, 
-            validators=[MinLengthValidator(8)]
+        max_length=30,
+        validators=[MinLengthValidator(8)]
     )
 
     gov_username = models.CharField(
-            max_length=50, 
-            validators=[MinLengthValidator(1)]
+        max_length=50,
+        validators=[MinLengthValidator(1)]
     )
 
     gov_password = models.CharField(
-            max_length=150, 
-            validators=[MinLengthValidator(1)]
+        max_length=150,
+        validators=[MinLengthValidator(1)]
     )
 
     student_limit = models.IntegerField(default=100, blank=True)
 
+    test_center = models.ForeignKey(
+        'TestCenter',
+        on_delete=models.PROTECT,
+        related_name='students',
+    )
+
     status = models.CharField(
-            max_length=20,
-            choices=[
-                ('1', 'Deactivated'),
-                ('2', 'Activated'),
-                ('3', 'Invalid'),
-                ],
-            default='1'
-            )
+        max_length=20,
+        choices=[
+            ('1', 'Deactivated'),
+            ('2', 'Activated'),
+            ('3', 'Invalid'),
+        ],
+        default='1'
+    )
 
     def __str__(self):
         return f'{self.user}'
@@ -114,48 +120,40 @@ class Profile(BaseModel):
 
 class Student(BaseModel):
     instructor = models.ForeignKey(
-            'Profile', 
-            on_delete=models.CASCADE,
-            related_name='students'
+        'Profile',
+        on_delete=models.CASCADE,
+        related_name='students'
     )
     candidate_number = models.CharField(max_length=100, unique=True)
     birth_date = models.DateField()
     first_name = models.CharField(
-            max_length=30, 
-            validators=[MinLengthValidator(1)]
+        max_length=30,
+        validators=[MinLengthValidator(1)]
     )
 
     last_name = models.CharField(
-            max_length=30, 
-            validators=[MinLengthValidator(1)]
+        max_length=30,
+        validators=[MinLengthValidator(1)]
     )
 
     """ must be a choice, look at the dutch website later """
     test_type = models.CharField(
-            max_length=30, 
-            choices=TEST_TYPES, 
-            blank=False,
-            null=False
-            )
-
-    #test_centers = models.ManyToManyField('TestCenter', blank=True)
-    #earliest_test_date = models.DateField(default=timezone.now, blank=True)
-#    test_center = models.ForeignKey(
-#            'TestCenter',
-#            on_delete=models.PROTECT,
-#            related_name='students'
-#            )
-#
-    search_range = models.CharField(
-            max_length=20,
-            choices=[
-                ('1', '2 weeks'),
-                ('2', '4 weeks'),
-                ('3', '12 weeks')
-            ],
-            default='1'
+        max_length=30,
+        choices=TEST_TYPES,
+        blank=False,
+        null=False
     )
-    
+
+    search_range = models.CharField(
+        max_length=20,
+        choices=[
+            ('1', '2 weeks'),
+            ('2', '4 weeks'),
+            ('3', '12 weeks')
+        ],
+        default='1'
+    )
+
     """
     days the candidate won't be able to do the test
     delimit dates with a `,`
@@ -165,17 +163,17 @@ class Student(BaseModel):
     last_crawled = models.DateTimeField(blank=True, default=timezone.now)
 
     status = models.CharField(
-            max_length=20,
-            choices=[
-                ('1', 'In analysis'),
-                ('2', 'Invalid'),
-                ('3', 'Searching'),
-                ('4', 'Test found'),
-                ('5', 'Paused'),
-            ],
-            default='3'
+        max_length=20,
+        choices=[
+            ('1', 'In analysis'),
+            ('2', 'Invalid'),
+            ('3', 'Searching'),
+            ('4', 'Test found'),
+            ('5', 'Paused'),
+        ],
+        default='3'
     )
-    
+
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
 
@@ -204,17 +202,17 @@ class Proxy(BaseModel):
 def get_expiration_time(self):
     return timezone.now() + datetime.timedelta(minutes=60)
 
+
 class Token(BaseModel):
     token_hash = models.CharField(max_length=32, unique=True)
     user = models.ForeignKey('User', on_delete=models.CASCADE)
     expiration = models.DateTimeField(
-            default=(get_expiration_time),
-            blank=True
-            )
+        default=(get_expiration_time),
+        blank=True
+    )
 
     def __str__(self):
         return self.user.email
 
     def is_expired(self):
         return self.expiration < timezone.now()
-    

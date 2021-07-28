@@ -23,6 +23,7 @@ class ProfileSerializer(serializers.ModelSerializer):
                 'gov_password',
                 'student_limit',
                 'status',
+                'test_center',
                 'students',
         ]
         

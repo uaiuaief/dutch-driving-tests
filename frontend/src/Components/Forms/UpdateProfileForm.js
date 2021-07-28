@@ -5,6 +5,7 @@ import PrimaryButton from '../Buttons/PrimaryButton'
 import SnackBar from '../MaterialUIComponents/SnackBar'
 import * as Yup from "yup"
 import InputButton from '../Buttons/InputButton'
+import TestCenters from './TestCenters'
 
 
 const UpdateProfileSchema = Yup.object().shape({
@@ -16,6 +17,8 @@ const UpdateProfileSchema = Yup.object().shape({
         .required('This field is required')
         .min(2, 'Too short')
         .max(30, 'Too long'),
+    test_center: Yup.string()
+        .required('This field is required'),
     mobile_number: Yup.string()
         .required('This field is required')
         .matches(/^[0-9]*$/, 'Mobile number can only contain numbers')
@@ -56,7 +59,7 @@ const UpdateProfileForm = ({ setParentState, profile }) => {
                 mobile_number: profile.mobile_number,
                 email: profile.email,
                 password: '************',
-                mobile_number: profile.mobile_number,
+                test_center: profile.test_center.name,
                 gov_username: profile.gov_username,
                 gov_password: profile.gov_password,
             }}
@@ -135,6 +138,24 @@ const UpdateProfileForm = ({ setParentState, profile }) => {
                                 helperText={props.touched.mobile_number && props.errors.mobile_number ? props.errors.mobile_number : null}
                             />
                         </div>
+                        <div className="form-item">
+                            <TextField
+                                label="Test Center"
+                                variant="outlined"
+                                select
+                                SelectProps={{
+                                    native: true,
+                                }}
+                                onChange={props.handleChange}
+                                onBlur={props.handleBlur}
+                                value={props.values.test_center}
+                                name="test_center"
+                                error={props.touched.test_center && props.errors.test_center}
+                                helperText={props.touched.test_center && props.errors.test_center ? props.errors.test_center : null}
+                            >
+                                <TestCenters/>
+                            </TextField>
+                        </div>
                     </div>
                     <div className="form-row form-row-3">
                         <div className="form-item">
@@ -175,7 +196,7 @@ const UpdateProfileForm = ({ setParentState, profile }) => {
                             />
                         </div>
                     </div>
-                    
+
                     <h1 className="menu-header menu-header-2">CBR Details</h1>
 
                     <div className="form-row form-row-4">
