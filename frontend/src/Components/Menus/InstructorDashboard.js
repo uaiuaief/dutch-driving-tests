@@ -92,14 +92,6 @@ class InstrutorDashboard extends Component {
 
             let { students } = data.profile
 
-            students.forEach(student => {
-                let test_centers = student.test_centers.map(each => {
-                    return each.name
-                })
-
-                student.test_centers = test_centers;
-            })
-
             this.setState({ students: students })
             this.renderTable()
             // students = this.filterStatus(students)

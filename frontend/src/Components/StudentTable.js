@@ -22,6 +22,12 @@ const statusDict = {
     5: 'Idle'
 }
 
+const SearchRangeDict = {
+    1: '2 weeks',
+    2: '4 weeks',
+    3: '12 weeks'
+}
+
 const columns = [
     {
         field: 'first_name',
@@ -54,14 +60,8 @@ const columns = [
         editable: false,
     },
     {
-        field: 'test_centers',
-        headerName: 'Location',
-        width: 350,
-        editable: false,
-    },
-    {
-        field: 'earliest_date',
-        headerName: 'Earliest Date',
+        field: 'search_range',
+        headerName: 'Search Range',
         width: 180,
         editable: false,
     },
@@ -179,14 +179,6 @@ const StudentTable = ({ rows, setParentState, refreshTable }) => {
                     </TableHead>
                     <TableBody>
                         {rows.map((student) => {
-                            let test_centers;
-                            if (student.test_centers.length > 0) {
-                                test_centers = student.test_centers.reduce((test_centers, each) => test_centers + `, ${each}`)
-                            }
-                            else {
-                                test_centers = ''
-                            }
-
                             return (
                                 <TableRow key={student.id}>
                                     <TableCell align={align}>{student.first_name}</TableCell>
@@ -194,8 +186,7 @@ const StudentTable = ({ rows, setParentState, refreshTable }) => {
                                     <TableCell align={align}>{student.candidate_number}</TableCell>
                                     <TableCell align={align}>{student.birth_date}</TableCell>
                                     <TableCell align={align}>{student.test_type}</TableCell>
-                                    <TableCell align={align}>{test_centers}</TableCell>
-                                    <TableCell align={align}>{student.earliest_test_date}</TableCell>
+                                    <TableCell align={align}>{SearchRangeDict[student.search_range]}</TableCell>
                                     <TableCell align={align}>{student.days_to_skip}</TableCell>
                                     {/* <TableCell align={align}>{statusDict[student.status]}</TableCell> */}
                                     <TableCell

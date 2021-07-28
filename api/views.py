@@ -1,15 +1,17 @@
 import datetime
-from django.http import HttpResponse, JsonResponse
-from django.utils.crypto import get_random_string
-from django.utils import timezone
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.hashers import make_password
 from django.core import exceptions
-from django.db.utils import IntegrityError 
+from django.db.utils import IntegrityError
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
-from rest_framework import viewsets, permissions, generics
-from rest_framework.views import APIView
+from django.utils import timezone
+from django.utils.crypto import get_random_string
 from exceptions import StudentLimitReached
+from rest_framework import generics, permissions, viewsets
+from rest_framework.views import APIView
+
 from . import models, serializers
 from .choices import TEST_TYPES
 
@@ -38,17 +40,12 @@ class ModelCreationMixin():
         return user
 
     def _create_student(self, data: dict):
-        test_centers = data.pop('test_centers')
-
         if self._is_over_student_limit(data.get('instructor')):
             raise StudentLimitReached
 
         student = models.Student(**data)
         student.full_clean()
         student.save()
-
-        for each in test_centers:
-            student.test_centers.add(each)
 
         return student
     
@@ -59,6 +56,7 @@ class ModelCreationMixin():
             return True
         else:
             return False
+
 
 class BaseView(APIView, ModelCreationMixin):
     required_fields = []
@@ -151,8 +149,7 @@ class CreateStudentView(BaseView):
             'first_name',
             'last_name',
             'test_type',
-            'test_centers',
-            'earliest_test_date',
+            'search_range',
             ]
 
     allowed_fields = required_fields + [
@@ -255,8 +252,8 @@ class UpdateStudentView(BaseView):
             'first_name',
             'last_name',
             'test_type',
-            'test_centers',
             'days_to_skip',
+            'search_range',
             ]
 
     def patch(self, request):
@@ -285,13 +282,6 @@ class UpdateStudentView(BaseView):
         return JsonResponse({}, status=200)
     
     def _update_student(self, student, data: dict):
-        for each in student.test_centers.all():
-            student.test_centers.remove(each)
-
-        test_centers = data.pop('test_centers')
-        for each in test_centers:
-            student.test_centers.add(each)
-
         for k in data:
             setattr(student, k, data[k])
 
@@ -308,6 +298,8 @@ class UpdateStudentView(BaseView):
                     translated_data[k] = data[k]
                 else:
                     continue
+            elif k not in self.allowed_fields:
+                continue
             elif k == 'test_centers':
                 translated_data['test_centers'] = []
                 for each in data[k]:

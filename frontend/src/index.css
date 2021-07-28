@@ -48,6 +48,10 @@ a {
     font-size: x-large;
 }
 
+.form-item.filler {
+    width: 368px;
+}
+
 .form-item {
     position: relative;
     width: fit-content;

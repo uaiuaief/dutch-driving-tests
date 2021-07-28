@@ -25,11 +25,7 @@ const UpdateStudentSchema = Yup.object().shape({
         .required('This field is required')
         .min(2, 'Too short')
         .max(30, 'Too long'),
-    earliest_test_date: Yup.string()
-        .required('This field is required')
-        .min(2, 'Too short')
-        .max(30, 'Too long'),
-    test_centers: Yup.string()
+    search_range: Yup.string()
         .required('This field is required'),
     days_to_skip: Yup.string()
         .nullable()
@@ -54,9 +50,8 @@ const UpdateStudentForm = ({ setParentState, student, refreshTable }) => {
                 first_name: student.first_name,
                 last_name: student.last_name,
                 test_type: student.test_type,
-                earliest_test_date: student.earliest_test_date,
-                days_to_skip: student.days_to_skip,
-                test_centers: student.test_centers,
+                search_range: student.search_range,
+                days_to_skip: student.days_to_skip
             }}
 
             onSubmit={async (values, actions) => {
@@ -184,19 +179,24 @@ const UpdateStudentForm = ({ setParentState, student, refreshTable }) => {
                         <div className="form-item">
                             <TextField
                                 required
-                                label="Earliest Date"
+                                label="Date Range"
                                 variant="outlined"
                                 InputLabelProps={{ shrink: true }}
-                                inputProps={{
-                                    type: "date"
+                                select
+                                SelectProps={{
+                                    native: true,
                                 }}
                                 onChange={props.handleChange}
                                 onBlur={props.handleBlur}
-                                value={props.values.earliest_test_date}
-                                name="earliest_test_date"
-                                error={props.touched.earliest_test_date && props.errors.earliest_test_date}
-                                helperText={props.touched.earliest_test_date && props.errors.earliest_test_date ? props.errors.earliest_test_date : null}
-                            />
+                                value={props.values.search_range}
+                                name="search_range"
+                                error={props.touched.search_range && props.errors.search_range}
+                                helperText={props.touched.search_range && props.errors.search_range ? props.errors.search_range : null}
+                            >
+                                <option value="1">2 weeks</option>
+                                <option value="2">4 weeks</option>
+                                <option value="3">12 weeks</option>
+                            </TextField>
                         </div>
                     </div>
                     <div className="form-row form-row-4">
@@ -213,26 +213,7 @@ const UpdateStudentForm = ({ setParentState, student, refreshTable }) => {
                                 helperText={props.touched.days_to_skip && props.errors.days_to_skip ? props.errors.days_to_skip : null}
                             />
                         </div>
-                        <div className="form-item">
-                            <TextField
-                                required
-                                id="multiple-select"
-                                // id="location-dropdown"
-                                // variant="outlined"
-                                select
-                                SelectProps={{
-                                    multiple: true,
-                                    native: true
-                                }}
-                                onChange={props.handleChange}
-                                onBlur={props.handleBlur}
-                                name="test_centers"
-                                value={props.values.test_centers}
-                                error={props.touched.test_centers && props.errors.test_centers}
-                                helperText={props.touched.test_centers && props.errors.test_centers ? props.errors.test_centers : null}
-                            >
-                                <TestCenters />
-                            </TextField>
+                        <div className="form-item filler">
                         </div>
                     </div>
                     <Box mt={"2.0rem"}>

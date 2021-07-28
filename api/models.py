@@ -138,23 +138,23 @@ class Student(BaseModel):
             null=False
             )
 
-    test_centers = models.ManyToManyField('TestCenter', blank=True)
-    earliest_test_date = models.DateField(default=timezone.now, blank=True)
+    #test_centers = models.ManyToManyField('TestCenter', blank=True)
+    #earliest_test_date = models.DateField(default=timezone.now, blank=True)
 #    test_center = models.ForeignKey(
 #            'TestCenter',
 #            on_delete=models.PROTECT,
 #            related_name='students'
 #            )
 #
-    #time_range = models.CharField(
-    #        max_length=20,
-    #        choices=[
-    #            ('1', '2 weeks'),
-    #            ('2', '4 weeks'),
-    #            ('3', '12 weeks')
-    #        ],
-    #        default='1'
-    #)
+    search_range = models.CharField(
+            max_length=20,
+            choices=[
+                ('1', '2 weeks'),
+                ('2', '4 weeks'),
+                ('3', '12 weeks')
+            ],
+            default='1'
+    )
     
     """
     days the candidate won't be able to do the test
@@ -173,7 +173,7 @@ class Student(BaseModel):
                 ('4', 'Test found'),
                 ('5', 'Paused'),
             ],
-            default='1'
+            default='3'
     )
     
     def __str__(self):
