@@ -51,6 +51,10 @@
     align-items: center;
 }
 
+#signup-page select {
+    width: 542px;
+}
+
 #signup-page input {
     width: 560px;
     /* height: 46px; */

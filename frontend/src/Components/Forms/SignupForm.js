@@ -9,6 +9,7 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import SnackBar from '../MaterialUIComponents/SnackBar'
 import encryptedImage from "../../Assets/images/encrypted.png"
+import TestCenters from './TestCenters'
 import * as Yup from "yup"
 
 
@@ -44,6 +45,8 @@ const SignupSchemaStepTwo = Yup.object().shape({
     gov_username: Yup.string()
         .required('This field is required'),
     gov_password: Yup.string()
+        .required('This field is required'),
+    test_center: Yup.string()
         .required('This field is required')
 })
 
@@ -205,12 +208,13 @@ const StepOne = ({ values, handleClickShowPassword, handleMouseDownPassword, nex
 }
 
 const StepTwo = ({ values, handleClickShowPassword, handleMouseDownPassword, previousStep, nextStep, setParentState, parentState, setValues }) => {
-    const { email, password, confirm_password, first_name, last_name, mobile_number, gov_username, gov_password } = parentState
+    const { email, password, confirm_password, first_name, last_name, mobile_number, gov_username, gov_password, test_center } = parentState
     return (
         <Formik
             initialValues={{
                 gov_username: gov_username,
-                gov_password: gov_password
+                gov_password: gov_password,
+                test_center: test_center
             }}
 
             onSubmit={async (values, actions) => {
@@ -258,6 +262,27 @@ const StepTwo = ({ values, handleClickShowPassword, handleMouseDownPassword, pre
                     <div className="form-row form-row-1">
                         <div className="form-item">
                             <TextField
+                                id="test-center-select"
+                                label="Test Center"
+                                variant="outlined"
+                                select
+                                SelectProps={{
+                                    native: true,
+                                }}
+                                onChange={props.handleChange}
+                                onBlur={props.handleBlur}
+                                value={props.values.test_center}
+                                name="test_center"
+                                error={props.touched.test_center && props.errors.test_center}
+                                helperText={props.touched.test_center && props.errors.test_center ? props.errors.test_center : null}
+                            >
+                                <TestCenters />
+                            </TextField>
+                        </div>
+                    </div>
+                    <div className="form-row form-row-2">
+                        <div className="form-item">
+                            <TextField
                                 required
                                 label="CBR Username"
                                 variant="outlined"
@@ -270,7 +295,7 @@ const StepTwo = ({ values, handleClickShowPassword, handleMouseDownPassword, pre
                             />
                         </div>
                     </div>
-                    <div className="form-row form-row-2">
+                    <div className="form-row form-row-3">
                         <div className="form-item">
                             <TextField
                                 className="icon-textfield"

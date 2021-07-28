@@ -24,11 +24,20 @@ class ModelCreationMixin():
         user = models.User.objects.create_user(email=email, password=password)
         user.save()
 
+        
+
         try:
+            name = data.pop('test_center')
+
             profile = models.Profile(
                     user = user,
                     **data
                     )
+
+            if name:
+                test_center = models.TestCenter.objects.get(name=name)     
+                
+            profile.test_center = test_center
 
             profile.full_clean()
             profile.save()
@@ -117,6 +126,7 @@ class CreateUserView(BaseView):
             'first_name',
             'last_name',
             'mobile_number',
+            'test_center',
             ]
 
     allowed_fields = required_fields
