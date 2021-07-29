@@ -839,7 +839,7 @@ class AddDateFoundView(BaseView):
         try:
             self._create_date_found(data)
             
-            return JsonResponse({}, status=204)
+            return JsonResponse({'msg': 'success'}, status=204)
         except Exception as e:
             return JsonResponse({
                 'error': str(e)
