@@ -216,3 +216,29 @@ class Token(BaseModel):
 
     def is_expired(self):
         return self.expiration < timezone.now()
+
+
+class DateFound(BaseModel):
+    test_center = models.ForeignKey(
+        'TestCenter',
+        on_delete=models.PROTECT,
+        related_name='dates',
+    )
+    date = models.DateField()
+    week_day = models.CharField(
+        max_length=30,
+        choices=[
+            ('1', 'Monday'),
+            ('2', 'Tuesday'),
+            ('3', 'Wednesday'),
+            ('4', 'Thursday'),
+            ('5', 'Friday'),
+            ('6', 'Saturday'),
+            ('7', 'Sunday'),
+        ]
+    )
+
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+    free_slots = models.IntegerField()
+    found_by = models.ForeignKey('Profile', on_delete=models.SET_NULL, null=True)

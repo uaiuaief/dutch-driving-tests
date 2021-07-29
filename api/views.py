@@ -24,8 +24,6 @@ class ModelCreationMixin():
         user = models.User.objects.create_user(email=email, password=password)
         user.save()
 
-        
-
         try:
             name = data.pop('test_center')
 
@@ -57,6 +55,11 @@ class ModelCreationMixin():
         student.save()
 
         return student
+
+    def _create_date_found(self, data: dict):
+        date_found = models.DateFound(**data)
+        date_found.full_clean()
+        date_found.save()
     
     def _is_over_student_limit(self, instructor):
         student_count = instructor.students.count()
@@ -777,7 +780,7 @@ class SetInstructorStatusView(BaseView):
             user = models.User.objects.get(id=user_id)
         except models.User.DoesNotExist:
             return JsonResponse({
-                'error': f"theres no instructor with id `{user_id}`"
+                'error': f"there's no instructor with id `{user_id}`"
                 }, status=404)
 
         user.profile.status = status
@@ -791,3 +794,56 @@ class SetInstructorStatusView(BaseView):
                 }, status=400)
 
         return JsonResponse({}, status=200)
+
+
+class AddDateFoundView(BaseView):
+    allowed_fields = required_fields = [
+            'test_center_name',
+            'date',
+            'week_day',
+            'start_time',
+            'end_time',
+            'free_slots',
+            'user_id',
+            ]
+    
+    def post(self, request):
+        error = self._catch_errors(request)
+        if error:
+            return error
+
+        data = request.data
+        user_id = data.pop('user_id')
+        test_center_name = data.pop('test_center_name')
+
+        try:
+            user = models.User.objects.get(id=user_id)
+        except models.User.DoesNotExist:
+            return JsonResponse({
+                'error': f"there's no instructor with id `{user_id}`"
+                }, status=404)
+
+        try:
+            test_center = models.TestCenter.objects.get(name=test_center_name)
+        except models.User.DoesNotExist:
+            return JsonResponse({
+                'error': f"there's no test center with name `{test_center_name}`"
+                }, status=404)
+
+        data = {
+                'found_by': user.profile,
+                'test_center': test_center,
+                **request.data
+                }
+
+        try:
+            self._create_date_found(data)
+            
+            return JsonResponse({}, status=204)
+        except Exception as e:
+            return JsonResponse({
+                'error': str(e)
+                }, status=400)
+
+
+
