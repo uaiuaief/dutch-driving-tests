@@ -60,6 +60,8 @@ class ModelCreationMixin():
         date_found = models.DateFound(**data)
         date_found.full_clean()
         date_found.save()
+
+        return date_found
     
     def _is_over_student_limit(self, instructor):
         student_count = instructor.students.count()
@@ -837,7 +839,8 @@ class AddDateFoundView(BaseView):
                 }
 
         try:
-            self._create_date_found(data)
+            date_found = self._create_date_found(data)
+            self._assign_slots(date_found)
             
             return JsonResponse({'msg': 'success'}, status=204)
         except Exception as e:
@@ -845,5 +848,80 @@ class AddDateFoundView(BaseView):
                 'error': str(e)
                 }, status=400)
 
+    def _assign_slots(self, date):
+        instructor = date.found_by
+        students2 = instructor.students.filter(search_range='2').all()
+        students4 = instructor.students.filter(search_range='4').all()
+        students12 = instructor.students.filter(search_range='12').all()
 
+        for _ in date.free_slots:
+            self._assign_one_slot(date, [students2, students4, students12])
+
+    def _assign_one_slot(self, date, student_groups):
+        for group in student_groups:
+            for student in group:
+                if self._does_date_match_student(date, student):
+                    student.date_to_book = date
+                    student.save()
+                    return
+
+    def get_matching_student(self, date):
+        instructor = date.found_by
+
+    def _does_date_match_student(self, date, student):
+        if self._is_date_within_safe_range(date) \
+                and date.test_type == student.test_type \
+                and self._is_date_within_student_range(date, student) \
+                and not self._is_date_skipped(date, student):
+                    return True
+        else:
+            return False
+    
+    def _is_date_within_student_range(self, date, student):
+        days = int(student.search_range) * 7
+        last_day = (datetime.datetime.today() + datetime.timedelta(days=days).date())
+
+        if date <= last_day:
+            return True
+        else:
+            return False
+
+    def _is_date_within_safe_range(self, date):
+        safe_limit = (datetime.datetime.today() + datetime.timedelta(days=2).date())
+
+        if date > safe_limit:
+            return True
+        else:
+            return False
+
+    def _is_date_skipped(self, date, student):
+        if str(date.day) in student.get_list_of_days_to_skip():
+            return True
+        else:
+            return False
+
+
+
+"""
+If there's a date matching a student's available time and test center
+and the date was found by the student's instructor, the crawler will 
+spawn a process with the student's instructor and a new proxy to book the date
+"""
+
+class GetDateAndStudent(BaseView):
+    allowed_fields = required_fields = [
+            'user_id',
+            ]
+
+    def get(self, request):
+        pass
+
+    def a(self):
+        user_id = request.data['user_id']
+        user = models.User.objects.get(user_id)
+        students = user.profile.students
+        dates = models.DateFound.objects.filter(found_by=user.profile).all()
+
+    def is_():
+        pass
 

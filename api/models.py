@@ -147,12 +147,19 @@ class Student(BaseModel):
     search_range = models.CharField(
         max_length=20,
         choices=[
-            ('1', '2 weeks'),
-            ('2', '4 weeks'),
-            ('3', '12 weeks')
+            ('2', '2 weeks'),
+            ('4', '4 weeks'),
+            ('12', '12 weeks')
         ],
         default='1'
     )
+
+    date_to_book = models.ForeignKey(
+            'DateFound',
+            null=True,
+            blank=True,
+            on_delete=models.SET_NULL
+            )
 
     """
     days the candidate won't be able to do the test
@@ -242,6 +249,11 @@ class DateFound(BaseModel):
     end_time = models.TimeField()
     free_slots = models.IntegerField()
     found_by = models.ForeignKey('Profile', on_delete=models.SET_NULL, null=True)
+
+    test_type = models.CharField(
+        max_length=30,
+        choices=TEST_TYPES,
+    )
 
     def __str__(self):
         return f"{self.test_center.name} - {self.date} - {self.start_time} - {self.free_slots}"
