@@ -843,18 +843,27 @@ class AddDateFoundView(BaseView):
             self._assign_slots(date_found)
             
             return JsonResponse({'msg': 'success'}, status=204)
-        except Exception as e:
+        except exceptions.ValidationError as e:
             return JsonResponse({
                 'error': str(e)
                 }, status=400)
 
     def _assign_slots(self, date):
         instructor = date.found_by
-        students2 = instructor.students.filter(search_range='2').all()
-        students4 = instructor.students.filter(search_range='4').all()
-        students12 = instructor.students.filter(search_range='12').all()
+        students2 = instructor.students.filter(
+                search_range='2',
+                date_to_book=None
+                ).all()
+        students4 = instructor.students.filter(
+                search_range='4',
+                date_to_book=None
+                ).all()
+        students12 = instructor.students.filter(
+                search_range='12',
+                date_to_book=None
+                ).all()
 
-        for _ in date.free_slots:
+        for _ in range(date.free_slots):
             self._assign_one_slot(date, [students2, students4, students12])
 
     def _assign_one_slot(self, date, student_groups):
@@ -879,23 +888,26 @@ class AddDateFoundView(BaseView):
     
     def _is_date_within_student_range(self, date, student):
         days = int(student.search_range) * 7
-        last_day = (datetime.datetime.today() + datetime.timedelta(days=days).date())
+        last_day = (datetime.datetime.today() + datetime.timedelta(days=days)).date()
 
-        if date <= last_day:
+        if date.date <= last_day:
             return True
         else:
+            print("not withing student range") 
             return False
 
     def _is_date_within_safe_range(self, date):
-        safe_limit = (datetime.datetime.today() + datetime.timedelta(days=2).date())
+        safe_limit = (datetime.datetime.today() + datetime.timedelta(days=2)).date()
 
-        if date > safe_limit:
+        if date.date > safe_limit:
             return True
         else:
+            print("not within safe limit") 
             return False
 
     def _is_date_skipped(self, date, student):
-        if str(date.day) in student.get_list_of_days_to_skip():
+        if str(date.date.day) in student.get_list_of_days_to_skip():
+            print("date is skipped") 
             return True
         else:
             return False

@@ -185,7 +185,13 @@ class Student(BaseModel):
         return f'{self.first_name} {self.last_name}'
 
     def get_list_of_days_to_skip(self) -> list:
-        return self.days_to_skip.split(',')
+        if self.days_to_skip:
+            if self.days_to_skip.find(','):
+                return self.days_to_skip.split(',')
+            else:
+                return self.days_to_skip
+        else:
+            return []
 
 
 class TestCenter(BaseModel):
