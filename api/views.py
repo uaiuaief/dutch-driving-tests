@@ -686,48 +686,21 @@ class GetInstructorProxyPair(BaseView):
 
 
 class GetStudentToCrawl(BaseView):
-    allowed_fields = required_fields = ['user_id']
-
-    def post(self, request):
-        error = self._catch_errors(request)
-        if error:
-            return error
-
-        try:
-            user = models.User.objects.get(id=request.data['user_id'])
-        except models.User.DoesNotExist as e:
-            return JsonResponse({
-                'error': f'User with id {user_id} does not exist'
-                }, status=404)
-
-        student = self.find_usable_student(user.profile)
+    def get(self, request):
+        student = models.Student.objects.exclude(date_to_book=None).first()
 
         if student:
-            student.last_crawled = timezone.now()
-            student.save()
+            serialized_student = serializers.StudentSerializer(student).data
 
-            serialized_data = serializers.StudentSerializer(student).data
+            #student.date_to_book = None
+            #student.save()
 
-            return JsonResponse(serialized_data, status=200)
+            return JsonResponse(serialized_student, status=200)
         else:
             return JsonResponse({
-                'error': 'There are no students avaiable'
+                'error': 'There are no students to book'
                 }, status=400)
 
-    def find_usable_student(self, profile):
-        minutes = 3
-        time_limit = timezone.now() - datetime.timedelta(minutes=minutes)
-
-        student = profile.students.filter(
-                status="3",
-                last_crawled__lte=time_limit,
-                ).order_by('last_crawled').first()
-
-        if student:
-            return student
-        else:
-            return None
-        
 
 class SetStudentStatusView(BaseView):
     allowed_fields = required_fields = [

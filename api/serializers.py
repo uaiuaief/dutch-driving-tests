@@ -4,7 +4,7 @@ from rest_framework import serializers
 
 class StudentSerializer(serializers.ModelSerializer):
     class Meta:
-        depth=1
+        depth = 1
         model = models.Student
         #fields = '__all__' 
         exclude = ['instructor']
@@ -12,6 +12,7 @@ class StudentSerializer(serializers.ModelSerializer):
 
 class ProfileSerializer(serializers.ModelSerializer):
     students = StudentSerializer(many=True)
+
     class Meta:
         depth = 1
         model = models.Profile
@@ -50,3 +51,22 @@ class ProxySerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Proxy
         fields = "__all__"
+
+
+class DateFoundSerializer(serializers.ModelSerializer):
+    depth = 1
+    profile = ProfileSerializer()
+
+    class Meta:
+        model = models.DateFound
+        fields = [
+                "id",
+                "date",
+                "week_day",
+                "start_time",
+                "end_time",
+                "free_slots",
+                "test_type",
+                "test_center",
+                "found_by",
+                ]

@@ -97,6 +97,7 @@ class Profile(BaseModel):
     )
 
     student_limit = models.IntegerField(default=100, blank=True)
+    last_crawled = models.DateTimeField(blank=True, default=timezone.now)
 
     test_center = models.ForeignKey(
         'TestCenter',
@@ -167,7 +168,7 @@ class Student(BaseModel):
     eg: `15,16,17`
     """
     days_to_skip = models.CharField(max_length=30, blank=True, null=True)
-    last_crawled = models.DateTimeField(blank=True, default=timezone.now)
+    #last_crawled = models.DateTimeField(blank=True, default=timezone.now)
 
     status = models.CharField(
         max_length=20,
