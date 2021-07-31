@@ -690,12 +690,18 @@ class GetStudentToCrawl(BaseView):
         student = models.Student.objects.exclude(date_to_book=None).first()
 
         if student:
+            instructor = student.instructor
+
+            serialized_instructor = serializers.ProfileSerializer(instructor).data
             serialized_student = serializers.StudentSerializer(student).data
 
             #student.date_to_book = None
             #student.save()
 
-            return JsonResponse(serialized_student, status=200)
+            return JsonResponse({
+                'instructor': serialized_instructor,
+                'student': serialized_student,
+                }, status=200)
         else:
             return JsonResponse({
                 'error': 'There are no students to book'
@@ -846,9 +852,6 @@ class AddDateFoundView(BaseView):
                     student.date_to_book = date
                     student.save()
                     return
-
-    def get_matching_student(self, date):
-        instructor = date.found_by
 
     def _does_date_match_student(self, date, student):
         if self._is_date_within_safe_range(date) \

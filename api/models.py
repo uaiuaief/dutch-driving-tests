@@ -96,6 +96,8 @@ class Profile(BaseModel):
         validators=[MinLengthValidator(1)]
     )
 
+    searches = models.IntegerField(default=0, blank=True)
+
     student_limit = models.IntegerField(default=100, blank=True)
     last_crawled = models.DateTimeField(blank=True, default=timezone.now)
 
@@ -154,6 +156,8 @@ class Student(BaseModel):
         ],
         default='1'
     )
+
+    test_booked = models.BooleanField(default=False, blank=True)
 
     date_to_book = models.ForeignKey(
             'DateFound',

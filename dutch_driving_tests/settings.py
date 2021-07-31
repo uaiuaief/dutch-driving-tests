@@ -137,3 +137,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #Custom user
 AUTH_USER_MODEL = 'api.User'
+
+
+#Environment variables
+##SEARCH_LIMIT = os.environ.get('SEARCH_LIMIT')
