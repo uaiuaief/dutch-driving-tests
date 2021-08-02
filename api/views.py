@@ -667,7 +667,6 @@ class GetInstructorProxyPair(BaseView):
         else:
             return None
 
-
     def get_proxy_data(self):
         minutes = 3
         time_limit = timezone.now() - datetime.timedelta(minutes=minutes)
@@ -685,21 +684,48 @@ class GetInstructorProxyPair(BaseView):
             return None
 
 
+class GetValidProxyView(BaseView):
+    def get(self, request):
+        proxy = self.get_proxy_data()
+        if proxy:
+            return JsonResponse(proxy, status=200)
+        else:
+            return JsonResponse({
+                'message': 'There are no proxies available'
+                }, status=404)
+
+    def get_proxy_data(self):
+        minutes = 3
+        time_limit = timezone.now() - datetime.timedelta(minutes=minutes)
+        usable_proxy = models.Proxy.objects.order_by('last_used').filter(
+                last_used__lte=time_limit,
+                is_banned=False).first()
+
+        if usable_proxy:
+            usable_proxy.last_used = timezone.now()
+            usable_proxy.save()
+
+            serialized_data = serializers.ProxySerializer(usable_proxy).data
+            return serialized_data
+        else:
+            return None
+
 class GetStudentToCrawl(BaseView):
     def get(self, request):
         student = models.Student.objects.exclude(date_to_book=None).first()
 
         if student:
-            instructor = student.instructor
+            user = student.instructor.user
 
-            serialized_instructor = serializers.ProfileSerializer(instructor).data
+            serialized_user = serializers.UserSerializer(user).data
+            serialized_user['profile']['students'] = []
             serialized_student = serializers.StudentSerializer(student).data
 
             #student.date_to_book = None
             #student.save()
 
             return JsonResponse({
-                'instructor': serialized_instructor,
+                'user': serialized_user,
                 'student': serialized_student,
                 }, status=200)
         else:
@@ -786,6 +812,7 @@ class AddDateFoundView(BaseView):
             'end_time',
             'free_slots',
             'user_id',
+            'test_type',
             ]
     
     def post(self, request):
@@ -793,9 +820,10 @@ class AddDateFoundView(BaseView):
         if error:
             return error
 
-        data = request.data
-        user_id = data.pop('user_id')
-        test_center_name = data.pop('test_center_name')
+        translated_data = self._translate_request_data(request)
+
+        user_id = translated_data.pop('user_id')
+        test_center_name = translated_data.pop('test_center_name')
 
         try:
             user = models.User.objects.get(id=user_id)
@@ -814,7 +842,7 @@ class AddDateFoundView(BaseView):
         data = {
                 'found_by': user.profile,
                 'test_center': test_center,
-                **request.data
+                **translated_data
                 }
 
         try:
@@ -888,28 +916,4 @@ class AddDateFoundView(BaseView):
         else:
             return False
 
-
-
-"""
-If there's a date matching a student's available time and test center
-and the date was found by the student's instructor, the crawler will 
-spawn a process with the student's instructor and a new proxy to book the date
-"""
-
-class GetDateAndStudent(BaseView):
-    allowed_fields = required_fields = [
-            'user_id',
-            ]
-
-    def get(self, request):
-        pass
-
-    def a(self):
-        user_id = request.data['user_id']
-        user = models.User.objects.get(user_id)
-        students = user.profile.students
-        dates = models.DateFound.objects.filter(found_by=user.profile).all()
-
-    def is_():
-        pass
 
