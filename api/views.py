@@ -126,6 +126,8 @@ class CreateUserView(BaseView):
     required_fields = [
             'email',
             'password',
+            'driving_school_name',
+            'test_type',
             'gov_username',
             'gov_password',
             'first_name',
@@ -163,7 +165,6 @@ class CreateStudentView(BaseView):
             'birth_date',
             'first_name',
             'last_name',
-            'test_type',
             'search_range',
             ]
 
@@ -200,17 +201,15 @@ class CreateStudentView(BaseView):
     def _translate_request_data(self, request) -> dict:
         data = request.data
         translated_data = {
-                'instructor': request.user.profile
+                'instructor': request.user.profile,
+                'test_type': request.user.profile.test_type
         }
 
         for k in data:
-            if data[k] == "":
+            if k not in self.allowed_fields:
                 continue
-            elif k == 'test_centers':
-                translated_data['test_centers'] = []
-                for each in data[k]:
-                    test_center = models.TestCenter.objects.get(name=each)
-                    translated_data['test_centers'].append(test_center)
+            elif data[k] == "":
+                continue
             else:
                 translated_data[k] = data[k]
 
@@ -221,6 +220,8 @@ class UpdateProfileView(BaseView):
     allowed_fields = [
             'first_name',
             'last_name',
+            'driving_school_name',
+            'test_type',
             'mobile_number',
             'gov_username',
             'gov_password',
@@ -246,6 +247,10 @@ class UpdateProfileView(BaseView):
             return JsonResponse({
                 'errors': e.messages
                 }, status=400)
+        except models.TestCenter.DoesNotExist as e:
+            return JsonResponse({
+                'error': f"Invalid test center"
+                }, status=400)
 
         return JsonResponse({}, status=200)
 
@@ -253,13 +258,7 @@ class UpdateProfileView(BaseView):
         name = data.pop('test_center')
 
         if name:
-            try:
-                test_center = models.TestCenter.objects.get(name=name)
-            except models.TestCenter.DoesNotExist:
-                return JsonResponse({
-                    'error': f"{name} is not a valid test center"
-                    }, status=400)
-            
+            test_center = models.TestCenter.objects.get(name=name)
             profile.test_center = test_center
 
         for k in data:
@@ -267,7 +266,6 @@ class UpdateProfileView(BaseView):
 
         profile.full_clean()
         profile.save()
-
 
 class UpdateStudentView(BaseView):
     required_fields = [
@@ -279,7 +277,6 @@ class UpdateStudentView(BaseView):
             'birth_date',
             'first_name',
             'last_name',
-            'test_type',
             'days_to_skip',
             'search_range',
             ]
@@ -650,20 +647,15 @@ class GetInstructorProxyPair(BaseView):
     def get_user_data(self):
         minutes = 5
         time_limit = timezone.now() - datetime.timedelta(minutes=minutes)
-        student = models.Student.objects.filter(
+        instructor = models.Profile.objects.filter(
                 last_crawled__lte=time_limit,
-                status='3'
+                status='2'
                 ).order_by('last_crawled').first()
 
-        if student:
-            instructor = student.instructor
+        serialized_data = serializers.UserSerializer(instructor.user).data
 
-            if instructor.status == '2':
-                serialized_data = serializers.UserSerializer(instructor.user).data
-
-                return serialized_data
-            else:
-                return None
+        if instructor:
+            return serialized_data
         else:
             return None
 
@@ -709,6 +701,7 @@ class GetValidProxyView(BaseView):
             return serialized_data
         else:
             return None
+
 
 class GetStudentToCrawl(BaseView):
     def get(self, request):

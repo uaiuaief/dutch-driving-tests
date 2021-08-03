@@ -71,6 +71,11 @@ class Profile(BaseModel):
         on_delete=models.CASCADE,
     )
 
+    driving_school_name = models.CharField(
+        max_length=150,
+        validators=[MinLengthValidator(1)]
+    )
+
     first_name = models.CharField(
         max_length=30,
         validators=[MinLengthValidator(1)],
@@ -94,6 +99,13 @@ class Profile(BaseModel):
     gov_password = models.CharField(
         max_length=150,
         validators=[MinLengthValidator(1)]
+    )
+
+    test_type = models.CharField(
+        max_length=30,
+        choices=TEST_TYPES,
+        blank=False,
+        null=False
     )
 
     searches = models.IntegerField(default=0, blank=True)
@@ -137,14 +149,6 @@ class Student(BaseModel):
     last_name = models.CharField(
         max_length=30,
         validators=[MinLengthValidator(1)]
-    )
-
-    """ must be a choice, look at the dutch website later """
-    test_type = models.CharField(
-        max_length=30,
-        choices=TEST_TYPES,
-        blank=False,
-        null=False
     )
 
     search_range = models.CharField(
