@@ -606,45 +606,49 @@ class UnauthenticatedChangePasswordView(BaseView):
             
         return JsonResponse({}, status=204)
 
+
 """
 Crawler views
 """
-class GetInstructorsView(generics.ListAPIView):
-    invalid_profiles = models.Profile.objects.filter(students__isnull=True).all()
-    invalid_user_ids = [each.user.id for each in invalid_profiles]
-
-    queryset = models.User.objects.exclude(profile__isnull=True)
-    queryset = queryset.exclude(id__in=invalid_user_ids).all()
-
-    serializer_class = serializers.UserSerializer
-
-"""
-If there's an active instructor that has a valid and active student 
-who hasn't been crawled for more than 5 minutes, returns the instructor 
-and a proxy, the crawler will spawn another process with that instructor and 
-proxy.
-"""
-class GetInstructorProxyPair(BaseView):
+class GetWatcherInfoView(BaseView):
+    """
+    Returns:
+    User, Student, Proxy
+    """
     def get(self, request):
-        pair = self.get_pair()
-        if pair:
-            return JsonResponse(pair, status=200)
+        info = self.get_info()
+        if info:
+            return JsonResponse(info, status=200)
         else:
             return JsonResponse({'error': 'no instructors or proxies available'}, status=400)
 
-    def get_pair(self):
-        user_data = self.get_user_data()
-        proxy_data = self.get_proxy_data()
+    def get_info(self):
+        user = self._get_valid_user()
 
-        if user_data and proxy_data:
+        if user:
+            proxy = self._get_valid_proxy()
+            student = self._get_valid_student(user)
+        else:
+            return None
+
+        if proxy and student:
             return {
-                    "user": user_data,
-                    "proxy": proxy_data
+                    "user": serializers.UserSerializer(user).data,
+                    "proxy": serializers.ProxySerializer(proxy).data,
+                    "student": serializers.StudentSerializer(student).data
                     }
         else:
             return None
 
-    def get_user_data(self):
+    def _get_valid_student(self, user):
+        student = user.profile.students.filter(
+                status='3',
+                test_booked=False,
+                ).first()
+
+        return student
+
+    def _get_valid_user(self):
         minutes = 5
         time_limit = timezone.now() - datetime.timedelta(minutes=minutes)
         instructor = models.Profile.objects.filter(
@@ -652,14 +656,9 @@ class GetInstructorProxyPair(BaseView):
                 status='2'
                 ).order_by('last_crawled').first()
 
-        serialized_data = serializers.UserSerializer(instructor.user).data
+        return instructor.user
 
-        if instructor:
-            return serialized_data
-        else:
-            return None
-
-    def get_proxy_data(self):
+    def _get_valid_proxy(self):
         minutes = 3
         time_limit = timezone.now() - datetime.timedelta(minutes=minutes)
         usable_proxy = models.Proxy.objects.order_by('last_used').filter(
@@ -670,7 +669,14 @@ class GetInstructorProxyPair(BaseView):
             usable_proxy.last_used = timezone.now()
             usable_proxy.save()
 
-            serialized_data = serializers.ProxySerializer(usable_proxy).data
+        return usable_proxy
+
+    def serialize_proxy(self, proxy):
+        if proxy:
+            proxy.last_used = timezone.now()
+            proxy.save()
+
+            serialized_data = serializers.ProxySerializer(proxy).data
             return serialized_data
         else:
             return None
