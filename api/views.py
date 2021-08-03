@@ -876,7 +876,7 @@ class AddDateFoundView(BaseView):
 
     def _does_date_match_student(self, date, student):
         if self._is_date_within_safe_range(date) \
-                and date.test_type == student.test_type \
+                and date.test_type == student.instructor.test_type \
                 and self._is_date_within_student_range(date, student) \
                 and not self._is_date_skipped(date, student):
                     return True
