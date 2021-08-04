@@ -35,6 +35,7 @@ urlpatterns = [
     path('get-watcher-info/', views.GetWatcherInfoView.as_view()),
     path('set-student-status/', views.SetStudentStatusView.as_view()),
     path('set-instructor-status/', views.SetInstructorStatusView.as_view()),
+    path('set-user-crawled/', views.SetUserCrawledView.as_view()),
     path('add-date-found/', views.AddDateFoundView.as_view()),
     path('get-valid-proxy/', views.GetValidProxyView.as_view()),
 ]

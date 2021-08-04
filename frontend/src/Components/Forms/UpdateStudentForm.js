@@ -46,7 +46,6 @@ const UpdateStudentForm = ({ setParentState, student, refreshTable }) => {
                 birth_date: student.birth_date,
                 first_name: student.first_name,
                 last_name: student.last_name,
-                test_type: student.test_type,
                 search_range: student.search_range,
                 days_to_skip: student.days_to_skip
             }}

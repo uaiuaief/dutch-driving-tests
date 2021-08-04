@@ -201,7 +201,6 @@ class CreateStudentView(BaseView):
         data = request.data
         translated_data = {
                 'instructor': request.user.profile,
-                'test_type': request.user.profile.test_type
         }
 
         for k in data:
@@ -630,6 +629,11 @@ class GetWatcherInfoView(BaseView):
             return None
 
         if proxy and student:
+            user.profile.last_crawled = timezone.now()
+            user.profile.save()
+            proxy.last_used = timezone.now()
+            proxy.save()
+
             return {
                     "user": serializers.UserSerializer(user).data,
                     "proxy": serializers.ProxySerializer(proxy).data,
@@ -641,7 +645,6 @@ class GetWatcherInfoView(BaseView):
     def _get_valid_student(self, user):
         student = user.profile.students.filter(
                 status='3',
-                test_booked=False,
                 ).first()
 
         return student
@@ -912,5 +915,39 @@ class AddDateFoundView(BaseView):
             return True
         else:
             return False
+
+
+class SetUserCrawledView(BaseView):
+    allowed_fields = required_fields = [
+            'user_id'
+            ]
+
+    def post(self, request):
+        error = self._catch_errors(request)
+        if error:
+            return error
+
+        user_id = request.data['user_id']
+        try:
+            user = models.User.objects.get(id=user_id)
+            user.profile.last_crawled = timezone.now()
+            user.profile.save()
+
+            self.remove_dates(user)
+
+            return JsonResponse({}, status=200)
+        except models.User.DoesNotExist:
+            return JsonResponse({
+                'error': f"There's no user with id {user_id}"
+                }, status=400)
+
+    def remove_dates(self, user):
+        dates = models.DateFound.objects.filter(
+                found_by=user.profile,
+                status='1'
+                ).all()
+
+        for each in dates:
+            each.delete()
 
 

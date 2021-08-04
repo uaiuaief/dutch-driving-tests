@@ -253,6 +253,15 @@ class DateFound(BaseModel):
         ]
     )
 
+    status = models.CharField(
+        max_length=20,
+        choices=[
+            ('1', 'Not Booked'),
+            ('2', 'Booked'),
+        ],
+        default='1'
+    )
+
     start_time = models.TimeField()
     end_time = models.TimeField()
     free_slots = models.IntegerField()

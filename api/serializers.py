@@ -53,6 +53,7 @@ class ProfileSerializer(serializers.ModelSerializer):
                 'driving_school_name',
                 'test_center',
                 'students',
+                'searches',
         ]
         
 

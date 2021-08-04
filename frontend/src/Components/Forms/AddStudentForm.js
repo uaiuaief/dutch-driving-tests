@@ -43,7 +43,6 @@ const AddStudentForm = ({ setParentState, refreshTable }) => {
                 birth_date: "",
                 first_name: "",
                 last_name: "",
-                test_type: "",
                 search_range: "",
                 days_to_skip: ""
             }}
