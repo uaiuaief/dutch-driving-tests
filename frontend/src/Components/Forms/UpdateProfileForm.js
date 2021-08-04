@@ -5,19 +5,29 @@ import PrimaryButton from '../Buttons/PrimaryButton'
 import SnackBar from '../MaterialUIComponents/SnackBar'
 import * as Yup from "yup"
 import InputButton from '../Buttons/InputButton'
+import InputAdornment from '@material-ui/core/InputAdornment';
+import IconButton from '@material-ui/core/IconButton';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import TestCenters from './TestCenters'
 
 
 const UpdateProfileSchema = Yup.object().shape({
-    first_name: Yup.string()
+    // first_name: Yup.string()
+    //     .required('This field is required')
+    //     .min(2, 'Too short')
+    //     .max(30, 'Too long'),
+    // last_name: Yup.string()
+    //     .required('This field is required')
+    //     .min(2, 'Too short')
+    //     .max(30, 'Too long'),
+    driving_school_name: Yup.string()
         .required('This field is required')
         .min(2, 'Too short')
-        .max(30, 'Too long'),
-    last_name: Yup.string()
-        .required('This field is required')
-        .min(2, 'Too short')
-        .max(30, 'Too long'),
+        .max(150, 'Too long'),
     test_center: Yup.string()
+        .required('This field is required'),
+    test_type: Yup.string()
         .required('This field is required'),
     mobile_number: Yup.string()
         .required('This field is required')
@@ -36,7 +46,9 @@ const UpdateProfileForm = ({ setParentState, profile }) => {
         alert: false,
         message: null,
         severity: null,
-        open: false
+        open: false,
+
+        showPassword: false,
     })
 
     const goToChangePassword = () => {
@@ -51,11 +63,21 @@ const UpdateProfileForm = ({ setParentState, profile }) => {
         })
     }
 
+    const handleClickShowPassword = () => {
+        setState({ ...state, showPassword: !state.showPassword });
+    };
+
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
+
     return (
         <Formik
             initialValues={{
-                first_name: profile.first_name,
-                last_name: profile.last_name,
+                // first_name: profile.first_name,
+                // last_name: profile.last_name,
+                driving_school_name: profile.driving_school_name,
+                test_type: profile.test_type,
                 mobile_number: profile.mobile_number,
                 email: profile.email,
                 password: '************',
@@ -100,7 +122,7 @@ const UpdateProfileForm = ({ setParentState, profile }) => {
             {props => (
                 <form onSubmit={props.handleSubmit}>
                     <div className="form-row form-row-1">
-                        <div className="form-item">
+                        {/* <div className="form-item">
                             <TextField
                                 label="First Name"
                                 variant="outlined"
@@ -123,6 +145,40 @@ const UpdateProfileForm = ({ setParentState, profile }) => {
                                 error={props.touched.last_name && props.errors.last_name}
                                 helperText={props.touched.last_name && props.errors.last_name ? props.errors.last_name : null}
                             />
+                        </div> */}
+                        <div className="form-item">
+                            <TextField
+                                label="Driving School Name"
+                                variant="outlined"
+                                onChange={props.handleChange}
+                                onBlur={props.handleBlur}
+                                value={props.values.driving_school_name}
+                                name="driving_school_name"
+                                error={props.touched.driving_school_name && props.errors.driving_school_name}
+                                helperText={props.touched.driving_school_name && props.errors.driving_school_name ? props.errors.driving_school_name : null}
+                            />
+                        </div>
+                        <div className="form-item">
+                            <TextField
+                                required
+                                label="Test Type"
+                                variant="outlined"        
+                                InputLabelProps={{ shrink: true }}
+                                select
+                                SelectProps={{
+                                    native: true,
+                                }}
+                                onChange={props.handleChange}
+                                onBlur={props.handleBlur}
+                                value={props.values.test_type}
+                                name="test_type"
+                                error={props.touched.test_type && props.errors.test_type}
+                                helperText={props.touched.test_type && props.errors.test_type ? props.errors.test_type : null}
+                            >
+                                <option value="">--- select ---</option>
+                                <option>A</option>
+                                <option>B</option>
+                            </TextField>
                         </div>
                     </div>
                     <div className="form-row form-row-2">
@@ -142,6 +198,7 @@ const UpdateProfileForm = ({ setParentState, profile }) => {
                             <TextField
                                 label="Test Center"
                                 variant="outlined"
+                                InputLabelProps={{ shrink: true }}
                                 select
                                 SelectProps={{
                                     native: true,
@@ -153,7 +210,7 @@ const UpdateProfileForm = ({ setParentState, profile }) => {
                                 error={props.touched.test_center && props.errors.test_center}
                                 helperText={props.touched.test_center && props.errors.test_center ? props.errors.test_center : null}
                             >
-                                <TestCenters/>
+                                <TestCenters />
                             </TextField>
                         </div>
                     </div>
@@ -214,6 +271,7 @@ const UpdateProfileForm = ({ setParentState, profile }) => {
                         </div>
                         <div className="form-item">
                             <TextField
+                                id="gov-password"
                                 label="CBR Password"
                                 variant="outlined"
                                 onChange={props.handleChange}
@@ -223,6 +281,18 @@ const UpdateProfileForm = ({ setParentState, profile }) => {
                                 type="password"
                                 error={props.touched.gov_password && props.errors.gov_password}
                                 helperText={props.touched.gov_password && props.errors.gov_password ? props.errors.gov_password : null}
+                                type={state.showPassword ? 'text' : 'password'}
+                                InputProps={{
+                                    endAdornment:
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                onClick={() => handleClickShowPassword('showCBRPassword')}
+                                                onMouseDown={handleMouseDownPassword}
+                                            >
+                                                {state.showPassword ? <Visibility /> : <VisibilityOff />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                }}
                             />
                         </div>
                     </div>

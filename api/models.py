@@ -76,14 +76,9 @@ class Profile(BaseModel):
         validators=[MinLengthValidator(1)]
     )
 
-    first_name = models.CharField(
+    full_name = models.CharField(
         max_length=30,
         validators=[MinLengthValidator(1)],
-    )
-
-    last_name = models.CharField(
-        max_length=30,
-        validators=[MinLengthValidator(1)]
     )
 
     mobile_number = models.CharField(
@@ -142,7 +137,7 @@ class Student(BaseModel):
     candidate_number = models.CharField(max_length=100, unique=True)
     birth_date = models.DateField()
     first_name = models.CharField(
-        max_length=30,
+        max_length=60,
         validators=[MinLengthValidator(1)]
     )
 
@@ -160,8 +155,6 @@ class Student(BaseModel):
         ],
         default='1'
     )
-
-    test_booked = models.BooleanField(default=False, blank=True)
 
     date_to_book = models.ForeignKey(
             'DateFound',

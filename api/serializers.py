@@ -43,13 +43,14 @@ class ProfileSerializer(serializers.ModelSerializer):
         depth = 1
         model = models.Profile
         fields = [
-                'first_name',
-                'last_name',
+                'full_name',
                 'mobile_number',
                 'gov_username',
                 'gov_password',
                 'student_limit',
                 'status',
+                'test_type',
+                'driving_school_name',
                 'test_center',
                 'students',
         ]

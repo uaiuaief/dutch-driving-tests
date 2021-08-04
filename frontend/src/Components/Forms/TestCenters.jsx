@@ -1,4 +1,5 @@
 const TestCenters = () => <>
+        <option value="">--- select ---</option>
         <option>Alkmaar (Olympiaweg 28)</option>
         <option>Almelo (Bedrijvenpark Twente 305)</option>
         <option>Amsterdam (Naritaweg 150)</option>

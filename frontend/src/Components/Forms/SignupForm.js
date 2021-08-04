@@ -26,41 +26,45 @@ const SignupSchemaStepOne = Yup.object().shape({
         .min(8, 'Password must be at least 8 characters long')
         .max(100, 'Too long')
         .oneOf([Yup.ref('password'), null], "Password must match"),
-    first_name: Yup.string()
+    full_name: Yup.string()
         .required('This field is required')
         .min(2, 'Too short')
-        .max(30, 'Too long'),
-    last_name: Yup.string()
+        .max(60, 'Too long'),
+    driving_school_name: Yup.string()
         .required('This field is required')
         .min(2, 'Too short')
-        .max(30, 'Too long'),
+        .max(150, 'Too long'),
     mobile_number: Yup.string()
         .required('This field is required')
         .matches(/^[0-9]*$/, 'Mobile number can only contain numbers')
         .min(8, 'Too short')
         .max(12, 'Too long'),
+    test_center: Yup.string()
+        .required('This field is required'),
+    test_type: Yup.string()
+        .required('This field is required')
 })
 
 const SignupSchemaStepTwo = Yup.object().shape({
     gov_username: Yup.string()
         .required('This field is required'),
     gov_password: Yup.string()
-        .required('This field is required'),
-    test_center: Yup.string()
         .required('This field is required')
 })
 
 const StepOne = ({ values, handleClickShowPassword, handleMouseDownPassword, nextStep, setParentState, parentState }) => {
-    const { email, password, confirm_password, first_name, last_name, mobile_number } = parentState
+    const { email, password, confirm_password, full_name, driving_school_name, mobile_number, test_center, test_type } = parentState
     return (
         <Formik
             initialValues={{
                 email: email,
                 password: password,
                 confirm_password: confirm_password,
-                first_name: first_name,
-                last_name: last_name,
+                driving_school_name: driving_school_name,
+                full_name: full_name,
                 mobile_number: mobile_number,
+                test_center: test_center,
+                test_type: test_type,
             }}
 
             onSubmit={async (values, actions) => {
@@ -77,27 +81,27 @@ const StepOne = ({ values, handleClickShowPassword, handleMouseDownPassword, nex
                         <div className="form-item">
                             <TextField
                                 required
-                                label="First Name"
+                                label="Full Name"
                                 variant="outlined"
                                 onChange={props.handleChange}
                                 onBlur={props.handleBlur}
-                                value={props.values.first_name}
-                                name="first_name"
-                                error={props.touched.first_name && props.errors.first_name}
-                                helperText={props.touched.first_name && props.errors.first_name ? props.errors.first_name : null}
+                                value={props.values.full_name}
+                                name="full_name"
+                                error={props.touched.full_name && props.errors.full_name}
+                                helperText={props.touched.full_name && props.errors.full_name ? props.errors.full_name : null}
                             />
                         </div>
                         <div className="form-item">
                             <TextField
                                 required
-                                label="Last Name"
+                                label="Driving School Name"
                                 variant="outlined"
                                 onChange={props.handleChange}
                                 onBlur={props.handleBlur}
-                                value={props.values.last_name}
-                                name="last_name"
-                                error={props.touched.last_name && props.errors.last_name}
-                                helperText={props.touched.last_name && props.errors.last_name ? props.errors.last_name : null}
+                                value={props.values.driving_school_name}
+                                name="driving_school_name"
+                                error={props.touched.driving_school_name && props.errors.driving_school_name}
+                                helperText={props.touched.driving_school_name && props.errors.driving_school_name ? props.errors.driving_school_name : null}
                             />
                         </div>
                     </div>
@@ -131,7 +135,53 @@ const StepOne = ({ values, handleClickShowPassword, handleMouseDownPassword, nex
                             />
                         </div>
                     </div>
+
                     <div className="form-row form-row-3">
+                        <div className="form-item">
+                            <TextField
+                                id="test-center-select"
+                                label="Test Center"
+                                variant="outlined"
+                                InputLabelProps={{ shrink: true }}
+                                select
+                                SelectProps={{
+                                    native: true,
+                                }}
+                                onChange={props.handleChange}
+                                onBlur={props.handleBlur}
+                                value={props.values.test_center}
+                                name="test_center"
+                                error={props.touched.test_center && props.errors.test_center}
+                                helperText={props.touched.test_center && props.errors.test_center ? props.errors.test_center : null}
+                            >
+                                <TestCenters />
+                            </TextField>
+                        </div>
+                        <div className="form-item">
+                            <TextField
+                                required
+                                label="Test Type"
+                                variant="outlined"
+                                InputLabelProps={{ shrink: true }}
+                                select
+                                SelectProps={{
+                                    native: true,
+                                }}
+                                onChange={props.handleChange}
+                                onBlur={props.handleBlur}
+                                value={props.values.test_type}
+                                name="test_type"
+                                error={props.touched.test_type && props.errors.test_type}
+                                helperText={props.touched.test_type && props.errors.test_type ? props.errors.test_type : null}
+                            >
+                                <option value="">--- select ---</option>
+                                <option>A</option>
+                                <option>B</option>
+                            </TextField>
+                        </div>
+                    </div>
+
+                    <div className="form-row form-row-4">
                         <div className="form-item">
                             <TextField
                                 className="icon-textfield"
@@ -208,13 +258,12 @@ const StepOne = ({ values, handleClickShowPassword, handleMouseDownPassword, nex
 }
 
 const StepTwo = ({ values, handleClickShowPassword, handleMouseDownPassword, previousStep, nextStep, setParentState, parentState, setValues }) => {
-    const { email, password, confirm_password, first_name, last_name, mobile_number, gov_username, gov_password, test_center } = parentState
+    const { email, password, confirm_password, full_name, mobile_number, gov_username, gov_password, test_center, test_type, driving_school_name } = parentState
     return (
         <Formik
             initialValues={{
                 gov_username: gov_username,
-                gov_password: gov_password,
-                test_center: test_center
+                gov_password: gov_password
             }}
 
             onSubmit={async (values, actions) => {
@@ -222,8 +271,10 @@ const StepTwo = ({ values, handleClickShowPassword, handleMouseDownPassword, pre
                     email: email,
                     password: password,
                     confirm_password: confirm_password,
-                    first_name: first_name,
-                    last_name: last_name,
+                    full_name: full_name,
+                    driving_school_name: driving_school_name,
+                    test_center: test_center,
+                    test_type: test_type,
                     mobile_number: mobile_number,
                     ...values
                 }
@@ -262,27 +313,6 @@ const StepTwo = ({ values, handleClickShowPassword, handleMouseDownPassword, pre
                     <div className="form-row form-row-1">
                         <div className="form-item">
                             <TextField
-                                id="test-center-select"
-                                label="Test Center"
-                                variant="outlined"
-                                select
-                                SelectProps={{
-                                    native: true,
-                                }}
-                                onChange={props.handleChange}
-                                onBlur={props.handleBlur}
-                                value={props.values.test_center}
-                                name="test_center"
-                                error={props.touched.test_center && props.errors.test_center}
-                                helperText={props.touched.test_center && props.errors.test_center ? props.errors.test_center : null}
-                            >
-                                <TestCenters />
-                            </TextField>
-                        </div>
-                    </div>
-                    <div className="form-row form-row-2">
-                        <div className="form-item">
-                            <TextField
                                 required
                                 label="CBR Username"
                                 variant="outlined"
@@ -295,7 +325,7 @@ const StepTwo = ({ values, handleClickShowPassword, handleMouseDownPassword, pre
                             />
                         </div>
                     </div>
-                    <div className="form-row form-row-3">
+                    <div className="form-row form-row-2">
                         <div className="form-item">
                             <TextField
                                 className="icon-textfield"

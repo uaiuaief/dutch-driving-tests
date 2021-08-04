@@ -118,6 +118,7 @@
 /* CREATE / UPDATE STUDENT SCREENS */
 #background-overlay {
     position: fixed;
+    z-index: 999;
     top: 0;
     left: 0;
     width: 100%;
@@ -173,7 +174,7 @@
 
 #add-student-form,
 #edit-student-form {
-    margin-top: 55px;
+    margin-top: 65px;
 }
 
 #edit-student-screen select,
@@ -185,7 +186,7 @@
 #edit-student-form .form-row {
     /* width: 800px; */
     margin: auto;
-    margin-top: 25px;
+    margin-top: 35px;
     display: flex;
     justify-content: center;
 }
@@ -206,6 +207,11 @@
     font-size: 40px;
     margin-top: 25px;
     color: var(--primary-color)
+}
+
+#add-student-form button,
+#edit-student-form button {
+    margin-top: 20px;
 }
 
 /* END CREATE / UPDATE STUDENT SCREENS */

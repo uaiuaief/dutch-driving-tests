@@ -130,8 +130,7 @@ class CreateUserView(BaseView):
             'test_type',
             'gov_username',
             'gov_password',
-            'first_name',
-            'last_name',
+            'full_name',
             'mobile_number',
             'test_center',
             ]
@@ -218,8 +217,7 @@ class CreateStudentView(BaseView):
         
 class UpdateProfileView(BaseView):
     allowed_fields = [
-            'first_name',
-            'last_name',
+            'full_name',
             'driving_school_name',
             'test_type',
             'mobile_number',

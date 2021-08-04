@@ -23,9 +23,9 @@ const statusDict = {
 }
 
 const SearchRangeDict = {
-    1: '2 weeks',
-    2: '4 weeks',
-    3: '12 weeks'
+    2: '2 weeks',
+    4: '4 weeks',
+    12: '12 weeks'
 }
 
 const columns = [
@@ -51,12 +51,6 @@ const columns = [
         field: 'birth_date',
         headerName: 'Date of Birth',
         width: 180,
-        editable: false,
-    },
-    {
-        field: 'test_type',
-        headerName: 'Test Type',
-        width: 150,
         editable: false,
     },
     {
@@ -185,7 +179,6 @@ const StudentTable = ({ rows, setParentState, refreshTable }) => {
                                     <TableCell align={align}>{student.last_name}</TableCell>
                                     <TableCell align={align}>{student.candidate_number}</TableCell>
                                     <TableCell align={align}>{student.birth_date}</TableCell>
-                                    <TableCell align={align}>{student.test_type}</TableCell>
                                     <TableCell align={align}>{SearchRangeDict[student.search_range]}</TableCell>
                                     <TableCell align={align}>{student.days_to_skip}</TableCell>
                                     {/* <TableCell align={align}>{statusDict[student.status]}</TableCell> */}

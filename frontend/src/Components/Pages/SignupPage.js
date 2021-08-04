@@ -159,16 +159,18 @@ const StepThree = () => {
 
 class SignupPage extends Component {
     state = {
-        step: 2,
+        step: 1,
 
         // Form values
         // Step 1
         email: "",
         password: "",
         confirm_password: "",
-        first_name: "",
-        last_name: "",
+        full_name: "",
+        driving_school_name: "",
         mobile_number: "",
+        test_center: "",
+        test_type: "",
         // Step 2
         gov_username: "",
         gov_password: "",

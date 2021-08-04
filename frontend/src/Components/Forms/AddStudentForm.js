@@ -15,8 +15,6 @@ const NewStudentSchema = Yup.object().shape({
         .matches(/^[0-9]*$/, 'Candidate number can only contain numbers'),
     birth_date: Yup.string()
         .required('This field is required'),
-    test_type: Yup.string()
-        .required('This field is required'),
     first_name: Yup.string()
         .required('This field is required')
         .min(2, 'Too short')
@@ -97,42 +95,6 @@ const AddStudentForm = ({ setParentState, refreshTable }) => {
                         <div className="form-item">
                             <TextField
                                 required
-                                label="Candidate Number"
-                                variant="outlined"
-                                onChange={props.handleChange}
-                                onBlur={props.handleBlur}
-                                value={props.values.candidate_number}
-                                name="candidate_number"
-                                error={props.touched.candidate_number && props.errors.candidate_number}
-                                helperText={props.touched.candidate_number && props.errors.candidate_number ? props.errors.candidate_number : null}
-                            />
-                        </div>
-                        <div className="form-item">
-                            <TextField
-                                required
-                                label="Test Type"
-                                variant="outlined"
-                                select
-                                SelectProps={{
-                                    native: true,
-                                }}
-                                onChange={props.handleChange}
-                                onBlur={props.handleBlur}
-                                value={props.values.test_type}
-                                name="test_type"
-                                error={props.touched.test_type && props.errors.test_type}
-                                helperText={props.touched.test_type && props.errors.test_type ? props.errors.test_type : null}
-                            >
-                                <option value=""></option>
-                                <option>A</option>
-                                <option>B</option>
-                            </TextField>
-                        </div>
-                    </div>
-                    <div className="form-row form-row-2">
-                        <div className="form-item">
-                            <TextField
-                                required
                                 label="First Name"
                                 variant="outlined"
                                 onChange={props.handleChange}
@@ -156,8 +118,32 @@ const AddStudentForm = ({ setParentState, refreshTable }) => {
                                 helperText={props.touched.last_name && props.errors.last_name ? props.errors.last_name : null}
                             />
                         </div>
+
+
+
+                        {/* <div className="form-item">
+                            <TextField
+                                required
+                                label="Test Type"
+                                variant="outlined"
+                                select
+                                SelectProps={{
+                                    native: true,
+                                }}
+                                onChange={props.handleChange}
+                                onBlur={props.handleBlur}
+                                value={props.values.test_type}
+                                name="test_type"
+                                error={props.touched.test_type && props.errors.test_type}
+                                helperText={props.touched.test_type && props.errors.test_type ? props.errors.test_type : null}
+                            >
+                                <option value=""></option>
+                                <option>A</option>
+                                <option>B</option>
+                            </TextField>
+                        </div> */}
                     </div>
-                    <div className="form-row form-row-3">
+                    <div className="form-row form-row-2">
                         <div className="form-item">
                             <TextField
                                 required
@@ -178,27 +164,19 @@ const AddStudentForm = ({ setParentState, refreshTable }) => {
                         <div className="form-item">
                             <TextField
                                 required
-                                label="Date Range"
+                                label="Candidate Number"
                                 variant="outlined"
-                                InputLabelProps={{ shrink: true }}
-                                select
-                                SelectProps={{
-                                    native: true,
-                                }}
                                 onChange={props.handleChange}
                                 onBlur={props.handleBlur}
-                                value={props.values.search_range}
-                                name="search_range"
-                                error={props.touched.search_range && props.errors.search_range}
-                                helperText={props.touched.search_range && props.errors.search_range ? props.errors.search_range : null}
-                            >
-                                <option value="1">2 weeks</option>
-                                <option value="2">4 weeks</option>
-                                <option value="3">12 weeks</option>
-                            </TextField>
+                                value={props.values.candidate_number}
+                                name="candidate_number"
+                                error={props.touched.candidate_number && props.errors.candidate_number}
+                                helperText={props.touched.candidate_number && props.errors.candidate_number ? props.errors.candidate_number : null}
+                            />
                         </div>
+
                     </div>
-                    <div className="form-row form-row-4">
+                    <div className="form-row form-row-3">
                         <div className="form-item">
                             <TextField
                                 label="Days to Skip"
@@ -212,7 +190,28 @@ const AddStudentForm = ({ setParentState, refreshTable }) => {
                                 helperText={props.touched.days_to_skip && props.errors.days_to_skip ? props.errors.days_to_skip : null}
                             />
                         </div>
-                        <div className="form-item filler">
+                        <div className="form-item">
+                            <TextField
+                                required
+                                label="Search Range"
+                                variant="outlined"
+                                InputLabelProps={{ shrink: true }}
+                                select
+                                SelectProps={{
+                                    native: true,
+                                }}
+                                onChange={props.handleChange}
+                                onBlur={props.handleBlur}
+                                value={props.values.search_range}
+                                name="search_range"
+                                error={props.touched.search_range && props.errors.search_range}
+                                helperText={props.touched.search_range && props.errors.search_range ? props.errors.search_range : null}
+                            >
+                                <option value="">--- select ---</option>
+                                <option value="2">2 weeks</option>
+                                <option value="4">4 weeks</option>
+                                <option value="12">12 weeks</option>
+                            </TextField>
                         </div>
                     </div>
                     <Box mt={"2.0rem"}>

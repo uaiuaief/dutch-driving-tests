@@ -46,7 +46,7 @@ class AccountPage extends Component {
             case 'account':
                 return <>
                     <ProfileMenu
-                        menuHeader={this.state.profile.first_name + ' ' + this.state.profile.last_name}
+                        menuHeader={this.state.profile.driving_school_name}
                         className="menu-body"
                         parentState={this.state}
                         setParentState={state => this.setState(state)}

@@ -37,8 +37,7 @@ class InstrutorDashboard extends Component {
                 regex.test(each.first_name) ||
                 regex.test(each.last_name) ||
                 regex.test(each.candidate_number) ||
-                regex.test(each.birth_date) ||
-                regex.test(each.test_type)
+                regex.test(each.birth_date)
             ) {
                 return (true)
             }

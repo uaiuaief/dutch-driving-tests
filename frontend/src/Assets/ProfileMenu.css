@@ -41,3 +41,7 @@
 #success-menu button {
     margin-top: 35px;
 }
+
+input#gov-password {
+    width: 214px;
+}
