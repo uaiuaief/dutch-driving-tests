@@ -16,7 +16,8 @@ function App() {
           <Navbar />
           <div id="navbar-filler"></div>
           <Switch>
-            <Route path="/" exact component={HomePage} />
+            {/* <Route path="/" exact component={HomePage} /> */}
+            <Route path="/" exact component={LoginPage} />
             <Route path="/login" exact component={LoginPage} />
             <Route path="/signup" exact component={SignupPage} />
             <Route path="/account" exact component={AccountPage} />

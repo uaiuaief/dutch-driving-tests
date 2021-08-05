@@ -118,11 +118,15 @@ class BaseView(APIView, ModelCreationMixin):
 
 
 class UserViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAdminUser]
+
     queryset = models.User.objects.all()
     serializer_class = serializers.UserSerializer
 
 
 class CreateUserView(BaseView):
+    permission_classes = [permissions.AllowAny]
+
     required_fields = [
             'email',
             'password',
@@ -159,6 +163,8 @@ class CreateUserView(BaseView):
 
 
 class CreateStudentView(BaseView):
+    permission_classes = [permissions.IsAuthenticated]
+
     required_fields = [
             'candidate_number',
             'birth_date',
@@ -215,6 +221,8 @@ class CreateStudentView(BaseView):
 
         
 class UpdateProfileView(BaseView):
+    permission_classes = [permissions.IsAuthenticated]
+
     allowed_fields = [
             'full_name',
             'driving_school_name',
@@ -265,6 +273,8 @@ class UpdateProfileView(BaseView):
         profile.save()
 
 class UpdateStudentView(BaseView):
+    permission_classes = [permissions.IsAuthenticated]
+
     required_fields = [
             'student_id'
             ]
@@ -292,6 +302,12 @@ class UpdateStudentView(BaseView):
             return JsonResponse({
                 'error': f"Student with id {student_id} does not exist"
                 }, status=400)
+
+
+        if student.status == '4':
+            return JsonResponse({
+                'error': f"Can't edit a student with a booked test"
+                }, status=403)
 
         try:
             self._update_student(student, data)
@@ -334,6 +350,8 @@ class UpdateStudentView(BaseView):
 
 
 class DeleteStudentView(BaseView):
+    permission_classes = [permissions.IsAuthenticated]
+
     required_fields = ['student_id']
     allowed_fields = required_fields
 
@@ -352,12 +370,19 @@ class DeleteStudentView(BaseView):
                 'error': f"Student with id {student_id} does not exist"
                 }, status=400)
 
+        if student.status == '4':
+            return JsonResponse({
+                'error': f"Can't delete a student with a booked test"
+                }, status=403)
+
         student.delete()
 
         return JsonResponse({}, status=204)
         
 
 class InstructorProfileView(BaseView):
+    permission_classes = [permissions.AllowAny]
+
     def get(self, request):
         user = request.user
         if not user.is_authenticated:
@@ -371,6 +396,8 @@ class InstructorProfileView(BaseView):
 
 
 class LoginView(BaseView):
+    permission_classes = [permissions.AllowAny]
+
     def post(self, request):
         email = request.data.get('email')
         password = request.data.get('password')
@@ -384,6 +411,8 @@ class LoginView(BaseView):
 
 
 class LogoutView(BaseView):
+    permission_classes = [permissions.AllowAny]
+
     def get(self, request):
         user = request.user
 
@@ -395,6 +424,8 @@ class LogoutView(BaseView):
 
 
 class GetStudentView(BaseView):
+    permission_classes = [permissions.IsAuthenticated]
+
     allowed_fields = required_fields = ['student_id']
 
     def post(self, request):
@@ -423,7 +454,7 @@ class GetStudentView(BaseView):
    
 
 class ChangeEmailView(BaseView):
-    #permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
         data = request.data
@@ -482,7 +513,7 @@ class ChangeEmailView(BaseView):
 
 
 class ChangePasswordView(BaseView):
-    #permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
     
     def post(self, request):
         data = request.data
@@ -532,7 +563,7 @@ class ChangePasswordView(BaseView):
         return None
 
 class RecoverPasswordView(BaseView):
-    #permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.AllowAny]
     allowed_fields = required_fields = [
             'email',
             ]
@@ -570,7 +601,7 @@ class RecoverPasswordView(BaseView):
 
 
 class UnauthenticatedChangePasswordView(BaseView):
-    #permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.AllowAny]
     allowed_fields = required_fields = [
             'token',
             'new_password'
@@ -608,6 +639,7 @@ class UnauthenticatedChangePasswordView(BaseView):
 Crawler views
 """
 class GetWatcherInfoView(BaseView):
+    permission_classes = [permissions.IsAdminUser]
     """
     Returns:
     User, Student, Proxy
@@ -690,6 +722,7 @@ class GetWatcherInfoView(BaseView):
 
 
 class GetValidProxyView(BaseView):
+    permission_classes = [permissions.IsAdminUser]
     def get(self, request):
         proxy = self.get_proxy_data()
         if proxy:
@@ -700,7 +733,7 @@ class GetValidProxyView(BaseView):
                 }, status=404)
 
     def get_proxy_data(self):
-        minutes = 3
+        minutes = 0
         time_limit = timezone.now() - datetime.timedelta(minutes=minutes)
         usable_proxy = models.Proxy.objects.order_by('last_used').filter(
                 last_used__lte=time_limit,
@@ -718,6 +751,7 @@ class GetValidProxyView(BaseView):
 
 
 class GetStudentToCrawl(BaseView):
+    permission_classes = [permissions.IsAdminUser]
     def get(self, request):
         minutes = 3
         time_limit = timezone.now() - datetime.timedelta(minutes=minutes)
@@ -746,6 +780,7 @@ class GetStudentToCrawl(BaseView):
 
 
 class SetStudentStatusView(BaseView):
+    permission_classes = [permissions.IsAdminUser]
     allowed_fields = required_fields = [
             "student_id",
             "status"
@@ -786,6 +821,7 @@ class SetStudentStatusView(BaseView):
 
 
 class SetInstructorStatusView(BaseView):
+    permission_classes = [permissions.IsAdminUser]
     allowed_fields = required_fields = [
             'user_id',
             'status'
@@ -820,6 +856,7 @@ class SetInstructorStatusView(BaseView):
 
 
 class AddDateFoundView(BaseView):
+    permission_classes = [permissions.IsAdminUser]
     allowed_fields = required_fields = [
             'test_center_name',
             'date',
@@ -934,6 +971,7 @@ class AddDateFoundView(BaseView):
 
 
 class SetUserCrawledView(BaseView):
+    permission_classes = [permissions.IsAdminUser]
     allowed_fields = required_fields = [
             'user_id'
             ]
@@ -968,6 +1006,7 @@ class SetUserCrawledView(BaseView):
 
 
 class IncreaseSearchCountView(BaseView):
+    permission_classes = [permissions.IsAdminUser]
     allowed_fields = required_fields = [
             'user_id'
             ]
@@ -992,6 +1031,7 @@ class IncreaseSearchCountView(BaseView):
 
 
 class BanProxyView(BaseView):
+    permission_classes = [permissions.IsAdminUser]
     allowed_fields = required_fields = [
             'ip'
             ]
