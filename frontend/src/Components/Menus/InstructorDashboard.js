@@ -117,7 +117,7 @@ class InstrutorDashboard extends Component {
                             <div id="student-information">
                                 <div>
                                     <h2>Search Count</h2>
-                                    <h1>{this.state.profile.searches}/250</h1>
+                                    <h1>{this.state.profile.search_count}/250</h1>
                                 </div>
                                 <div>
                                     <h2>Total Students</h2>

@@ -38,4 +38,6 @@ urlpatterns = [
     path('set-user-crawled/', views.SetUserCrawledView.as_view()),
     path('add-date-found/', views.AddDateFoundView.as_view()),
     path('get-valid-proxy/', views.GetValidProxyView.as_view()),
+    path('increase-search-count/', views.IncreaseSearchCountView.as_view()),
+    path('ban-proxy/', views.BanProxyView.as_view()),
 ]

@@ -103,7 +103,7 @@ class Profile(BaseModel):
         null=False
     )
 
-    searches = models.IntegerField(default=0, blank=True)
+    search_count = models.IntegerField(default=0, blank=True)
 
     student_limit = models.IntegerField(default=100, blank=True)
     last_crawled = models.DateTimeField(blank=True, default=timezone.now)
@@ -169,7 +169,7 @@ class Student(BaseModel):
     eg: `15,16,17`
     """
     days_to_skip = models.CharField(max_length=30, blank=True, null=True)
-    #last_crawled = models.DateTimeField(blank=True, default=timezone.now)
+    last_crawled = models.DateTimeField(blank=True, default=timezone.now)
 
     status = models.CharField(
         max_length=20,

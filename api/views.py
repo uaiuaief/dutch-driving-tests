@@ -654,10 +654,15 @@ class GetWatcherInfoView(BaseView):
         time_limit = timezone.now() - datetime.timedelta(minutes=minutes)
         instructor = models.Profile.objects.filter(
                 last_crawled__lte=time_limit,
-                status='2'
+                status='2',
+                search_count__lte=250
                 ).order_by('last_crawled').first()
 
-        return instructor.user
+        if instructor:
+            return instructor.user
+        else:
+            return None
+
 
     def _get_valid_proxy(self):
         minutes = 3
@@ -675,6 +680,7 @@ class GetWatcherInfoView(BaseView):
     def serialize_proxy(self, proxy):
         if proxy:
             proxy.last_used = timezone.now()
+            proxy.use_count += 1
             proxy.save()
 
             serialized_data = serializers.ProxySerializer(proxy).data
@@ -702,6 +708,7 @@ class GetValidProxyView(BaseView):
 
         if usable_proxy:
             usable_proxy.last_used = timezone.now()
+            usable_proxy.use_count += 1
             usable_proxy.save()
 
             serialized_data = serializers.ProxySerializer(usable_proxy).data
@@ -712,7 +719,11 @@ class GetValidProxyView(BaseView):
 
 class GetStudentToCrawl(BaseView):
     def get(self, request):
-        student = models.Student.objects.exclude(date_to_book=None).first()
+        minutes = 3
+        time_limit = timezone.now() - datetime.timedelta(minutes=minutes)
+
+        student = models.Student.objects.exclude(date_to_book=None)
+        student = student.filter(last_crawled__lte=time_limit).first()
 
         if student:
             user = student.instructor.user
@@ -721,8 +732,8 @@ class GetStudentToCrawl(BaseView):
             serialized_user['profile']['students'] = []
             serialized_student = serializers.StudentSerializer(student).data
 
-            #student.date_to_book = None
-            #student.save()
+            student.last_crawled = timezone.now()
+            student.save()
 
             return JsonResponse({
                 'user': serialized_user,
@@ -755,6 +766,7 @@ class SetStudentStatusView(BaseView):
                 'error': f"theres no student with id `{student_id}`"
                 }, status=404)
 
+
         student.status = status
 
         try:
@@ -764,6 +776,10 @@ class SetStudentStatusView(BaseView):
             return JsonResponse({
                 'error': f"status {status} is not a valid choice"
                 }, status=400)
+
+        if status == "4":
+            student.date_to_book.status = "2"
+            student.date_to_book.save()
 
 
         return JsonResponse({}, status=200)
@@ -951,3 +967,48 @@ class SetUserCrawledView(BaseView):
             each.delete()
 
 
+class IncreaseSearchCountView(BaseView):
+    allowed_fields = required_fields = [
+            'user_id'
+            ]
+
+    def post(self, request):
+        error = self._catch_errors(request)
+        if error:
+            return error
+
+        user_id = request.data['user_id']
+        try:
+            user = models.User.objects.get(id=user_id)
+        except:
+            return JsonResponse({
+                'error': f"User with id {user_id} does not exist"
+                }, status=400)
+
+        user.profile.search_count += 1
+        user.profile.save()
+
+        return JsonResponse({}, status=200)
+
+
+class BanProxyView(BaseView):
+    allowed_fields = required_fields = [
+            'ip'
+            ]
+
+    def post(self, request):
+        error = self._catch_errors(request)
+        if error:
+            return error
+
+        ip = request.data['ip']
+        try:
+            proxy = models.Proxy.objects.get(ip=ip)
+            proxy.is_banned = True
+            proxy.save()
+        except:
+            return JsonResponse({
+                'error': f"Proxy with ip {ip} does not exist"
+                }, status=400)
+
+        return JsonResponse({}, status=200)
