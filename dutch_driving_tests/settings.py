@@ -31,10 +31,10 @@ SECRET_KEY = os.environ.get('DJANGO_SK')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['www.snelcbrexamen.nl', 'localhost']
+ALLOWED_HOSTS = ['snelcbrexamen.nl', 'www.snelcbrexamen.nl', 'localhost']
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
-SECURE_SSL_REDIRECT= True
+#SECURE_SSL_REDIRECT= True
 
 # Application definition
 

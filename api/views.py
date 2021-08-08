@@ -757,26 +757,35 @@ class GetStudentToCrawl(BaseView):
         time_limit = timezone.now() - datetime.timedelta(minutes=minutes)
 
         student = models.Student.objects.exclude(date_to_book=None)
-        student = student.filter(last_crawled__lte=time_limit).first()
+        student = student.filter(
+                last_crawled__lte=time_limit,
+                status='3'
+                ).first()
 
-        if student:
-            user = student.instructor.user
 
-            serialized_user = serializers.UserSerializer(user).data
-            serialized_user['profile']['students'] = []
-            serialized_student = serializers.StudentSerializer(student).data
-
-            student.last_crawled = timezone.now()
-            student.save()
-
-            return JsonResponse({
-                'user': serialized_user,
-                'student': serialized_student,
-                }, status=200)
-        else:
+        if not student:
             return JsonResponse({
                 'error': 'There are no students to book'
                 }, status=400)
+
+        user = student.instructor.user
+
+        if user.search_count >= 250:
+            return JsonResponse({
+                'error': 'There are no students to book'
+                }, status=400)
+
+        serialized_user = serializers.UserSerializer(user).data
+        serialized_user['profile']['students'] = []
+        serialized_student = serializers.StudentSerializer(student).data
+
+        student.last_crawled = timezone.now()
+        student.save()
+
+        return JsonResponse({
+            'user': serialized_user,
+            'student': serialized_student,
+            }, status=200)
 
 
 class SetStudentStatusView(BaseView):
