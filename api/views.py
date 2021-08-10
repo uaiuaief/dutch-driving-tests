@@ -770,7 +770,7 @@ class GetStudentToCrawl(BaseView):
 
         user = student.instructor.user
 
-        if user.profile.search_count >= 250:
+        if user.profile.search_count >= 250 or user.profile.status != '2':
             return JsonResponse({
                 'error': 'There are no students to book'
                 }, status=400)
