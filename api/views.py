@@ -226,11 +226,7 @@ class UpdateProfileView(BaseView):
     allowed_fields = [
             'full_name',
             'driving_school_name',
-            'test_type',
             'mobile_number',
-            'gov_username',
-            'gov_password',
-            'test_center',
             ]
 
     def patch(self, request):
@@ -260,7 +256,7 @@ class UpdateProfileView(BaseView):
         return JsonResponse({}, status=200)
 
     def _update_profile(self, profile, data):
-        name = data.pop('test_center')
+        name = data.pop('test_center', None)
 
         if name:
             test_center = models.TestCenter.objects.get(name=name)
@@ -271,6 +267,7 @@ class UpdateProfileView(BaseView):
 
         profile.full_clean()
         profile.save()
+
 
 class UpdateStudentView(BaseView):
     permission_classes = [permissions.IsAuthenticated]
