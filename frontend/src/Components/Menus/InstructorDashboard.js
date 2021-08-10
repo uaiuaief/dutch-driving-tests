@@ -32,10 +32,9 @@ class InstrutorDashboard extends Component {
         }
 
         const result = students.filter(each => {
-            let regex = new RegExp(this.state.filterSearch)
+            let regex = new RegExp(this.state.filterSearch.toLowerCase())
             if (
-                regex.test(each.first_name) ||
-                regex.test(each.last_name) ||
+                regex.test(`${each.first_name} ${each.last_name}`.toLowerCase()) ||
                 regex.test(each.candidate_number) ||
                 regex.test(each.birth_date)
             ) {

@@ -13,31 +13,15 @@ import TestCenters from './TestCenters'
 
 
 const UpdateProfileSchema = Yup.object().shape({
-    // first_name: Yup.string()
-    //     .required('This field is required')
-    //     .min(2, 'Too short')
-    //     .max(30, 'Too long'),
-    // last_name: Yup.string()
-    //     .required('This field is required')
-    //     .min(2, 'Too short')
-    //     .max(30, 'Too long'),
     driving_school_name: Yup.string()
         .required('This field is required')
         .min(2, 'Too short')
         .max(150, 'Too long'),
-    test_center: Yup.string()
-        .required('This field is required'),
-    test_type: Yup.string()
-        .required('This field is required'),
     mobile_number: Yup.string()
         .required('This field is required')
         .matches(/^[0-9]*$/, 'Mobile number can only contain numbers')
         .min(8, 'Too short')
-        .max(12, 'Too long'),
-    gov_username: Yup.string()
-        .required('This field is required'),
-    gov_password: Yup.string()
-        .required('This field is required')
+        .max(12, 'Too long')
 })
 
 
@@ -74,8 +58,6 @@ const UpdateProfileForm = ({ setParentState, profile }) => {
     return (
         <Formik
             initialValues={{
-                // first_name: profile.first_name,
-                // last_name: profile.last_name,
                 driving_school_name: profile.driving_school_name,
                 test_type: profile.test_type,
                 mobile_number: profile.mobile_number,
@@ -122,30 +104,6 @@ const UpdateProfileForm = ({ setParentState, profile }) => {
             {props => (
                 <form onSubmit={props.handleSubmit}>
                     <div className="form-row form-row-1">
-                        {/* <div className="form-item">
-                            <TextField
-                                label="First Name"
-                                variant="outlined"
-                                onChange={props.handleChange}
-                                onBlur={props.handleBlur}
-                                value={props.values.first_name}
-                                name="first_name"
-                                error={props.touched.first_name && props.errors.first_name}
-                                helperText={props.touched.first_name && props.errors.first_name ? props.errors.first_name : null}
-                            />
-                        </div>
-                        <div className="form-item">
-                            <TextField
-                                label="Last Name"
-                                variant="outlined"
-                                onChange={props.handleChange}
-                                onBlur={props.handleBlur}
-                                value={props.values.last_name}
-                                name="last_name"
-                                error={props.touched.last_name && props.errors.last_name}
-                                helperText={props.touched.last_name && props.errors.last_name ? props.errors.last_name : null}
-                            />
-                        </div> */}
                         <div className="form-item">
                             <TextField
                                 label="Driving School Name"
@@ -172,12 +130,13 @@ const UpdateProfileForm = ({ setParentState, profile }) => {
                                 onBlur={props.handleBlur}
                                 value={props.values.test_type}
                                 name="test_type"
+                                disabled={true}
                                 error={props.touched.test_type && props.errors.test_type}
                                 helperText={props.touched.test_type && props.errors.test_type ? props.errors.test_type : null}
                             >
                                 <option value="">--- select ---</option>
-                                <option>A</option>
-                                <option>B</option>
+                                <option>ATH</option>
+                                <option>BTH</option>
                             </TextField>
                         </div>
                     </div>
@@ -207,6 +166,7 @@ const UpdateProfileForm = ({ setParentState, profile }) => {
                                 onBlur={props.handleBlur}
                                 value={props.values.test_center}
                                 name="test_center"
+                                disabled={true}
                                 error={props.touched.test_center && props.errors.test_center}
                                 helperText={props.touched.test_center && props.errors.test_center ? props.errors.test_center : null}
                             >
@@ -265,6 +225,7 @@ const UpdateProfileForm = ({ setParentState, profile }) => {
                                 onBlur={props.handleBlur}
                                 value={props.values.gov_username}
                                 name="gov_username"
+                                disabled={true}
                                 error={props.touched.gov_username && props.errors.gov_username}
                                 helperText={props.touched.gov_username && props.errors.gov_username ? props.errors.gov_username : null}
                             />
@@ -279,6 +240,7 @@ const UpdateProfileForm = ({ setParentState, profile }) => {
                                 value={props.values.gov_password}
                                 name="gov_password"
                                 type="password"
+                                disabled={true}
                                 error={props.touched.gov_password && props.errors.gov_password}
                                 helperText={props.touched.gov_password && props.errors.gov_password ? props.errors.gov_password : null}
                                 type={state.showPassword ? 'text' : 'password'}

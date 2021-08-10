@@ -11,7 +11,7 @@ class PlanMenu extends Component {
                     {profile.student_limit} students
                 </p>
                 <p>
-                    £ 49,00
+                    £ {profile.student_limit * 10}.00
                 </p>
                 <p>
                     Contact us through: support@snelcbrexamen.nl if you need more students

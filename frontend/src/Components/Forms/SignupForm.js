@@ -175,8 +175,8 @@ const StepOne = ({ values, handleClickShowPassword, handleMouseDownPassword, nex
                                 helperText={props.touched.test_type && props.errors.test_type ? props.errors.test_type : null}
                             >
                                 <option value="">--- select ---</option>
-                                <option>A</option>
-                                <option>B</option>
+                                <option>ATH</option>
+                                <option>BTH</option>
                             </TextField>
                         </div>
                     </div>
