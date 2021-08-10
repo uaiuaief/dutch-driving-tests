@@ -211,7 +211,7 @@ class Proxy(BaseModel):
     last_used = models.DateTimeField(blank=True, default=timezone.now)
 
     def __str__(self):
-        return self.ip
+        return f"{self.ip} - {'BANNED' if self.is_banned else ''}"
 
 
 def get_expiration_time(self):
