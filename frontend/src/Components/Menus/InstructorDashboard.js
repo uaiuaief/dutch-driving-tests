@@ -5,6 +5,7 @@ import PrimaryButton from '../Buttons/PrimaryButton'
 import StudentTable from '../StudentTable'
 import CreateStudentScreen from "../CreateStudentScreen"
 import EditStudentScreen from "../EditStudentScreen"
+import TestFoundScreen from "../TestFoundScreen"
 import TextField from '@material-ui/core/TextField'
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
@@ -20,6 +21,7 @@ class InstrutorDashboard extends Component {
 
         show_add_student: false,
         show_edit_student: false,
+        show_date_found: false,
         student_to_edit: null,
 
         filterStatus: '0',
@@ -236,18 +238,43 @@ class InstrutorDashboard extends Component {
                                 setParentState={(state) => this.setState(state)}
                                 refreshTable={() => this.refreshTable()}
                             />
-                            <CreateStudentScreen
-                                show={this.state.show_add_student}
-                                setParentState={(params) => this.setState(params)}
-                                refreshTable={this.refreshTable}
-                            />
-                            <EditStudentScreen
-                                show={this.state.show_edit_student}
-                                student={this.state.student_to_edit}
-                                // show={true}
-                                setParentState={(params) => this.setState(params)}
-                                refreshTable={this.refreshTable}
-                            />
+
+                            {
+                                this.state.show_add_student
+                                    ?
+                                    <CreateStudentScreen
+                                        show={this.state.show_add_student}
+                                        setParentState={(params) => this.setState(params)}
+                                        refreshTable={this.refreshTable}
+                                    />
+                                    :
+                                    null
+                            }
+                            {
+                                this.state.show_edit_student
+                                    ?
+
+                                    <EditStudentScreen
+                                        show={this.state.show_edit_student}
+                                        student={this.state.student_to_edit}
+                                        setParentState={(params) => this.setState(params)}
+                                        refreshTable={this.refreshTable}
+                                    />
+                                    :
+                                    null
+                            }
+                            {
+                                this.state.show_date_found
+                                    ?
+                                    < TestFoundScreen
+                                        show={this.state.show_date_found}
+                                        student={this.state.student_to_edit}
+                                        setParentState={(params) => this.setState(params)}
+                                        refreshTable={this.refreshTable}
+                                    />
+                                    :
+                                    null
+                            }
                         </>
                 }
             </div >
