@@ -61,7 +61,7 @@ def send_password_recovery_email(receiver, user_name, link):
         'link': link
     })
 
-def profile_update_required_email(receiver, user_name):
+def _profile_update_required_email(receiver, user_name):
     subject = 'Please update your profile'
 
     send_email(subject, receiver, 'profile_update_required.html', {
@@ -70,12 +70,23 @@ def profile_update_required_email(receiver, user_name):
         'link': f'{settings.DOMAIN_NAME}/account'
     })
 
+def profile_update_required_email(receiver, user_name, student_name):
+    subject = "Please update your student's information"
 
-def test_found_email(receiver, user_name, test_time, test_date, test_center):
+    send_email(subject, receiver, 'profile_update_required.html', {
+        'header': "Please update your student's information",
+        'name': user_name,
+        'student_name': student_name,
+        'link': f'{settings.DOMAIN_NAME}/account'
+})
+
+
+def test_found_email(receiver, user_name, student_name, test_time, test_date, test_center):
     subject = "We've found your new test!"
     send_email(subject, receiver, 'test_found.html', {
         'header': "We've found your new test!",
         'name': user_name,
+        'student_name': student_name,
         'date_found': timezone.now().date().strftime("%d-%m-%Y"),
         'test_time': test_time,
         'test_date': test_date,
@@ -96,8 +107,8 @@ def welcome_email(receiver, user_name):
 
 def test():
     #send_simple_email('support@snelcbrexamen.nl', 'subject', 'body')
-    welcome_email('support@snelcbrexamen.nl', 'John Doe')
+    # welcome_email('support@snelcbrexamen.nl', 'John Doe')
     #welcome_email('jhonatasbn14@gmail.com', 'José da Silva Matos Alcantara Pereira Dias Brum')
-    #test_found_email('jhonatasbn14@gmail.com', 'José da Silva Matos', '12:00', '26-06-2021', 'Birmingham (Cocks Moors Woods)')
-    #profile_update_required_email('jhonatasbn14@gmail.com', 'José da Silva Matos')
+    test_found_email('support@snelcbrexamen.nl', 'José da Silva Matos', 'Abou Omar', '12:00', '26-06-2021', 'Rijswijk Zh EXTRA (Kessler Park 1)')
+    # profile_update_required_email('support@snelcbrexamen.nl', 'José da Silva Matos', 'Abou Omar')
     #send_password_recovery_email('jhonatasbn14@gmail.com', 'José da Silva Matos', 'link')

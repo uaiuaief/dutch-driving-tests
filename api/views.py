@@ -799,7 +799,7 @@ class SetStudentStatusView(BaseView):
             return error
 
         student_id = request.data['student_id']
-        status = request.data['status']
+        status = str(request.data['status'])
         
         try:
             student = models.Student.objects.get(id=student_id)
@@ -819,6 +819,24 @@ class SetStudentStatusView(BaseView):
                 'error': f"status {status} is not a valid choice"
                 }, status=400)
 
+
+        """
+        If status is '2' or 'invalid' send email to instructor
+        """
+        if status == "2":
+            receiver = student.instructor.user.email
+            instructor_name = student.instructor.full_name
+            student_name = f"{student.first_name} {student.last_name}"
+
+            email_sender.profile_update_required_email(
+                    receiver, 
+                    instructor_name,
+                    student_name
+                    )
+
+        """
+        Set DateFound status to booked
+        """
         if status == "4":
             student.date_to_book.status = "2"
             student.date_to_book.save()

@@ -2,12 +2,16 @@
 {% block content %}
 
 <p style="margin: 0; color: #7B7B7B;">
-	Hello {{name}}. We've found your new cancellation date.
+	Hello {{name}}. We've found your new test date.
 </p>
 <div style="text-align: center;
 			margin: 20px auto 0 auto ;
 			color: #7B7B7B;
 			 ">
+	<div style="display: block; margin: 14px auto 0 auto;">
+		<p style="font-size: 16px; margin: 0; font-weight: 600;">Student</p>
+		<p style="font-size: 16px; margin: 0;">{{ student_name }}</p>
+	</div>
 	<div style="display: block; margin: 14px auto 0 auto;">
 		<p style="font-size: 16px; margin: 0; font-weight: 600;">Was found in</p>
 		<p style="font-size: 16px; margin: 0;">{{ date_found }}</p>
@@ -23,7 +27,7 @@
 		<p style="font-size: 16px; margin: 0;">{{ test_date }}</p>
 	</div>
 	<div style="display: block;">
-		<p style="font-size: 16px; margin: 14px auto 0 auto; font-weight: 600; width: 100px">Test centre</p>
+		<p style="font-size: 16px; margin: 14px auto 0 auto; font-weight: 600; width: 100px">Test center</p>
 		<p style="font-size: 16px; margin: 0;">{{ test_center }}</p>
 	</div>
 </div>
