@@ -172,6 +172,47 @@
     /* height: 41px; */
 }
 
+#date-found-screen {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    width: 450px;
+    height: 450px;
+    background-color: white;
+    z-index: 9999;
+    text-align: center;
+    border-radius: 10px;
+    padding: 30px;
+}
+
+#date-found-screen h1.title {
+    font-weight: 500;
+    color: #00B127;
+    font-size: 36px;
+}
+
+#date-found-screen .date-found-info {
+    margin: auto;
+    margin-top: 30px;
+    color: #7B7B7B;
+    text-align: center;
+}
+
+#date-found-screen .date-found-info .block:not(:last-child) {
+    margin-bottom: 25px;
+}
+
+#date-found-screen .date-found-info p {
+    font-size: 20px;
+}
+
+#date-found-screen .date-found-info p.title {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 17px;
+}
+
 #add-student-form,
 #edit-student-form {
     margin-top: 65px;

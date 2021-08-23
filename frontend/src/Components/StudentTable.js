@@ -126,6 +126,13 @@ const StudentTable = ({ rows, setParentState, refreshTable }) => {
         })
     }
 
+    const showDateFound = (student) => {
+        setParentState({
+            show_date_found: true,
+            student_to_edit: student
+        })
+    }
+
     const renderStatus = (status) => {
         let className = 'status status-'
 
@@ -200,10 +207,11 @@ const StudentTable = ({ rows, setParentState, refreshTable }) => {
                                             <DeleteForeverOutlinedIcon />
                                         </IconButton>
                                         {
-                                            student.status == 2
+                                            student.status == 4
                                                 ?
                                                 <IconButton
                                                     className="test-found-button table-row-button"
+                                                    onClick={() => showDateFound(student)}
                                                 >
                                                     <SearchIcon />
                                                 </IconButton>
