@@ -835,12 +835,24 @@ class SetStudentStatusView(BaseView):
                     )
 
         """
-        Set DateFound status to booked
+        Set DateFound status to booked and send an email to instructor
         """
         if status == "4":
             student.date_to_book.status = "2"
             student.date_to_book.save()
 
+            receiver = student.instructor.user.email
+            instructor_name = student.instructor.full_name
+            student_name = f"{student.first_name} {student.last_name}"
+
+            email_sender.test_found_email(
+                    receiver,
+                    instructor_name,
+                    student_name,
+                    student.date_to_book.start_time,
+                    format(student.date_to_book.date, "%d-%m-%Y"),
+                    student.date_to_book.test_center.name
+                    )
 
         return JsonResponse({}, status=200)
 
