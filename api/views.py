@@ -864,6 +864,7 @@ class SetInstructorStatusView(BaseView):
 
 class AddDateFoundView(BaseView):
     permission_classes = [permissions.IsAdminUser]
+
     allowed_fields = required_fields = [
             'test_center_name',
             'date',
@@ -916,16 +917,15 @@ class AddDateFoundView(BaseView):
                 }, status=400)
 
     def _assign_slots(self, date):
-        instructor = date.found_by
-        students2 = instructor.students.filter(
+        students2 = models.Student.objects.filter(
                 search_range='2',
                 date_to_book=None
                 ).all()
-        students4 = instructor.students.filter(
+        students4 = models.Student.objects.filter(
                 search_range='4',
                 date_to_book=None
                 ).all()
-        students12 = instructor.students.filter(
+        students12 = models.Student.objects.filter(
                 search_range='12',
                 date_to_book=None
                 ).all()
@@ -945,10 +945,21 @@ class AddDateFoundView(BaseView):
         if self._is_date_within_safe_range(date) \
                 and date.test_type == student.instructor.test_type \
                 and self._is_date_within_student_range(date, student) \
+                and self._does_location_match_student(date, student) \
                 and not self._is_date_skipped(date, student):
                     return True
         else:
             return False
+        
+    def _does_location_match_student(self, date, student):
+        date_test_center = date.test_center.name
+        student_test_center = student.instructor.test_center.name
+
+        if date_test_center != student_test_center:
+            print("test center is different from student's test center")
+            return False
+        else:
+            return True
     
     def _is_date_within_student_range(self, date, student):
         days = int(student.search_range) * 7
