@@ -184,7 +184,16 @@ class Student(BaseModel):
     )
 
     def __str__(self):
-        return f'{self.first_name} {self.last_name}'
+        status_dict = {
+                '1': 'In analysis',
+                '2': 'Invalid',
+                '3': 'Searching',
+                '4': 'Test found',
+                '5': 'Paused',
+                }
+        status = status_dict[self.status]
+
+        return f'{self.first_name} {self.last_name} - {status}'
 
     def get_list_of_days_to_skip(self) -> list:
         if self.days_to_skip:
