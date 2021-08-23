@@ -1,0 +1,27 @@
+{% extends "base_email.html" %}
+{% block content %}
+
+<p style="margin: 0; color: #7B7B7B;">
+	Hello {{name}}. Looks like the information you provided is incorrect
+	so we can’t search cancellation dates for you. Please login to your 
+	account and review the information you provided.
+</p>
+
+<br />
+<a href="{{link}}" style="
+		display: block;
+		margin: auto;
+		text-decoration: none;
+		padding: .2rem .7rem;
+		border-radius: 5px;
+		font-weight: 500;
+		width: 9rem;
+		font-size: 1.3rem;
+		line-height: 3rem;
+		background-color:#FFC700;
+		color: #FFFFFF;">
+	My Account
+</a>
+
+
+{% endblock %}

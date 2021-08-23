@@ -40,4 +40,6 @@ urlpatterns = [
     path('get-valid-proxy/', views.GetValidProxyView.as_view()),
     path('increase-search-count/', views.IncreaseSearchCountView.as_view()),
     path('ban-proxy/', views.BanProxyView.as_view()),
+
+    path('test/', views.TestView.as_view()),
 ]

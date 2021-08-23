@@ -1,0 +1,36 @@
+{% extends "base_email.html" %}
+{% block content %}
+
+<p style="margin: 0; color: #7B7B7B;">
+	Your account was created succesfully and we’re already searching for
+	your cancellation. You can manage your profile and change your
+	personal informations if you need through your dashboard.
+	We will notify you as soon as we find a new date. Don’t worry, it’s very quick.
+</p>
+<br/>
+<p style="margin: 0; color: #7B7B7B;">
+	The DVSA system is currently extremely busy due to the large backlog caused by COVID lockdowns. For this reason, there may be some periods where it is simply not possible to search at test centres, which may be reflected in your search history.
+	We're doing everything we can to find you driving test cancellations, and we appreciate you bearing with us during these unprecedented times.
+	Thank you for your patience and understanding.
+</p>
+
+
+<br />
+<a href="{{link}}" style="
+		display: block;
+		margin: auto;
+		text-decoration: none;
+		padding: .2rem .7rem;
+		border-radius: 5px;
+		font-weight: 500;
+		width: 9rem;
+		font-size: 1.3rem;
+		line-height: 3rem;
+		background-color:#FFC700;
+		color: #FFFFFF;
+		">
+	My Profile
+</a>
+
+
+{% endblock %}

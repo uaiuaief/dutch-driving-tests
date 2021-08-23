@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -138,6 +142,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #Custom user
 AUTH_USER_MODEL = 'api.User'
 
+#Email
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtpout.secureserver.net'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'support@snelcbrexamen.nl'
+EMAIL_HOST_PASSWORD = 'Alidutch100!'
+
+
 #REST FRAMEWORK
 REST_FRAMEWORK = {
         'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -152,3 +164,7 @@ REST_FRAMEWORK = {
 
 #Environment variables
 ##SEARCH_LIMIT = os.environ.get('SEARCH_LIMIT')
+EMAIL = os.environ.get('EMAIL')
+EMAIL_PASSWORD = os.environ.get('EMAIL_PASSWORD')
+DOMAIN_NAME = os.environ.get('DOMAIN_NAME')
+

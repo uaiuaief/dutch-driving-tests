@@ -1,4 +1,5 @@
 import './App.css';
+import React, { Component } from 'react';
 import { Switch, Route, BrowserRouter, Link } from 'react-router-dom';
 import AccountPage from './Components/Pages/AccountPage'
 import LoginPage from './Components/Pages/LoginPage'
@@ -13,17 +14,17 @@ function App() {
   return (
     <BrowserRouter>
       <div id="main-content">
-          <Navbar />
-          <div id="navbar-filler"></div>
-          <Switch>
-            {/* <Route path="/" exact component={HomePage} /> */}
-            <Route path="/" exact component={LoginPage} />
-            <Route path="/login" exact component={LoginPage} />
-            <Route path="/signup" exact component={SignupPage} />
-            <Route path="/account" exact component={AccountPage} />
-            <Route path="/forgot-password" exact component={ForgotPasswordPage} />
-            <Route path="/reset-password" exact component={ResetPasswordPage} />
-          </Switch>
+        <Navbar />
+        <div id="navbar-filler"></div>
+        <Switch>
+          {/* <Route path="/" exact component={HomePage} /> */}
+          <Route path="/" exact component={LoginPage} />
+          <Route path="/login" exact component={LoginPage} />
+          <Route path="/signup" exact component={SignupPage} />
+          <Route path="/account" exact component={AccountPage} />
+          <Route path="/forgot-password" exact component={ForgotPasswordPage} />
+          <Route path="/reset-password" exact component={ResetPasswordPage} />
+        </Switch>
       </div>
     </BrowserRouter>
   );

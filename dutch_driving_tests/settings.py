@@ -166,3 +166,5 @@ REST_FRAMEWORK = {
 
 #Environment variables
 ##SEARCH_LIMIT = os.environ.get('SEARCH_LIMIT')
+EMAIL = os.environ.get('EMAIL')
+EMAIL_PASSWORD = os.environ.get('EMAIL_PASSWORD')

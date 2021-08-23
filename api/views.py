@@ -11,8 +11,9 @@ from django.utils.crypto import get_random_string
 from exceptions import StudentLimitReached
 from rest_framework import generics, permissions, viewsets
 from rest_framework.views import APIView
+from django.core.mail import send_mail
 
-from . import models, serializers
+from . import models, serializers, email_sender
 from .choices import TEST_TYPES
 
 
@@ -1056,5 +1057,15 @@ class BanProxyView(BaseView):
             return JsonResponse({
                 'error': f"Proxy with ip {ip} does not exist"
                 }, status=400)
+
+        return JsonResponse({}, status=200)
+
+
+class TestView(BaseView):
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        email_sender.test()
+
 
         return JsonResponse({}, status=200)

@@ -1,0 +1,38 @@
+{% extends "base_email.html" %}
+{% block content %}
+
+<p style="margin: 0; color: #7B7B7B;">
+	Hello {{name}}. We've found your new cancellation date.
+</p>
+<div style="text-align: center;
+			margin: 20px auto 0 auto ;
+			color: #7B7B7B;
+			 ">
+	<div style="display: block; margin: 14px auto 0 auto;">
+		<p style="font-size: 16px; margin: 0; font-weight: 600;">Was found in</p>
+		<p style="font-size: 16px; margin: 0;">{{ date_found }}</p>
+	</div>
+	<div style="display: block;">
+		<p style="font-size: 16px; margin: 14px auto 0 auto; font-weight: 600;">Test time</p>
+		<p style="font-size: 16px; margin: 0;">{{ test_time }}</p>
+	</div>
+</div>
+<div style="margin: auto; color: #7B7B7B;">
+	<div style="display: block; margin: 0 0 0 0;">
+		<p style="font-size: 16px; margin: 14px auto 0 auto; font-weight: 600;">Test date</p>
+		<p style="font-size: 16px; margin: 0;">{{ test_date }}</p>
+	</div>
+	<div style="display: block;">
+		<p style="font-size: 16px; margin: 14px auto 0 auto; font-weight: 600; width: 100px">Test centre</p>
+		<p style="font-size: 16px; margin: 0;">{{ test_center }}</p>
+	</div>
+</div>
+<div style="margin: 20px auto 0 auto">
+	<p style="font-weight: 600; text-align: center; color: #7B7B7B;">Status</p>
+	<div
+		style="width: 100px; margin: auto; background-color:#0AE520; color: #FFFFFF; border-radius: 8px; padding: 5px 0px">
+		Booked
+	</div>
+</div>
+
+{% endblock %}
