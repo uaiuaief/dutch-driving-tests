@@ -684,7 +684,7 @@ class GetWatcherInfoView(BaseView):
         instructor = models.Profile.objects.filter(
                 last_crawled__lte=time_limit,
                 status='2',
-                search_count__lte=250
+                search_count__lte=270
                 ).order_by('last_crawled').first()
 
         if instructor:
@@ -767,7 +767,7 @@ class GetStudentToCrawl(BaseView):
 
         user = student.instructor.user
 
-        if user.profile.search_count >= 250 or user.profile.status != '2':
+        if user.profile.search_count >= 270 or user.profile.status != '2':
             return JsonResponse({
                 'error': 'There are no students to book'
                 }, status=400)
