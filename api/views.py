@@ -1,4 +1,5 @@
 import datetime
+from http import HTTPStatus
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.hashers import make_password
@@ -64,6 +65,22 @@ class ModelCreationMixin():
 
         return date_found
     
+    def _create_crawler_instance(self, data: dict):
+        student_id = data.pop('student_id')
+        student = models.Student.objects.get(id=student_id)
+        data['student'] = student
+
+        ip = data.pop('proxy')
+        proxy = models.Proxy.objects.get(ip=ip)
+        data['proxy'] = proxy
+
+        instance = models.CrawlerInstance(**data)
+
+        instance.full_clean()
+        instance.save()
+
+        return instance
+
     def _is_over_student_limit(self, instructor):
         student_count = instructor.students.count()
         
@@ -1100,6 +1117,65 @@ class BanProxyView(BaseView):
                 }, status=400)
 
         return JsonResponse({}, status=200)
+
+
+class GetCrawlerInstancesView(BaseView):
+    permission_classes = [permissions.IsAdminUser]
+    def get(self, request):
+        instance = models.CrawlerInstance.objects.all()
+
+        return JsonResponse({
+            'crawlers': serializers.CrawlerInstanceSerializer(instance, many=True).data
+            }, status=200)
+
+
+class CreateCrawlerInstanceView(BaseView):
+    permission_classes = [permissions.IsAdminUser]
+    allowed_fields = required_fields = [
+            "student_id",
+            "proxy",
+            "role",
+            ]
+
+    def post(self, request):
+        error = self._catch_errors(request)
+        if error:
+            return error
+
+        try:
+            self._create_crawler_instance(request.data)
+        except Exception as e:
+            return JsonResponse({
+                'msg': str(e)
+                }, status=400)
+
+        return JsonResponse({}, status=201)
+
+
+class PingCrawlerView(BaseView):
+    permission_classes = [permissions.IsAdminUser]
+    allowed_fields = required_fields = [
+            "id"
+            ]
+
+    def post(self, request):
+        error = self._catch_errors(request)
+        if error:
+            return error
+
+        try:
+            instance = models.CrawlerInstance.objects.get(id=request.data['id'])
+            instance.last_ping = timezone.now()
+            instance.save()
+        except Exception as e:
+            return JsonResponse({
+                'msg': str(e)
+                }, status=400)
+
+        return JsonResponse({}, status=200)
+
+
+
 
 
 class TestView(BaseView):

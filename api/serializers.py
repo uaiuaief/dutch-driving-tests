@@ -70,6 +70,19 @@ class UserSerializer(serializers.ModelSerializer):
                 ]
 
 
+class CrawlerInstanceSerializer(serializers.ModelSerializer):
+    class Meta:
+        depth = 1
+        model = models.CrawlerInstance
+        fields = [
+                'id',
+                'student',
+                'proxy',
+                'last_ping',
+                'role',
+        ]
+
+
 class ProxySerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Proxy

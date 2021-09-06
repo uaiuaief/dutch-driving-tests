@@ -227,6 +227,33 @@ def get_expiration_time(self):
     return timezone.now() + datetime.timedelta(minutes=60)
 
 
+class CrawlerInstance(BaseModel):
+    student = models.ForeignKey(
+        'Student',
+        on_delete=models.CASCADE,
+        related_name='crawler_instance'
+    )
+
+    proxy = models.ForeignKey(
+        'Proxy',
+        on_delete=models.CASCADE,
+        related_name='crawler_instance'
+    )
+
+    last_ping = models.DateTimeField(blank=True, null=True)
+
+    role = models.CharField(
+        max_length=20,
+        choices=[
+            ('watch', 'Watch'),
+            ('book', 'Book'),
+        ]
+    )
+
+    def __str__(self):
+        return f"{self.role}"
+
+
 class Token(BaseModel):
     token_hash = models.CharField(max_length=32, unique=True)
     user = models.ForeignKey('User', on_delete=models.CASCADE)
