@@ -1126,10 +1126,16 @@ class BanProxyView(BaseView):
 class GetCrawlerInstancesView(BaseView):
     permission_classes = [permissions.IsAdminUser]
     def get(self, request):
-        instance = models.CrawlerInstance.objects.all()
+        role = request.query_params.get('role')
+        if role not in ['watch', 'book']:
+            return JsonResponse({
+                'error': f'{role} is not a valid role'
+                }, status=400)
+
+        instances = models.CrawlerInstance.objects.filter(role=role)
 
         return JsonResponse({
-            'crawlers': serializers.CrawlerInstanceSerializer(instance, many=True).data
+            'crawlers': serializers.CrawlerInstanceSerializer(instances, many=True).data
             }, status=200)
 
 

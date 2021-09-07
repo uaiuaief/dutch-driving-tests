@@ -71,11 +71,13 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class CrawlerInstanceSerializer(serializers.ModelSerializer):
+    instructor = UserSerializer()
     class Meta:
-        depth = 1
+        depth = 2
         model = models.CrawlerInstance
         fields = [
                 'id',
+                'instructor',
                 'student',
                 'proxy',
                 'last_ping',

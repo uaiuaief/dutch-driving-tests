@@ -25,6 +25,7 @@ class Command(BaseCommand):
 
         self.remove_instances_with_instructor_above_search_limit()
         self.remove_instances_with_invalid_instructor()
+        self.remove_instances_with_invalid_student()
         self.remove_instances_with_banned_proxy()
         self.remove_instances_with_expired_cache()
 
@@ -57,6 +58,7 @@ class Command(BaseCommand):
     Role - watch""")
             if not self.dry_run:
                 self._create_crawler_instance(
+                        instructor=student.instructor.user,
                         student=student,
                         proxy=proxy,
                         role='watch'
@@ -88,6 +90,7 @@ class Command(BaseCommand):
     Role - book""")
             if not self.dry_run:
                 self._create_crawler_instance(
+                        instructor=student.instructor.user,
                         student=student,
                         proxy=proxy,
                         role='book'
@@ -147,6 +150,16 @@ class Command(BaseCommand):
 
         for each in instances:
             if each.student.instructor.status != '2':
+                logger.info(f'Removing "{each.role}" instance with id: {each.id}')
+                if not self.dry_run:
+                    each.delete()
+
+    def remove_instances_with_invalid_student(self):
+        logger.info('Removing instances with invalid student')
+        instances = models.CrawlerInstance.objects.all()
+
+        for each in instances:
+            if each.student.status != '3':
                 logger.info(f'Removing "{each.role}" instance with id: {each.id}')
                 if not self.dry_run:
                     each.delete()

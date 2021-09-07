@@ -231,6 +231,12 @@ def get_expiration_time(self):
 
 
 class CrawlerInstance(BaseModel):
+    instructor = models.ForeignKey(
+        'User',
+        on_delete=models.CASCADE,
+        related_name='crawler_instance'
+    )
+
     student = models.ForeignKey(
         'Student',
         on_delete=models.CASCADE,
