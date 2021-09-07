@@ -33,7 +33,7 @@ class Command(BaseCommand):
         self.create_new_booker_instances()
 
     def create_new_watcher_instances(self):
-        logger.info('Creating new watcher instances')
+        self.stdout.write('Creating new watcher instances')
         active_profiles: list = self.get_active_profiles()
 
         watcher_instances = models.CrawlerInstance.objects.filter(
@@ -52,7 +52,7 @@ class Command(BaseCommand):
         proxies = self.get_valid_proxies()
 
         for student, proxy in zip(students, proxies):
-            logger.info(f"""Creating watcher instance:
+            self.stdout.write(f"""Creating watcher instance:
     Student - {student.get_full_name()}
     Proxy - {proxy.ip}
     Role - watch""")
@@ -65,7 +65,7 @@ class Command(BaseCommand):
                         )
 
     def create_new_booker_instances(self):
-        logger.info('Creating new booker instances')
+        self.stdout.write('Creating new booker instances')
         active_profiles: list = self.get_active_profiles()
 
         booker_instances = models.CrawlerInstance.objects.filter(
@@ -84,7 +84,7 @@ class Command(BaseCommand):
         proxies = self.get_valid_proxies()
 
         for student, proxy in zip(students[:5], proxies):
-            logger.info(f"""Creating booker instance:
+            self.stdout.write(f"""Creating booker instance:
     Student - {student.get_full_name()}
     Proxy - {proxy.ip}
     Role - book""")
@@ -113,54 +113,54 @@ class Command(BaseCommand):
         return proxies
 
     def remove_instances_with_expired_cache(self):
-        logger.info('Removing instances with expired cache')
+        self.stdout.write('Removing instances with expired cache')
         time_limit = timezone.now() - datetime.timedelta(minutes=55)
         instances = models.CrawlerInstance.objects.filter(
                 created_at__lte=time_limit
                 )
 
         for each in instances:
-            logger.info(f'Removing "{each.role}" instance with id: {each.id}')
+            self.stdout.write(f'Removing "{each.role}" instance with id: {each.id}')
             if not self.dry_run:
                 each.delete()
 
     def remove_instances_with_banned_proxy(self):
-        logger.info('Removing instances with banned proxies')
+        self.stdout.write('Removing instances with banned proxies')
         instances = models.CrawlerInstance.objects.all()
 
         for each in instances:
             if each.proxy.is_banned:
-                logger.info(f'Removing "{each.role}" instance with id: {each.id}')
+                self.stdout.write(f'Removing "{each.role}" instance with id: {each.id}')
                 if not self.dry_run:
                     each.delete()
 
     def remove_instances_with_instructor_above_search_limit(self):
-        logger.info('Removing instances with instructor above search limit')
+        self.stdout.write('Removing instances with instructor above search limit')
         instances = models.CrawlerInstance.objects.all()
 
         for each in instances:
             if each.student.instructor.search_count >= settings.SEARCH_LIMIT:
-                logger.info(f'Removing "{each.role}" instance with id: {each.id}')
+                self.stdout.write(f'Removing "{each.role}" instance with id: {each.id}')
                 if not self.dry_run:
                     each.delete()
 
     def remove_instances_with_invalid_instructor(self):
-        logger.info('Removing instances with invalid instructor')
+        self.stdout.write('Removing instances with invalid instructor')
         instances = models.CrawlerInstance.objects.all()
 
         for each in instances:
             if each.student.instructor.status != '2':
-                logger.info(f'Removing "{each.role}" instance with id: {each.id}')
+                self.stdout.write(f'Removing "{each.role}" instance with id: {each.id}')
                 if not self.dry_run:
                     each.delete()
 
     def remove_instances_with_invalid_student(self):
-        logger.info('Removing instances with invalid student')
+        self.stdout.write('Removing instances with invalid student')
         instances = models.CrawlerInstance.objects.all()
 
         for each in instances:
             if each.student.status != '3':
-                logger.info(f'Removing "{each.role}" instance with id: {each.id}')
+                self.stdout.write(f'Removing "{each.role}" instance with id: {each.id}')
                 if not self.dry_run:
                     each.delete()
 
