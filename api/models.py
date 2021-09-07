@@ -249,7 +249,7 @@ class CrawlerInstance(BaseModel):
         related_name='crawler_instance'
     )
 
-    last_ping = models.DateTimeField(blank=True, null=True)
+    last_ping = models.DateTimeField(blank=True, default=timezone.now)
 
     role = models.CharField(
         max_length=20,

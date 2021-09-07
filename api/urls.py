@@ -43,6 +43,7 @@ urlpatterns = [
     path('create-crawler-instance/', views.CreateCrawlerInstanceView.as_view()),
     path('ping-crawler-instance/', views.PingCrawlerView.as_view()),
     path('get-crawler-instances/', views.GetCrawlerInstancesView.as_view()),
+    path('get-student-date-to-book/', views.GetStudentDateToBookView.as_view()),
 
     path('test/', views.TestView.as_view()),
 ]

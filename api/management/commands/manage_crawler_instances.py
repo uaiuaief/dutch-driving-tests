@@ -83,7 +83,7 @@ class Command(BaseCommand):
 
         proxies = self.get_valid_proxies()
 
-        for student, proxy in zip(students, proxies):
+        for student, proxy in zip(students[:5], proxies):
             logger.info(f"""Creating booker instance:
     Student - {student.get_full_name()}
     Proxy - {proxy.ip}

@@ -752,7 +752,7 @@ class GetValidProxyView(BaseView):
                 }, status=404)
 
     def get_proxy_data(self):
-        minutes = 0
+        minutes = 3
         time_limit = timezone.now() - datetime.timedelta(minutes=minutes)
         usable_proxy = models.Proxy.objects.order_by('last_used').filter(
                 last_used__lte=time_limit,
@@ -1132,7 +1132,13 @@ class GetCrawlerInstancesView(BaseView):
                 'error': f'{role} is not a valid role'
                 }, status=400)
 
-        instances = models.CrawlerInstance.objects.filter(role=role)
+        minutes = 5
+        time_limit = timezone.now() - datetime.timedelta(minutes=minutes)
+
+        instances = models.CrawlerInstance.objects.filter(
+                role=role,
+                last_ping__lte=time_limit
+                )
 
         return JsonResponse({
             'crawlers': serializers.CrawlerInstanceSerializer(instances, many=True).data
@@ -1164,25 +1170,54 @@ class CreateCrawlerInstanceView(BaseView):
 
 class PingCrawlerView(BaseView):
     permission_classes = [permissions.IsAdminUser]
-    allowed_fields = required_fields = [
-            "id"
-            ]
 
-    def post(self, request):
-        error = self._catch_errors(request)
-        if error:
-            return error
+    def get(self, request):
+        crawler_id = request.query_params.get('crawler_id')
+        if not crawler_id:
+            return JsonResponse({
+                'error': '`crawler_id` is required'
+                }, status=400)
 
         try:
-            instance = models.CrawlerInstance.objects.get(id=request.data['id'])
+            instance = models.CrawlerInstance.objects.get(id=crawler_id)
             instance.last_ping = timezone.now()
             instance.save()
         except Exception as e:
             return JsonResponse({
-                'msg': str(e)
-                }, status=400)
+                'error': str(e)
+                }, status=404)
 
         return JsonResponse({}, status=200)
+
+class GetStudentDateToBookView(BaseView):
+    permission_classes = [permissions.IsAdminUser]
+
+    def get(self, request):
+        student_id = request.query_params.get('student_id')
+        if not student_id:
+            return JsonResponse({
+                'error': f'`student_id` is required'
+                }, status=400)
+
+        try:
+            student = models.Student.objects.get(id=student_id)
+        except models.Student.DoesNotExist as e:
+            return JsonResponse({
+                'error': str(e)
+                }, status=404)
+
+        date_to_book = student.date_to_book
+        if date_to_book:
+            return JsonResponse(
+                    serializers.DateFoundSerializer(date_to_book).data,
+                    status=200
+                    )
+        else:
+            return JsonResponse({}, status=404)
+
+
+
+
 
 
 
