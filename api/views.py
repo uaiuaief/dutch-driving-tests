@@ -1,6 +1,7 @@
 import datetime
 from http import HTTPStatus
 
+from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.hashers import make_password
 from django.core import exceptions
@@ -16,6 +17,9 @@ from django.core.mail import send_mail
 
 from . import models, serializers, email_sender
 from .choices import TEST_TYPES
+
+
+logger = settings.LOGGER
 
 
 class ModelCreationMixin():
@@ -702,7 +706,7 @@ class GetWatcherInfoView(BaseView):
         instructor = models.Profile.objects.filter(
                 last_crawled__lte=time_limit,
                 status='2',
-                search_count__lte=270
+                search_count__lte=settings.SEARCH_LIMIT
                 ).order_by('last_crawled').first()
 
         if instructor:
@@ -785,7 +789,7 @@ class GetStudentToCrawl(BaseView):
 
         user = student.instructor.user
 
-        if user.profile.search_count >= 270 or user.profile.status != '2':
+        if user.profile.search_count >= settings.SEARCH_LIMIT or user.profile.status != '2':
             return JsonResponse({
                 'error': 'There are no students to book'
                 }, status=400)
@@ -1003,7 +1007,7 @@ class AddDateFoundView(BaseView):
         student_test_center = student.instructor.test_center.name
 
         if date_test_center != student_test_center:
-            print("test center is different from student's test center")
+            logger.warning("test center is different from student's test center")
             return False
         else:
             return True
@@ -1015,7 +1019,7 @@ class AddDateFoundView(BaseView):
         if date.date <= last_day:
             return True
         else:
-            print("not withing student range") 
+            logger.debug("not withing student range") 
             return False
 
     def _is_date_within_safe_range(self, date):
@@ -1024,12 +1028,12 @@ class AddDateFoundView(BaseView):
         if date.date > safe_limit:
             return True
         else:
-            print("not within safe limit") 
+            logger.debug("not within safe limit") 
             return False
 
     def _is_date_skipped(self, date, student):
         if str(date.date.day) in student.get_list_of_days_to_skip():
-            print("date is skipped") 
+            logger.debug("date is skipped") 
             return True
         else:
             return False

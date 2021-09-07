@@ -11,11 +11,13 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 import os
+import logging
 from pathlib import Path
 from dotenv import load_dotenv
 
 
 load_dotenv()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -163,8 +165,21 @@ REST_FRAMEWORK = {
 
 
 #Environment variables
-##SEARCH_LIMIT = os.environ.get('SEARCH_LIMIT')
+SEARCH_LIMIT = int(os.environ.get('SEARCH_LIMIT'))
 EMAIL = os.environ.get('EMAIL')
 EMAIL_PASSWORD = os.environ.get('EMAIL_PASSWORD')
 DOMAIN_NAME = os.environ.get('DOMAIN_NAME')
+
+# Logger
+LOGGER = logging.getLogger('server')
+
+stream = logging.StreamHandler()
+stream.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s %(message)s', '%d/%m/%Y %H:%M:%S')
+stream.setFormatter(formatter)
+
+LOGGER.addHandler(stream)
+
+logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%d/%m/%Y %H:%M:%S', level=logging.DEBUG)
+
 

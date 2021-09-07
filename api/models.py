@@ -183,6 +183,9 @@ class Student(BaseModel):
         default='3'
     )
 
+    def get_full_name(self):
+        return f"{self.first_name} {self.last_name}"
+
     def __str__(self):
         status_dict = {
                 '1': 'In analysis',
