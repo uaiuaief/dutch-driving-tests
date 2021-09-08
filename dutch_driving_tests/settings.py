@@ -30,12 +30,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('DJANGO_SK')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = bool(os.environ.get('DEBUG'))
 
-ALLOWED_HOSTS = ['snelcbrexamen.nl', 'www.snelcbrexamen.nl', 'localhost']
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
-#SECURE_SSL_REDIRECT= True
+if not DEBUG:
+    ALLOWED_HOSTS = ['snelcbrexamen.nl', 'www.snelcbrexamen.nl', 'localhost']
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+else:
+    ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -87,7 +89,7 @@ WSGI_APPLICATION = 'dutch_driving_tests.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
+PROD_DB = {
     'default': {
         #'ENGINE': 'django.db.backends.sqlite3',
         #'NAME': BASE_DIR / 'db.sqlite3',
@@ -100,6 +102,17 @@ DATABASES = {
     }
 }
 
+DEV_DB = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+if not DEBUG:
+    DATABASES = PROD_DB
+else:
+    DATABASES = DEV_DB
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -138,7 +151,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+if not DEBUG: 
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATICFILES_DIRS = [
         os.path.join(BASE_DIR, 'frontend/build/static'),
