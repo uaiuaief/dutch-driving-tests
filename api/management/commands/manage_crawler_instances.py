@@ -36,26 +36,24 @@ class Command(BaseCommand):
         self.stdout.write('Creating new watcher instances')
         active_profiles: list = self.get_active_profiles()
 
-        watcher_instances = models.CrawlerInstance.objects.filter(
-                role='watch'
-                ).values_list('id', flat=True)
+        watcher_instances = models.CrawlerInstance.objects\
+                .filter(role='watch')\
+                .values_list('id', flat=True)
         watcher_instances = list(watcher_instances)
 
-        users = models.User.objects.filter(
-                crawler_instance__in=watcher_instances
-                ).values_list('id', flat=True)
-        
-        instructors_with_running_watcher = models.Profile.objects.filter(
-                user__in=users
-                )
+        users_with_running_watcher = models.User.objects\
+                .filter(crawler_instance__in=watcher_instances)\
+                .values_list('id', flat=True)
 
-        students = models.Student.objects.exclude(
-                instructor__in=instructors_with_running_watcher,
-                )
-        students = students.filter(
-                instructor__in=active_profiles,
-                status='3'
-                )
+        
+        instructors_without_running_watcher = models.Profile.objects\
+                .filter(id__in=active_profiles)\
+                .exclude(user__in=users_with_running_watcher)
+        
+        students = []
+        for each in instructors_without_running_watcher:
+            student = each.students.filter(status='3').first()
+            students.append(student)
 
         proxies = self.get_valid_proxies()
 
