@@ -55,7 +55,8 @@ class Command(BaseCommand):
         students = []
         for each in instructors_without_running_watcher:
             student = each.students.filter(status='3').first()
-            students.append(student)
+            if student:
+                students.append(student)
 
         proxies = self.get_valid_proxies()
 
