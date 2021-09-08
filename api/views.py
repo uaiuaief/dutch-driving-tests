@@ -1189,6 +1189,7 @@ class PingCrawlerView(BaseView):
 
         return JsonResponse({}, status=200)
 
+
 class GetStudentDateToBookView(BaseView):
     permission_classes = [permissions.IsAdminUser]
 

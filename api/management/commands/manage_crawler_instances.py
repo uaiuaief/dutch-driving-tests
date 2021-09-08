@@ -41,8 +41,16 @@ class Command(BaseCommand):
                 ).values_list('id', flat=True)
         watcher_instances = list(watcher_instances)
 
+        users = models.User.objects.filter(
+                crawler_instance__in=watcher_instances
+                ).values_list('id', flat=True)
+        
+        instructors_with_running_watcher = models.Profile.objects.filter(
+                user__in=users
+                )
+
         students = models.Student.objects.exclude(
-                crawler_instance__in=watcher_instances,
+                instructor__in=instructors_with_running_watcher,
                 )
         students = students.filter(
                 instructor__in=active_profiles,
