@@ -20,8 +20,10 @@ class Command(BaseCommand):
                 )
 
     def handle(self, *args, **options):
+        current_time = format(datetime.datetime.now(), "%d-%m-%Y %H:%M:%S")
+        self.stdout.write(f'{current_time} ~ Running crawler manager')
+
         self.dry_run = options['dry_run']
-        self.stdout.write('Running crawler manager')
 
         self.remove_instances_with_instructor_above_search_limit()
         self.remove_instances_with_invalid_instructor()
