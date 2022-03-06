@@ -32,12 +32,12 @@ SECRET_KEY = os.environ.get('DJANGO_SK')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('DEBUG'))
 
-if not DEBUG:
+if DEBUG is False:
     ALLOWED_HOSTS = ['snelcbrexamen.nl', 'www.snelcbrexamen.nl', 'localhost']
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
 else:
-    ALLOWED_HOSTS = []
+    ALLOWED_HOSTS = ['localhost:8000', 'localhost']
 
 # Application definition
 
@@ -98,7 +98,7 @@ PROD_DB = {
         'USER': os.environ.get('DB_USER'),
         'PASSWORD': os.environ.get('DB_PASSWORD'),
         'HOST': os.environ.get('DB_HOST'),
-        'PORT': '5432',
+        'PORT': os.environ.get('DB_PORT')
     }
 }
 
@@ -109,10 +109,12 @@ DEV_DB = {
     }
 }
 
+
 if not DEBUG:
     DATABASES = PROD_DB
 else:
-    DATABASES = DEV_DB
+    DATABASES = PROD_DB
+#    DATABASES = DEV_DB
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
